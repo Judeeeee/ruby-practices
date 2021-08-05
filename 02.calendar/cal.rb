@@ -23,7 +23,7 @@ end
 month_last_date = Date.new(year, month, -1).day
 date_array = (1..month_last_date).to_a
 ### カレンダー表示の関係で、数字前に半角スペースを入れて調整
-date_array[0..9] = [" 1"," 2", " 3", " 4", " 5" ," 6", " 7", " 8", " 9"]
+date_array[0..8] = [" 1"," 2", " 3", " 4", " 5" ," 6", " 7", " 8", " 9"]
 
 ## 月初日から曜日を求めて、曜日と日付を対応させた配列を作成する
 month_first_day = Date.new(year, month, 1)
