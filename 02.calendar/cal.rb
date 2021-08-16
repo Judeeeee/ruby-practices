@@ -8,13 +8,12 @@ opt.on('-m')
 
 
 ### 引数指定しない場合 => 今年・今月の結果を返す
-argv_decision = ARGV.empty?
 year_month_input = opt.parse!(ARGV)
 year = year_month_input[0].to_i
 month = year_month_input[1].to_i
 today = Date.today
 
-if argv_decision == true
+if ARGV.empty?
   year = today.year
   month = today.month
 end
