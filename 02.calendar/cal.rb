@@ -27,7 +27,7 @@ month_first_day = Date.new(year, month, 1)
 day_of_the_week_num = month_first_day.wday
 display_days_array = []
 
-### 空文字の追加
+## ifで0の条件分岐を設置しないと、`0.times do ~~`になってしまい何も出力されなくなってしまう
 if day_of_the_week_num == 0
   display_days_array = date_array
 else
