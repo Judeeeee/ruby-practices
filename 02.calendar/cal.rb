@@ -40,7 +40,7 @@ else
   end
 end
 
-## コマンドラインへの出力
-  puts ("　　  #{month}月 #{year}    　　")
-  puts ("日 月 火 水 木 金 土")
-  display_days_array.each_slice(7) {|n| puts n.join(" ")}# 区切り文字半角
+
+puts ("　　  #{month}月 #{year}    　　")
+puts ("日 月 火 水 木 金 土")
+display_days_array.each_slice(7) {|n| puts n.join(" ")}
