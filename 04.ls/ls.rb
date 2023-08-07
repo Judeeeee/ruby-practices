@@ -24,3 +24,4 @@ def output_list(files, max_column = 3)
 end
 
 main
+
