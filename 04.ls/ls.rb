@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 def main
-  files = get_files_no_option
+  files = no_option_directory_item
   output_list(files)
 end
 
-def get_files_no_option
-  Dir.glob("*")
+def no_option_directory_item
+  Dir.glob('*')
 end
 
 def output_list(files, max_column = 3)
