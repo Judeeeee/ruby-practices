@@ -14,12 +14,12 @@ def output_list(files, max_column = 3)
   column_size = (files.size - 1) / max_column + 1
   column_size.times do |i|
     row = []
-    max_column.times{
+    max_column.times do
       row << files[i]
       i += column_size
-    }
+    end
     result << row.compact.join(' ')
-  }
+  end
   puts result
 end
 
