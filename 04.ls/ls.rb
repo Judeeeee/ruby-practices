@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def main
   files = get_files_no_option
   output_list(files)
