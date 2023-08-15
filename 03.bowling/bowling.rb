@@ -64,7 +64,7 @@ def calculate_score(flames)
       if flames[i+1] == [10,0]
         point += flames[i+1][0] + flames[i+2][0]
       else
-        point += (flames[i+1][0] + flames[i+1][1])
+        point += (flames[i+1][0] + flames[i+1].fetch(1,0))
       end
     end
     p point

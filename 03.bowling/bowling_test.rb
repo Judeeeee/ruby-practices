@@ -71,7 +71,7 @@ class TestBowling < Test::Unit::TestCase
     assert_equal(acutual,expected)
   end
 
-  def test_calculate_score_3#![0,10]はスペアだけどどうするか
+  def test_calculate_score_3
     flames = [[0,10],[1,5],[0,0],[0,0],[10,0],[10,0],[10,0],[5,1],[8,1],[0,4]]
     acutual = calculate_score(flames)
     expected = 107
@@ -92,7 +92,7 @@ class TestBowling < Test::Unit::TestCase
     assert_equal(acutual,expected)
   end
 
-  def test_calculate_score_6#!actual:220
+  def test_calculate_score_6
     flames =  [[10,0],[10,0],[10,0],[10,0],[10,0],[10,0],[10,0],[10,0],[10,0],[10,10,10]]
     acutual = calculate_score(flames)
     expected = 300
