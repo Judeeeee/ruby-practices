@@ -10,7 +10,6 @@ end
 
 def convert(input)
   shots = []
-  frames = []
   scores = input.split(',')
 
   scores.each do |s|
@@ -18,9 +17,7 @@ def convert(input)
   end
 
   # フレームごとに分割する
-  shots.each_slice(2) do |n|
-    frames << n
-  end
+  frames = shots.each_slice(2).to_a
 
   # 最後の10投目で、スペアの場合、最後の配列と結合した配列を返す。
   if frames[9][0] + frames[9][1] == 10
