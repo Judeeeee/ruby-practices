@@ -23,14 +23,14 @@ def convert(input)
   if frames[9][0] + frames[9][1] == 10
     tmp = (frames[9] + frames[10]).delete_if(&:zero?)
     frames = frames[0..-3]
-    frames = frames << tmp
+    frames << tmp
   end
 
   # 最後の10投目で、ストライクの場合。
   if frames[9][0] == 10 && frames[10]
     tmp = (frames[9] + frames[10]).delete_if(&:zero?)
     frames = frames[0..-3]
-    frames = frames << tmp
+    frames << tmp
   end
   frames
 end
