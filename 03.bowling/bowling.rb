@@ -1,67 +1,62 @@
 # frozen_string_literal: true
 
 def main
-  input = ARGV[0]
-  convert(input)
-  frames = convert(input)
-  point = calculate_score(frames)
-  output_result(point)
+  results = ARGV[0]
+  flames = convert(results)
+  calculate_score(flames)
 end
 
-def convert(input)
+def convert(results)
   shots = []
-  scores = input.split(',')
+  results = results.split(',')
 
-  scores.each do |s|
-    s == 'X' ? shots << 10 << 0 : shots << s.to_i
+  results.each do |result|
+    result == 'X' ? shots << 10 << 0 : shots << result.to_i
   end
 
   # フレームごとに分割する
-  frames = shots.each_slice(2).to_a
+  flames = shots.each_slice(2).to_a
 
-  # 最後の10投目で、スペアの場合、最後の配列と結合した配列を返す。
-  if frames[9][0] + frames[9][1] == 10
-    tmp = (frames[9] + frames[10]).delete_if(&:zero?)
-    frames = frames[0..-3]
-    frames << tmp
+  # 最後の10投目で、スペアの場合。
+  if flames[9][0] + flames[9][1] == 10
+    last_flame = (flames[9] + flames[10]).delete_if(&:zero?)
+    flames = flames[0..-3] << last_flame
   end
 
   # 最後の10投目で、ストライクの場合。
-  if frames[9][0] == 10 && frames[10]
-    tmp = (frames[9] + frames[10]).delete_if(&:zero?)
-    frames = frames[0..-3]
-    frames << tmp
+  if flames[9][0] == 10 && flames[10]
+    last_flame = (flames[9] + flames[10]).delete_if(&:zero?)
+    flames = flames[0..-3] << last_flame
   end
-  frames
+  flames
 end
 
 def calculate_score(flames)
-  point = 0
+  final_score = 0
 
   flames.each_with_index do |flame, i|
-    frame_score = flame.sum
-    point += frame_score
+    final_score += flame.sum
 
     break if i == flames.size - 1
 
     # このフレームがスペアの場合
-    point += flames[i + 1][0] if flame[0] + flame[1] == 10 && flame[0] != 10
+    final_score += flames[i + 1][0] if flame[0] + flame[1] == 10 && flame[0] != 10
 
     next if flame[0] != 10
 
     # このフレームがストライクの場合
-    point += if flames[i + 1] == [10, 0]
-               flames[i + 1][0] + flames[i + 2][0]
-             else
-               (flames[i + 1][0] + flames[i + 1].fetch(1, 0))
-             end
+    final_score += if flames[i + 1] == [10, 0]
+                     flames[i + 1][0] + flames[i + 2][0]
+                   else
+                     flames[i + 1][0] + flames[i + 1].fetch(1, 0)
+                   end
   end
-  point
+  final_score
 end
 
 # #スコア合計を標準出力
-def output_result(point)
-  puts point
+def output_result(final_score)
+  puts final_score
 end
 
 main if __FILE__ == './bowling'
