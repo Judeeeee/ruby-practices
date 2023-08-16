@@ -55,14 +55,14 @@ def calculate_score(flames)
     # このフレームがスペアの場合
     point += flames[i + 1][0] if flame[0] + flame[1] == 10 && flame[0] != 10
 
+    next if flame[0] != 10
+
     # このフレームがストライクの場合
-    if flame[0] == 10
-      if flames[i + 1] == [10, 0]
-        point += flames[i + 1][0] + flames[i + 2][0]
-      else
-        point += (flames[i + 1][0] + flames[i + 1].fetch(1, 0))
-      end
-    end
+    point += if flames[i + 1] == [10, 0]
+               flames[i + 1][0] + flames[i + 2][0]
+             else
+               (flames[i + 1][0] + flames[i + 1].fetch(1, 0))
+             end
   end
   point
 end
