@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 def main
-  if ARGV[0] == nil
+  if ARGV[0].nil?
     files = no_option_directory_item
-  elsif ARGV[0] == "-a"
+  elsif ARGV[0] == '-a'
     files = a_option
   end
   output_list(files)
@@ -14,8 +14,7 @@ def no_option_directory_item
 end
 
 def a_option
-  files = Dir.entries(".").sort
-  return files
+  Dir.entries('.').sort
 end
 
 def output_list(files, max_column = 3)
