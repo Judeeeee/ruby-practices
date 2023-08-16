@@ -14,12 +14,7 @@ def convert(input)
   scores = input.split(',')
 
   scores.each do |s|
-    if s == 'X'
-      shots << 10
-      shots << 0
-    else
-      shots << s.to_i
-    end
+    s == 'X' ? shots << 10 << 0 : shots << s.to_i
   end
 
   # フレームごとに分割する
