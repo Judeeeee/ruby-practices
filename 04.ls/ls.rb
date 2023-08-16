@@ -1,12 +1,21 @@
 # frozen_string_literal: true
 
 def main
-  files = no_option_directory_item
+  if ARGV[0] == nil
+    files = no_option_directory_item
+  elsif ARGV[0] == "-a"
+    files = a_option
+  end
   output_list(files)
 end
 
 def no_option_directory_item
   Dir.glob('*')
+end
+
+def a_option
+  files = Dir.entries(".").sort
+  return files
 end
 
 def output_list(files, max_column = 3)
