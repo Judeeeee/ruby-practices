@@ -3,7 +3,8 @@
 def main
   results = ARGV[0]
   flames = convert(results)
-  calculate_score(flames)
+  final_score = calculate_score(flames)
+  output_result(final_score)
 end
 
 def convert(results)
@@ -54,9 +55,9 @@ def calculate_score(flames)
   final_score
 end
 
-# #スコア合計を標準出力
+# スコア合計を標準出力。putsで引数を出力しているだけだが、テストコードで実行結果を確認するために、敢えてメソッドにしている。
 def output_result(final_score)
   puts final_score
 end
 
-main if __FILE__ == './bowling'
+main if __FILE__ == $PROGRAM_NAME
