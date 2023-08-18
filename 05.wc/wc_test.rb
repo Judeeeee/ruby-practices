@@ -7,12 +7,13 @@ class TC_Wc < Test::Unit::TestCase
   ##l option
   def l_option
     file = "l_option.md"
-    file_data = ""
+    file_path = File.expand_path(file)
+    file_data = File.read(file_path)
     l_total = []
-    output_expect = "expect"
-    l_total_expect = "expect"
+    output_expect = "5 l_option.md"
+    l_total_expect = [5]
 
-    output,l_total = l_option(file_data,file,l_total)
+    output,l_total = l_option(file,file_data,l_total)
     assert_equal(output, output_expect)
     assert_equal(l_total, l_total_expect)
   end
@@ -20,12 +21,13 @@ class TC_Wc < Test::Unit::TestCase
   ##w option
   def w_option
     file = "w_option.md"
-    file_data = ""
+    file_path = File.expand_path(file)
+    file_data = File.read(file_path)
     w_total = []
-    output_expect = "expect"
-    w_total_expect = "expect"
+    output_expect = "5 w_option.md"
+    w_total_expect = [5]
 
-    output,w_total = w_option(file_data,file,w_total)
+    output,w_total = w_option(file,file_data,w_total)
     assert_equal(output, output_expect)
     assert_equal(w_total, w_total_expect)
   end
@@ -33,12 +35,12 @@ class TC_Wc < Test::Unit::TestCase
   ##c option
   def c_option
     file = "c_option.md"
-    file_path = ""
+    file_path = File.expand_path(file)
     c_total = []
-    output_expect = "expect"
-    c_total_expect = "expect"
+    output_expect = "5 c_option.md"
+    c_total_expect = [5]
 
-    output,c_total = c_option(file_path,file,c_total)
+    output,c_total = c_option(file,file_path,c_total)
     assert_equal(output, output_expect)
     assert_equal(c_total, c_total_expect)
   end

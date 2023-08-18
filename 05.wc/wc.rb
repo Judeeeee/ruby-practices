@@ -13,28 +13,28 @@ l_total = []
 w_total = []
 c_total = []
 
-def l_option(file_data,file,l_total)
+def l_option(file,file_data,l_total)
   line_count = file_data.count("\n")
   output = "#{line_count} #{file}"
   l_total << line_count
   return output,l_total
 end
 
-def w_option(file_data,file,w_total)
+def w_option(file,file_data,w_total)
   word_count = file_data.split(' ').size
   output = "#{word_count} #{file}"
   w_total << word_count
   return output,w_total
 end
 
-def c_option(file_path,file,c_total)
+def c_option(file,file_path,c_total)
   file_size = File.size(file_path)
-  optput = "#{file_size} #{file}"
+  output = "#{file_size} #{file}"
   c_total << file_size
-  return optput,c_total
+  return output,c_total
 end
 
-def l_and_w_option(file_data,file,l_total,w_total)
+def l_and_w_option(file,file_data,l_total,w_total)
   #l_option
   line_count = file_data.count("\n")
   l_total << line_count
@@ -45,7 +45,8 @@ def l_and_w_option(file_data,file,l_total,w_total)
   return output, l_total, w_total
 end
 
-def w_and_c_option(file_path,file_data,file,w_total,c_total)
+#オプション2つ
+def w_and_c_option(file,file_path,file_data,w_total,c_total)
   #w option
   word_count = file_data.split(' ').size
   w_total << word_count
@@ -56,7 +57,7 @@ def w_and_c_option(file_path,file_data,file,w_total,c_total)
   return output, w_total, c_total
 end
 
-def c_and_l_option(file_path,file_data,file,c_total,l_total)
+def c_and_l_option(file,file_path,file_data,c_total,l_total)
   #c option
   file_size = File.size(file_path)
   c_total << file_size
@@ -77,7 +78,7 @@ def l_and_w_and_c_option(file_path,file_data,file,l_total,w_total,c_total)
   #c option
   file_size = File.size(file_path)
   w_total << file_size
-  output = "#{line_count} #{word_count} #{file_size}"
+  output = "#{line_count} #{word_count} #{file_size} #{file}"
   return output,l_total,w_total,c_total
 end
 
@@ -88,38 +89,32 @@ files.each{|file|
   #*オプションが1つの場合(ファイル1つ、複数指定の網羅)
   if params.size == 1
     if params[:l]
-      output,l_total = l_option(file_data,file,l_total)
+      output,l_total = l_option(file,file_data,l_total)
       puts output
-      return l_total
     elsif params[:w]
-      output,w_total = w_option(file_data,file,w_total)
+      output,w_total = w_option(file,file_data,w_total)
       puts output
-      return w_total
     elsif params[:c]
-      output,c_total = c_option(file_path,file,c_total)
+      output,c_total = c_option(file,file_path,c_total)
       puts output
-      return c_total
     end
   end
 
   #*オプションが2つの場合
   if params.size == 2
     if params.keys == [:l, :w] || params.keys == [:w, :l]
-      output,l_total,w_total = l_and_w_option(file_data,file,l_total,w_total)
+      output,l_total,w_total = l_and_w_option(file,file_data,l_total,w_total)
       puts output
-      return l_total,w_total
     end
 
     if params.keys == [:w, :c] || params.keys == [:c, :w]
-      output,w_total,c_total = w_and_c_option(file_path,file_data,file,w_total,c_total)
+      output,w_total,c_total = w_and_c_option(file,file_path,file_data,w_total,c_total)
       puts output
-      return w_total, c_total
     end
 
     if params.keys == [:c, :l] || params.keys == [:l, :c]
-      output,c_total,l_total = c_and_l_option(file_path,file_data,file,c_total,l_total)
+      output,c_total,l_total = c_and_l_option(file,file_path,file_data,c_total,l_total)
       puts output
-      return c_total, l_total
     end
   end
 
@@ -127,7 +122,6 @@ files.each{|file|
     if params.size == 0 || params.size == 3
       output,l_total,w_total,c_total = l_and_w_and_c_option(file_path,file_data,file,l_total,w_total,c_total)
       puts output
-      return l_total,w_total,c_total
     end
 }
 
