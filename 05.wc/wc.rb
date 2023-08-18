@@ -25,22 +25,26 @@ files.each{|file|
     w_total << word_count
     file_size = File.size(file_path)
     c_total << file_size
-    puts "#{line_count} #{word_count} #{file_size}"
+    output = "#{line_count} #{word_count} #{file_size}"
+    puts output
   end
 
   #*オプションが1つの場合(ファイル1つ、複数指定の網羅)
   if params.size == 1
     if params[:l]
       line_count = file_data.count("\n")
-      puts "#{line_count} #{file}"
+      output = "#{line_count} #{file}"
+      puts output
       l_total << line_count
     elsif params[:w]
       word_count = file_data.split(' ').size
-      puts "#{word_count} #{file}"
+      output = "#{word_count} #{file}"
+      puts output
       w_total << word_count
     elsif params[:c]
       file_size = File.size(file_path)
-      puts "#{file_size} #{file}"
+      optput = "#{file_size} #{file}"
+      puts optput
       c_total << file_size
     end
   end
@@ -50,24 +54,35 @@ files.each{|file|
     if params.keys == [:l, :w] || params.keys == [:w, :l]
       line_count = file_data.count("\n")
       word_count = file_data.split(' ').size
-      puts "#{line_count} #{word_count} #{file}"
+      output = "#{line_count} #{word_count} #{file}"
+      puts output
+      l_total << line_count
+      w_total << word_count
     end
 
     if params.keys == [:w, :c] || params.keys == [:c, :w]
       word_count = file_data.split(' ').size
       file_size = File.size(file_path)
-      puts "#{word_count} #{file_size} #{file}"
+      output = "#{word_count} #{file_size} #{file}"
+      puts output
+      w_total << word_count
+      c_total << file_size
     end
 
     if params.keys == [:c, :l] || params.keys == [:l, :c]
       file_size = File.size(file_path)
       line_count = file_data.count("\n")
-      puts "#{line_count} #{file_size} #{file}"
+      output = "#{line_count} #{file_size} #{file}"
+      puts output
+      c_total << file_size
+      l_total << line_count
     end
   end
 }
 
 #? 合計を算出する
-puts"#{l_total.sum} total" if l_total.size != 1 && l_total.sum != 0
-puts "#{w_total.sum} total"if w_total.sum != 1 && w_total.sum != 0
-puts "#{c_total.sum} total" if c_total.sum != 1 && c_total.sum != 0
+l_output = l_total.sum if l_total.size != 1 && l_total.sum != 0
+w_output = w_total.sum if w_total.sum != 1 && w_total.sum != 0
+c_output = c_total.sum if c_total.sum != 1 && c_total.sum != 0
+puts "#{l_output} #{w_output} #{c_output} total"
+
