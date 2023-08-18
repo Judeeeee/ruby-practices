@@ -68,7 +68,7 @@ def c_and_l_option(file,file_path,file_data,c_total,l_total)
   return output, c_total, l_total
 end
 
-def l_and_w_and_c_option(file_path,file_data,file,l_total,w_total,c_total)
+def l_and_w_and_c_option(file,file_path,file_data,l_total,w_total,c_total)
   #l option
   line_count = file_data.count("\n")
   l_total << line_count
@@ -77,7 +77,7 @@ def l_and_w_and_c_option(file_path,file_data,file,l_total,w_total,c_total)
   w_total << word_count
   #c option
   file_size = File.size(file_path)
-  w_total << file_size
+  c_total << file_size
   output = "#{line_count} #{word_count} #{file_size} #{file}"
   return output,l_total,w_total,c_total
 end
@@ -120,7 +120,7 @@ files.each{|file|
 
     #* オプション指定がない、またはオプション指定が3つの場合
     if params.size == 0 || params.size == 3
-      output,l_total,w_total,c_total = l_and_w_and_c_option(file_path,file_data,file,l_total,w_total,c_total)
+      output,l_total,w_total,c_total = l_and_w_and_c_option(file,file_path,file_data,l_total,w_total,c_total)
       puts output
     end
 }
