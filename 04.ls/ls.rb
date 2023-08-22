@@ -10,18 +10,18 @@ def main
 
   case params.size
   when 0
-    files = no_option_directory_item
+    files = specify_no_option
   when 1
-    files = a_option if params[:a]
+    files = specify_a_option if params[:a]
   end
   output_list(files)
 end
 
-def no_option_directory_item
+def specify_no_option
   Dir.glob('*')
 end
 
-def a_option
+def specify_a_option
   Dir.entries('.').sort
 end
 
