@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 
+require 'optparse'
+
 def main
-  if ARGV[0].nil?
+  opt = OptionParser.new
+  params = {}
+  opt.on('-a') { |v| params[:a] = v }
+  opt.parse!(ARGV)
+
+  case params.size
+  when 0
     files = no_option_directory_item
-  elsif ARGV[0] == '-a'
-    files = a_option
+  when 1
+    files = a_option if params[:a]
   end
   output_list(files)
 end
