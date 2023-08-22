@@ -2,8 +2,8 @@
 
 def main
   results = ARGV[0]
-  flames = convert(results)
-  final_score = calculate_score(flames)
+  frames = convert(results)
+  final_score = calculate_score(frames)
   output_result(final_score)
 end
 
@@ -16,40 +16,40 @@ def convert(results)
   end
 
   # フレームごとに分割する
-  flames = shots.each_slice(2).to_a
+  frames = shots.each_slice(2).to_a
 
   # 最後の10投目で、スペアの場合。
-  if flames[9][0] + flames[9][1] == 10
-    last_flame = (flames[9] + flames[10]).delete_if(&:zero?)
-    flames = flames[0..-3] << last_flame
+  if frames[9][0] + frames[9][1] == 10
+    last_frame = (frames[9] + frames[10]).delete_if(&:zero?)
+    frames = frames[0..-3] << last_frame
   end
 
   # 最後の10投目で、ストライクの場合。
-  if flames[9][0] == 10 && flames[10]
-    last_flame = (flames[9] + flames[10]).delete_if(&:zero?)
-    flames = flames[0..-3] << last_flame
+  if frames[9][0] == 10 && frames[10]
+    last_frame = (frames[9] + frames[10]).delete_if(&:zero?)
+    frames = frames[0..-3] << last_frame
   end
-  flames
+  frames
 end
 
-def calculate_score(flames)
+def calculate_score(frames)
   final_score = 0
 
-  flames.each_with_index do |flame, i|
-    final_score += flame.sum
+  frames.each_with_index do |frame, i|
+    final_score += frame.sum
 
-    break if i == flames.size - 1
+    break if i == frames.size - 1
 
     # このフレームがスペアの場合
-    final_score += flames[i + 1][0] if flame[0] + flame[1] == 10 && flame[0] != 10
+    final_score += frames[i + 1][0] if frame[0] + frame[1] == 10 && frame[0] != 10
 
-    next if flame[0] != 10
+    next if frame[0] != 10
 
     # このフレームがストライクの場合
-    final_score += if flames[i + 1] == [10, 0]
-                     flames[i + 1][0] + flames[i + 2][0]
+    final_score += if frames[i + 1] == [10, 0]
+                     frames[i + 1][0] + frames[i + 2][0]
                    else
-                     flames[i + 1][0] + flames[i + 1].fetch(1, 0)
+                     frames[i + 1][0] + frames[i + 1].fetch(1, 0)
                    end
   end
   final_score
