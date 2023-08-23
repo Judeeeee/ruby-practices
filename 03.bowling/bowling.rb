@@ -9,10 +9,10 @@ end
 
 def convert(scoreboard)
   shots = []
-  scoreboard = scoreboard.split(',')
+  scores = scoreboard.split(',')
 
-  scoreboard.each do |result|
-    result == 'X' ? shots << 10 << 0 : shots << result.to_i
+  scores.each do |score|
+    score == 'X' ? shots << 10 << 0 : shots << score.to_i
   end
 
   # フレームごとに分割する
