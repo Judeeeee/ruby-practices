@@ -41,19 +41,21 @@ def calculate_score(frames)
 
   frames.each_with_index do |frame, i|
     final_score += frame.sum
+    next_frame = frames[i + 1]
+    two_positions_away_frame = frames[i + 2]
 
     break if i == frames.size - 1
 
-    # このフレームがスペアの場合
-    final_score += frames[i + 1][0] if frame[0] + frame[1] == 10 && frame[0] != 10
+    # スペアのフレームの得点は次の1投の点を加算するルール。
+    final_score += next_frame[0] if spare?(frame) && !strike?(frame)
 
-    next if frame[0] != 10
+    next unless strike?(frame)
 
-    # このフレームがストライクの場合
-    final_score += if frames[i + 1] == [10, 0]
-                     frames[i + 1][0] + frames[i + 2][0]
+    # ストライクのフレームの得点は次の2投の点を加算するルール。
+    final_score += if strike?(next_frame)
+                     next_frame[0] + two_positions_away_frame[0]
                    else
-                     frames[i + 1][0] + frames[i + 1].fetch(1, 0)
+                     next_frame[0] + next_frame.fetch(1, 0)
                    end
   end
   final_score
