@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 def main
-  results = ARGV[0]
-  frames = convert(results)
+  scoreboard = ARGV[0]
+  frames = convert(scoreboard)
   final_score = calculate_score(frames)
   output_result(final_score)
 end
 
-def convert(results)
+def convert(scoreboard)
   shots = []
-  results = results.split(',')
+  scoreboard = scoreboard.split(',')
 
-  results.each do |result|
+  scoreboard.each do |result|
     result == 'X' ? shots << 10 << 0 : shots << result.to_i
   end
 
