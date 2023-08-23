@@ -2,12 +2,24 @@
 
 def main
   scoreboard = ARGV[0]
-  frames = convert(scoreboard)
+  frames = split_by_frames(scoreboard)
   final_score = calculate_score(frames)
   output_result(final_score)
 end
 
-def convert(scoreboard)
+def spare?(frame)
+  true if frame[0] + frame[1] == 10
+end
+
+def strike?(frame)
+  true if frame[0] == 10
+end
+
+def change_last_frame(frames, last_frame)
+  (last_frame + frames[10]).delete_if(&:zero?)
+end
+
+def split_by_frames(scoreboard)
   shots = []
   scores = scoreboard.split(',')
 
@@ -15,20 +27,12 @@ def convert(scoreboard)
     score == 'X' ? shots << 10 << 0 : shots << score.to_i
   end
 
-  # フレームごとに分割する
   frames = shots.each_slice(2).to_a
+  last_frame = frames[9]
 
-  # 最後の10投目で、スペアの場合。
-  if frames[9][0] + frames[9][1] == 10
-    last_frame = (frames[9] + frames[10]).delete_if(&:zero?)
-    frames = frames[0..-3] << last_frame
-  end
-
-  # 最後の10投目で、ストライクの場合。
-  if frames[9][0] == 10 && frames[10]
-    last_frame = (frames[9] + frames[10]).delete_if(&:zero?)
-    frames = frames[0..-3] << last_frame
-  end
+  # 最後のフレームがスペアかストライクの場合、この後のcalculate_scoreで扱いやすいように最後のフレームを3shotsにまとめる
+  frames = frames[0..-3].push(change_last_frame(frames, last_frame)) if spare?(last_frame)
+  frames = frames[0..-3].push(change_last_frame(frames, last_frame)) if strike?(last_frame) && frames[10]
   frames
 end
 
