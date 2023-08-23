@@ -52,7 +52,7 @@ def calculate_score(frames)
     next unless strike?(frame)
 
     # ストライクのフレームの得点は次の2投の点を加算するルール。
-    final_score += if strike?(next_frame)
+    final_score += if next_frame == [10, 0]
                      next_frame[0] + two_positions_away_frame[0]
                    else
                      next_frame[0] + next_frame.fetch(1, 0)
