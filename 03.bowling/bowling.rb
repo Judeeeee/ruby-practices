@@ -20,11 +20,10 @@ def change_last_frame(frames, last_frame)
 end
 
 def split_by_frames(scoreboard)
-  shots = []
   scores = scoreboard.split(',')
 
-  scores.each do |score|
-    score == 'X' ? shots << 10 << 0 : shots << score.to_i
+  shots = scores.flat_map do |score|
+    score == 'X' ? [10, 0] : score.to_i
   end
 
   frames = shots.each_slice(2).to_a
