@@ -4,52 +4,52 @@ require 'test/unit'
 require './bowling'
 
 class TestBowling < Test::Unit::TestCase
-  # convertのテスト
-  def testcase1_convert
+  # split_by_framesのテスト
+  def testcase1_split_by_frames
     input = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,6,4,5'
-    actual = convert(input)
+    actual = split_by_frames(input)
     expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [6, 4, 5]]
     assert_equal(actual, expect)
   end
 
-  def testcase2_convert
+  def testcase2_split_by_frames
     input = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,X,X,X'
-    actual = convert(input)
+    actual = split_by_frames(input)
     expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [10, 10, 10]]
     assert_equal(actual, expect)
   end
 
-  def testcase3_convert
+  def testcase3_split_by_frames
     input = '0,10,1,5,0,0,0,0,X,X,X,5,1,8,1,0,4'
-    actual = convert(input)
+    actual = split_by_frames(input)
     expect = [[0, 10], [1, 5], [0, 0], [0, 0], [10, 0], [10, 0], [10, 0], [5, 1], [8, 1], [0, 4]]
     assert_equal(actual, expect)
   end
 
-  def testcase4_convert
+  def testcase4_split_by_frames
     input = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,X,0,0'
-    actual = convert(input)
+    actual = split_by_frames(input)
     expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [10]]
     assert_equal(actual, expect)
   end
 
-  def testcase5_convert
+  def testcase5_split_by_frames
     input = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,X,1,8'
-    actual = convert(input)
+    actual = split_by_frames(input)
     expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [10, 1, 8]]
     assert_equal(actual, expect)
   end
 
-  def testcase6_convert
+  def testcase6_split_by_frames
     input = 'X,X,X,X,X,X,X,X,X,X,X,X'
-    actual = convert(input)
+    actual = split_by_frames(input)
     expect = [[10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 10, 10]]
     assert_equal(actual, expect)
   end
 
-  def testcase7_convert
+  def testcase7_split_by_frames
     input = 'X,0,0,X,0,0,X,0,0,X,0,0,X,0,0'
-    actual = convert(input)
+    actual = split_by_frames(input)
     expect = [[10, 0], [0, 0], [10, 0], [0, 0], [10, 0], [0, 0], [10, 0], [0, 0], [10, 0], [0, 0]]
     assert_equal(actual, expect)
   end
