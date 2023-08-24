@@ -10,14 +10,14 @@ def main
 
   case params.size
   when 0
-    files = specify_no_option
+    files = get_filenames_without_dotfile
   when 1
     files = specify_a_option if params[:a]
   end
   output_list(files)
 end
 
-def specify_no_option
+def get_filenames_without_dotfile
   Dir.glob('*')
 end
 
