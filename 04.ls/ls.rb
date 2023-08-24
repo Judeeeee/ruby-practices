@@ -10,18 +10,18 @@ def main
 
   case params.size
   when 0
-    files = get_filenames_without_dotfile
+    files = fetch_filenames_without_dotfile
   when 1
-    files = get_all_items if params[:a]
+    files = fetch_all_items if params[:a]
   end
   output_list(files)
 end
 
-def get_filenames_without_dotfile
+def fetch_filenames_without_dotfile
   Dir.glob('*')
 end
 
-def get_all_items
+def fetch_all_items
   Dir.entries('.').sort
 end
 
