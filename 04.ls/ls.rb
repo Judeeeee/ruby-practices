@@ -12,7 +12,7 @@ def main
   when 0
     files = get_filenames_without_dotfile
   when 1
-    files = specify_a_option if params[:a]
+    files = get_all_items if params[:a]
   end
   output_list(files)
 end
@@ -21,7 +21,7 @@ def get_filenames_without_dotfile
   Dir.glob('*')
 end
 
-def specify_a_option
+def get_all_items
   Dir.entries('.').sort
 end
 
