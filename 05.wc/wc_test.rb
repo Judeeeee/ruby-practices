@@ -1,46 +1,57 @@
 require 'test/unit'
 require './wc'
 
+#TODO: expectの値を変える
 
 class TC_Wc < Test::Unit::TestCase
-  #TODO オプションが1つの場合
-  ##l option
   def l_option
-    file = "l_option.md"
-    file_path = File.expand_path(file)
-    file_data = File.read(file_path)
-    l_total = []
+    opt = OptionParser.new
+    params = {}
+    opt.on('-l') {|v| params[:l] = v }
+    opt.on('-w') {|v| params[:w] = v }
+    opt.on('-c') {|v| params[:c] = v }
+    opt.parse!(ARGV)
+
+    files = ["l_option.md"]
+    l_total, w_total, c_total, output = calcurate_data(files, params)
     output_expect = "5 l_option.md"
     l_total_expect = [5]
-
-    output,l_total = l_option(file,file_data,l_total)
     assert_equal(output, output_expect)
     assert_equal(l_total, l_total_expect)
   end
 
   ##w option
   def w_option
-    file = "w_option.md"
-    file_path = File.expand_path(file)
-    file_data = File.read(file_path)
-    w_total = []
+    opt = OptionParser.new
+    params = {}
+    opt.on('-l') {|v| params[:l] = v }
+    opt.on('-w') {|v| params[:w] = v }
+    opt.on('-c') {|v| params[:c] = v }
+    opt.parse!(ARGV)
+
+    files = ["w_option.md"]
+    l_total, w_total, c_total, output = calcurate_data(files, params)
     output_expect = "5 w_option.md"
     w_total_expect = [5]
 
-    output,w_total = w_option(file,file_data,w_total)
     assert_equal(output, output_expect)
     assert_equal(w_total, w_total_expect)
   end
 
   ##c option
   def c_option
-    file = "c_option.md"
-    file_path = File.expand_path(file)
-    c_total = []
+    opt = OptionParser.new
+    params = {}
+    opt.on('-l') {|v| params[:l] = v }
+    opt.on('-w') {|v| params[:w] = v }
+    opt.on('-c') {|v| params[:c] = v }
+    opt.parse!(ARGV)
+
+    files = ["c_option.md"]
+    l_total, w_total, c_total, output = calcurate_data(files, params)
     output_expect = "5 c_option.md"
     c_total_expect = [5]
 
-    output,c_total = c_option(file,file_path,c_total)
     assert_equal(output, output_expect)
     assert_equal(c_total, c_total_expect)
   end
@@ -48,15 +59,18 @@ class TC_Wc < Test::Unit::TestCase
   #TODO オプションが2つの場合
   ##lwまたはwl
   def lw_wl_option
-    file = "wc_test.md"
-    file_data = ""
-    l_total = []
-    w_total = []
+    opt = OptionParser.new
+    params = {}
+    opt.on('-l') {|v| params[:l] = v }
+    opt.on('-w') {|v| params[:w] = v }
+    opt.on('-c') {|v| params[:c] = v }
+    opt.parse!(ARGV)
+
+    files = [["l_option.md"],["w_option.md"]]
+    l_total, w_total, c_total, output = calcurate_data(files, params)
     output_expect = "expect"
     l_total_expect = "expect"
     w_total_expect = "expect"
-
-    output, l_total, w_total = l_and_w_option(file_data,file,l_total,w_total)
     assert_equal(output, output_expect)
     assert_equal(l_total, l_total_expect)
     assert_equal(w_total, w_total_expect)
@@ -64,16 +78,19 @@ class TC_Wc < Test::Unit::TestCase
 
   ##wcまたはcw
   def wc_cw_option
-    file = "wc_test.md"
-    file_data = ""
-    file_path = ""
-    w_total = []
-    c_total = []
+    opt = OptionParser.new
+    params = {}
+    opt.on('-l') {|v| params[:l] = v }
+    opt.on('-w') {|v| params[:w] = v }
+    opt.on('-c') {|v| params[:c] = v }
+    opt.parse!(ARGV)
+
+    files = [["w_option.md"],["c_option.md"]]
+    l_total, w_total, c_total, output = calcurate_data(files, params)
     output_expect = "expect"
     w_total_expect = "expect"
     c_total_expect = "expect"
 
-    output, w_total, c_total = w_and_c_option(file_path,file_data,file,w_total,c_total)
     assert_equal(output, output_expect)
     assert_equal(w_total, w_total_expect)
     assert_equal(c_total, c_total_expect)
@@ -81,16 +98,19 @@ class TC_Wc < Test::Unit::TestCase
 
   ##clまたはlc
   def cl_lc_option
-    file = "wc_test.md"
-    file_data = ""
-    file_path = ""
-    c_total = []
-    l_total = []
+    opt = OptionParser.new
+    params = {}
+    opt.on('-l') {|v| params[:l] = v }
+    opt.on('-w') {|v| params[:w] = v }
+    opt.on('-c') {|v| params[:c] = v }
+    opt.parse!(ARGV)
+
+    files = [["c_option.md"],["l_option.md"]]
+    l_total, w_total, c_total, output = calcurate_data(files, params)
     output_expect = "expect"
     c_total_expect = "expect"
     l_total_expect = "expect"
 
-    output, c_total, l_total = c_and_l_option(file_path,file_data,file,c_total,l_total)
     assert_equal(output, output_expect)
     assert_equal(c_total, c_total_expect)
     assert_equal(l_total, l_total_expect)
@@ -98,21 +118,27 @@ class TC_Wc < Test::Unit::TestCase
 
   #TODO オプション無しまたは3つの場合
   def l_and_w_and_c_option
-    file = "wc_test.md"
-    file_data = ""
-    file_path = ""
-    l_total = []
-    w_total = []
-    c_total = []
+    opt = OptionParser.new
+    params = {}
+    opt.on('-l') {|v| params[:l] = v }
+    opt.on('-w') {|v| params[:w] = v }
+    opt.on('-c') {|v| params[:c] = v }
+    opt.parse!(ARGV)
+
+    files = [["l_option.md"],["w_option.md"],["c_option.md"]]
+    l_total, w_total, c_total, output = calcurate_data(files, params)
     output_expect = "expect"
     l_total_expect = "expect"
     w_total_expect = "expect"
     c_total_expect = "expect"
 
-    output,l_total,w_total,c_total = l_and_w_and_c_option(file_path,file_data,file,l_total,w_total,c_total)
+    total = total_output(l_total, w_total, c_total)
+    total_expect = ""
+
     assert_equal(output, output_expect)
     assert_equal(l_total, l_total_expect)
     assert_equal(w_total, w_total_expect)
     assert_equal(c_total, c_total_expect)
+    assert_equal(total, total_expect)
   end
 end
