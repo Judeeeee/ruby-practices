@@ -8,11 +8,11 @@ def main
   opt.on('-a') { |v| params[:a] = v }
   opt.parse!(ARGV)
 
-  if params[:a]
-    files = fetch_all_items
-  else params.empty?
-    files = fetch_filenames_without_dotfile
-  end
+  files = if params[:a]
+            fetch_all_items
+          else
+            fetch_filenames_without_dotfile
+          end
   output_list(files)
 end
 
