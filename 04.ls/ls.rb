@@ -10,7 +10,7 @@ def main
 
   if params[:a]
     files = fetch_all_items
-  elsif params.empty?
+  else params.empty?
     files = fetch_filenames_without_dotfile
   end
   output_list(files)
