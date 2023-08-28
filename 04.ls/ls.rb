@@ -27,9 +27,12 @@ end
 def output_list(files, max_column = 3)
   result = []
   column_size = (files.size - 1) / max_column + 1
+  longest_string_length = files.max_by(&:length).length
+
   column_size.times do |i|
     row = []
     max_column.times do
+      files[i] = files[i].ljust(longest_string_length)
       row << files[i]
       i += column_size
     end
