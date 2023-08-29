@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'optparse'
 
 # def main
 #   opt = OptionParser.new
@@ -16,27 +15,6 @@ require 'optparse'
 #     total_output(l_total, w_total, c_total)
 #   end
 # end
-
-def l_option(file,file_data,l_total)
-  line_count = file_data.count("\n")
-  output = "#{line_count} #{file}"
-  l_total << line_count
-  return output,l_total
-end
-
-def w_option(file,file_data,w_total)
-  word_count = file_data.split(' ').size
-  output = "#{word_count} #{file}"
-  w_total << word_count
-  return output,w_total
-end
-
-def c_option(file,file_path,c_total)
-  file_size = File.size(file_path)
-  output = "#{file_size} #{file}"
-  c_total << file_size
-  return output,c_total
-end
 
 # def l_and_w_option(file,file_data,l_total,w_total)
 #   #l_option
@@ -137,12 +115,35 @@ end
 #   return l_total, w_total, c_total, output
 # end
 
+require 'optparse'
+
+def l_option(file,file_data,l_total)
+  line_count = file_data.count("\n")
+  output = "#{line_count} #{file}"
+  l_total << line_count
+  return output,l_total
+end
+
+def w_option(file,file_data,w_total)
+  word_count = file_data.split(' ').size
+  output = "#{word_count} #{file}"
+  w_total << word_count
+  return output,w_total
+end
+
+def c_option(file,file_path,c_total)
+  file_size = File.size(file_path)
+  output = "#{file_size} #{file}"
+  c_total << file_size
+  return output,c_total
+end
+
 def total_output(l_total, w_total, c_total)
   #? 合計を算出する
-  l_output = l_total.sum if l_total.sum != 1 && l_total.sum != 0
-  w_output = w_total.sum if w_total.sum != 1 && w_total.sum != 0
-  c_output = c_total.sum if c_total.sum != 1 && c_total.sum != 0
-  puts "#{l_output} #{w_output} #{c_output} total"
+  l_output = l_total.sum if  l_total.sum != 0
+  w_output = w_total.sum if   w_total.sum != 0
+  c_output = c_total.sum if  c_total.sum != 0
+  puts "#{l_output}" + "#{w_output}" + "#{c_output}"  + " total"
 end
 
 def main
@@ -160,7 +161,6 @@ def main
   w_total = []
   c_total = []
   output = ""
-
   files.each{|file|
     file_path = File.expand_path(file)
     file_data = File.read(file_path)
