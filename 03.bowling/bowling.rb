@@ -7,16 +7,24 @@ def main
   output_result(final_score)
 end
 
-def spare?(frame)
-  true if frame[0] + frame[1] == 10
-end
-
 def strike?(frame)
-  true if frame[0] == 10
+  frame == [10, 0]
 end
 
-def change_last_frame(frames, last_frame)
-  (last_frame + frames[10]).delete_if(&:zero?)
+def spare?(frame)
+  !strike?(frame) && (frame[0] + frame[1] == 10)
+end
+
+def change_last_frame(frames, last_frame, last_frame_add_shot)
+  #10フレーム目が全てストライクの場合
+  if strike?(last_frame) && strike?(last_frame_add_shot)
+    final_shot = frames[11]
+    grouped_last_frame_shots = (last_frame + last_frame_add_shot + final_shot).reject(&:zero?)
+    frames[0..-4].push(grouped_last_frame_shots)
+  else
+    grouped_last_frame_shots = (last_frame + last_frame_add_shot).reject(&:zero?)
+    frames[0..-3].push(grouped_last_frame_shots)
+  end
 end
 
 def split_by_frames(scoreboard)
@@ -28,10 +36,12 @@ def split_by_frames(scoreboard)
 
   frames = shots.each_slice(2).to_a
   last_frame = frames[9]
+  last_frame_add_shot = frames[10]
 
   # 最後のフレームがスペアかストライクの場合、この後のcalculate_scoreで扱いやすいように最後のフレームを3shotsにまとめる
-  frames = frames[0..-3].push(change_last_frame(frames, last_frame)) if spare?(last_frame)
-  frames = frames[0..-3].push(change_last_frame(frames, last_frame)) if strike?(last_frame) && frames[10]
+  if frames.size != 10
+    frames = change_last_frame(frames, last_frame, last_frame_add_shot)
+  end
   frames
 end
 
@@ -46,12 +56,12 @@ def calculate_score(frames)
     break if i == frames.size - 1
 
     # スペアのフレームの得点は次の1投の点を加算するルール。
-    final_score += next_frame[0] if spare?(frame) && !strike?(frame)
+    final_score += next_frame[0] if spare?(frame)
 
     next unless strike?(frame)
 
     # ストライクのフレームの得点は次の2投の点を加算するルール。
-    final_score += if next_frame == [10, 0]
+    final_score += if strike?(next_frame)
                      next_frame[0] + two_positions_away_frame[0]
                    else
                      next_frame[0] + next_frame.fetch(1, 0)
