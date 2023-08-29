@@ -15,15 +15,15 @@ def spare?(frame)
   !strike?(frame) && (frame[0] + frame[1] == 10)
 end
 
-def change_last_frame(frames, last_frame, last_frame_add_shot)
+def groupe_last_frame_shots(frames, last_frame, last_frame_added_shot)
   # 10フレーム目が全てストライクの場合
-  if strike?(last_frame) && strike?(last_frame_add_shot)
-    final_shot = frames[11]
-    grouped_last_frame_shots = (last_frame + last_frame_add_shot + final_shot).reject(&:zero?)
-    frames[0..-4].push(grouped_last_frame_shots)
+  if strike?(last_frame) && strike?(last_frame_added_shot)
+    last_frame_final_shot = frames[11]
+    grouped_3_shots = (last_frame + last_frame_added_shot + last_frame_final_shot).reject(&:zero?)
+    frames[0..-4].push(grouped_3_shots)
   else
-    grouped_last_frame_shots = (last_frame + last_frame_add_shot).reject(&:zero?)
-    frames[0..-3].push(grouped_last_frame_shots)
+    grouped_3_shots = (last_frame + last_frame_added_shot).reject(&:zero?)
+    frames[0..-3].push(grouped_3_shots)
   end
 end
 
@@ -36,10 +36,10 @@ def split_by_frames(scoreboard)
 
   frames = shots.each_slice(2).to_a
   last_frame = frames[9]
-  last_frame_add_shot = frames[10]
+  last_frame_added_shot = frames[10]
 
   # 最後のフレームがスペアかストライクの場合は3投目が投げられる。この後のcalculate_scoreで扱いやすいように最後のフレームを3shotsにまとめる
-  frames = change_last_frame(frames, last_frame, last_frame_add_shot) if frames.size != 10
+  frames = groupe_last_frame_shots(frames, last_frame, last_frame_added_shot) if frames.size != 10
   frames
 end
 
