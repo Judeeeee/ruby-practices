@@ -53,17 +53,13 @@ def calculate_score(frames)
 
     break if i == frames.size - 1
 
-    # スペアのフレームの得点は次の1投の点を加算するルール。
-    final_score += next_frame[0] if spare?(frame)
-
-    next unless strike?(frame)
-
-    # ストライクのフレームの得点は次の2投の点を加算するルール。
-    final_score += if strike?(next_frame)
-                     next_frame[0] + after_next_frame[0]
-                   else
-                     next_frame[0] + next_frame.fetch(1, 0)
-                   end
+    if spare?(frame)
+      final_score += next_frame[0]
+    elsif strike?(frame) && !strike?(next_frame)
+      final_score += next_frame[0] + next_frame.fetch(1, 0)
+    elsif strike?(frame) && strike?(next_frame)
+      final_score += next_frame[0] + after_next_frame[0]
+    end
   end
   final_score
 end
