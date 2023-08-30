@@ -23,7 +23,6 @@ def group_last_frame_shots(frames, last_frame, last_frame_added_shot)
     [*frames[0..-4], grouped_3_shots]
   else
     grouped_3_shots = (last_frame + last_frame_added_shot).reject(&:zero?)
-    frames[0..-3].push(grouped_3_shots)
     [*frames[0..-3], grouped_3_shots]
   end
 end
