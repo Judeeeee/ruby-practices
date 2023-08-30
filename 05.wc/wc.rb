@@ -27,7 +27,7 @@ def total_output(l_total, w_total, c_total)
   c_output = c_total.sum.to_s if c_total.sum != 0
   #オプションが1つだと、左詰にならない。（nilが空文字判定なので)。
   #文字列にして足せばこの問題は解決するのだが、文字列同士の足し算になってしまう。
-  puts [l_output,w_output,c_output].join(' ')  + " total"
+  puts [l_output,w_output,c_output,"total"].compact.join(' ')
 end
 
 
@@ -43,6 +43,7 @@ def main
   params_array = params.keys.to_a.map(&:to_s)
   #l,w,cの順番で入れ替える
   order = ["l","w","c"]
+
   params_array = params_array.sort_by { |str| order.index(str) }
 
   l_total = []
