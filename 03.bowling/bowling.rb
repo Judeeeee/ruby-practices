@@ -15,7 +15,7 @@ def spare?(frame)
   !strike?(frame) && (frame[0] + frame[1] == 10)
 end
 
-def groupe_last_frame_shots(frames, last_frame, last_frame_added_shot)
+def group_last_frame_shots(frames, last_frame, last_frame_added_shot)
   # 10フレーム目が全てストライクの場合
   if strike?(last_frame) && strike?(last_frame_added_shot)
     last_frame_final_shot = frames[11]
@@ -39,7 +39,7 @@ def split_by_frames(scoreboard)
   last_frame_added_shot = frames[10]
 
   # 最後のフレームがスペアかストライクの場合は3投目が投げられる。この後のcalculate_scoreで扱いやすいように最後のフレームを3shotsにまとめる
-  frames = groupe_last_frame_shots(frames, last_frame, last_frame_added_shot) if frames.size != 10
+  frames = group_last_frame_shots(frames, last_frame, last_frame_added_shot) if frames.size != 10
   frames
 end
 
