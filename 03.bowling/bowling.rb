@@ -20,10 +20,11 @@ def group_last_frame_shots(frames, last_frame, last_frame_added_shot)
   if strike?(last_frame) && strike?(last_frame_added_shot)
     last_frame_final_shot = frames[11]
     grouped_3_shots = (last_frame + last_frame_added_shot + last_frame_final_shot).reject(&:zero?)
-    frames[0..-4].push(grouped_3_shots)
+    [*frames[0..-4], grouped_3_shots]
   else
     grouped_3_shots = (last_frame + last_frame_added_shot).reject(&:zero?)
     frames[0..-3].push(grouped_3_shots)
+    [*frames[0..-3], grouped_3_shots]
   end
 end
 
