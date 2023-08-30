@@ -58,7 +58,7 @@ def calculate_score(frames)
       final_score += if strike?(next_frame)
                        next_frame[0] + after_next_frame[0]
                      else
-                       next_frame[0] + next_frame.fetch(1, 0)
+                       next_frame[0..1].sum
                      end
     end
   end
