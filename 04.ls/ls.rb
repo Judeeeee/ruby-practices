@@ -5,11 +5,11 @@ require 'optparse'
 def main
   opt = OptionParser.new
   params = {}
-  opt.on('-a') { |v| params[:a] = v }
+  opt.on('-r') { |v| params[:r] = v }
   opt.parse!(ARGV)
 
-  files = if params[:a]
-            fetch_all_items
+  files = if params[:r]
+            reversed_files
           else
             fetch_filenames_without_dotfile
           end
@@ -20,8 +20,9 @@ def fetch_filenames_without_dotfile
   Dir.glob('*')
 end
 
-def fetch_all_items
-  Dir.entries('.').sort
+def reversed_files
+  filenames_without_dotfile = fetch_filenames_without_dotfile
+  filenames_without_dotfile.reverse
 end
 
 def output_list(files, max_column = 3)
