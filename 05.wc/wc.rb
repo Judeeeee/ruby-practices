@@ -48,36 +48,37 @@ def main
   l_total = []
   w_total = []
   c_total = []
-  output = ""
+
   files.each{|file|
     array = []
     file_path = File.expand_path(file)
     file_data = File.read(file_path)
-    params_array.each do |param|
 
-      if param == "l"
-        line_count,l_total = l_option(file_data,l_total)
-        array << line_count
-      elsif param == "w"
-        word_count,w_total = w_option(file_data,w_total)
-        array << word_count
-      elsif param == "c"
-        file_size,c_total =c_option(file_path,c_total)
-        array << file_size
-      else
-        #オプション指定がない場合
-        output,l_total = l_option(file_data,l_total)
-        output,w_total = w_option(file_data,w_total)
-        output,c_total = c_option(file_path,c_total)
+    if params_array == []#オプション指定がない場合
+      line_count,l_total = l_option(file_data,l_total)
+      word_count,w_total = w_option(file_data,w_total)
+      file_size,c_total = c_option(file_path,c_total)
+      puts [line_count,word_count,file_size].join(' ') + " " + "#{file}"
+    else
+      params_array.each do |param|
+        if param == "l"
+          line_count,l_total = l_option(file_data,l_total)
+          array << line_count
+        elsif param == "w"
+          word_count,w_total = w_option(file_data,w_total)
+          array << word_count
+        elsif param == "c"
+          file_size,c_total =c_option(file_path,c_total)
+          array << file_size
+        end
       end
+      puts array.join(' ') + " " + "#{file}"
     end
-    puts array.join(' ') + " " + "#{file}"
   }
 
   if files.size > 1
     total_output(l_total, w_total, c_total)
   end
 end
-#二つオプションを指定したときに、一列で表示してほしい.1つのオプションを指定&複数ファイルはOK
 
 main if __FILE__ == $PROGRAM_NAME
