@@ -39,8 +39,7 @@ def split_by_frames(scoreboard)
   last_frame_added_shot = frames[10]
 
   # 最後のフレームがスペアかストライクの場合は3投目が投げられる。この後のcalculate_scoreで扱いやすいように最後のフレームを3shotsにまとめる
-  frames = group_last_frame_shots(frames, last_frame, last_frame_added_shot) if frames.size != 10
-  frames
+  frames.size != 10 ? group_last_frame_shots(frames, last_frame, last_frame_added_shot) : frames
 end
 
 def calculate_score(frames)
