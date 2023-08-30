@@ -47,10 +47,10 @@ def calculate_score(frames)
 
   frames.each_with_index do |frame, i|
     final_score += frame.sum
+    break if i == frames.size - 1
+
     next_frame = frames[i + 1]
     after_next_frame = frames[i + 2]
-
-    break if i == frames.size - 1
 
     if spare?(frame)
       final_score += next_frame[0]
