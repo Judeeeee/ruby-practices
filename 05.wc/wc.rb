@@ -2,22 +2,16 @@
 
 require 'optparse'
 
-def l_option(file_data,l_total)
+def l_option(file_data)
   line_count = file_data.count("\n")
-  l_total << line_count
-  return line_count,l_total
 end
 
-def w_option(file_data,w_total)
+def w_option(file_data)
   word_count = file_data.split(' ').size
-  w_total << word_count
-  return word_count,w_total
 end
 
-def c_option(file_path,c_total)
-  file_size = File.size(file_path)
-  c_total << file_size
-  return file_size,c_total
+def c_option(file_data)
+  file_size = file_data.bytesize
 end
 
 def total_output(l_total, w_total, c_total)
@@ -25,8 +19,6 @@ def total_output(l_total, w_total, c_total)
   l_output = l_total.sum.to_s if l_total.sum != 0
   w_output = w_total.sum.to_s if w_total.sum != 0
   c_output = c_total.sum.to_s if c_total.sum != 0
-  #オプションが1つだと、左詰にならない。（nilが空文字判定なので)。
-  #文字列にして足せばこの問題は解決するのだが、文字列同士の足し算になってしまう。
   puts [l_output,w_output,c_output,"total"].compact.join(' ')
 end
 
@@ -54,17 +46,17 @@ def main
     array = []
     file_data = $stdin.to_a.join
     if params_array == []#オプション指定がない場合
-      line_count,l_total = l_option(file_data,l_total)
-      word_count,w_total = w_option(file_data,w_total)
-      file_size = file_data.bytesize
+      line_count = l_option(file_data)
+      word_count = w_option(file_data)
+      file_size = c_option(file_data)
       puts [line_count,word_count,file_size].join(' ')
     else
       params_array.each do |param|
         if param == "l"
-          line_count,l_total = l_option(file_data,l_total)
+          line_count = l_option(file_data)
           array << line_count
         elsif param == "w"
-          word_count,w_total = w_option(file_data,w_total)
+          word_count = w_option(file_data)
           array << word_count
         elsif param == "c"
           file_size = file_data.bytesize
@@ -77,24 +69,27 @@ def main
     files.each{|file|
       array = []
       file_path = File.expand_path(file)
-      file_data = File.read(file_path)#=>lsコマンドで渡ってきている時は、file_data =  $stdin.to_a.joinとしたい。
+      file_data = File.read(file_path)
 
       if params_array == []#オプション指定がない場合
-        line_count,l_total = l_option(file_data,l_total)
-        word_count,w_total = w_option(file_data,w_total)
-        file_size,c_total = c_option(file_path,c_total)
+        line_count = l_option(file_data)
+        word_count = w_option(file_data)
+        file_size = c_option(file_data)
         puts [line_count,word_count,file_size].join(' ') + " " + "#{file}"
       else
         params_array.each do |param|
           if param == "l"
-            line_count,l_total = l_option(file_data,l_total)
+            line_count = l_option(file_data)
             array << line_count
+            l_total << line_count
           elsif param == "w"
-            word_count,w_total = w_option(file_data,w_total)
+            word_count = w_option(file_data)
             array << word_count
+            w_total << word_count
           elsif param == "c"
-            file_size,c_total =c_option(file_path,c_total)
+            file_size = c_option(file_data)
             array << file_size
+            c_total << file_size
           end
         end
         puts array.join(' ') + " " + "#{file}"
