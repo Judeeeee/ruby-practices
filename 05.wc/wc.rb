@@ -41,8 +41,47 @@ def main
   w_total = []
   c_total = []
 
-  #lsコマンドでパイプライン処理している場合
-  if $stdin.nil?
+  input = $stdin
+  $stdin = STDIN
+  input_flag = input.isatty
+
+  if input_flag #lsコマンドでパイプライン処理していない場合(ややこしいので、tty?でもいいかも。)
+    files.each{|file|
+      array = []
+      file_path = File.expand_path(file)
+      file_data = File.read(file_path)
+
+      if params_array == []#オプション指定がない場合
+        line_count = l_option(file_data)
+        l_total << line_count
+        word_count = w_option(file_data)
+        w_total << word_count
+        file_size = c_option(file_data)
+        c_total << file_size
+        puts [line_count,word_count,file_size].join(' ') + " " + "#{file}"
+      else
+        params_array.each do |param|
+          if param == "l"
+            line_count = l_option(file_data)
+            array << line_count
+            l_total << line_count
+          elsif param == "w"
+            word_count = w_option(file_data)
+            array << word_count
+            w_total << word_count
+          elsif param == "c"
+            file_size = c_option(file_data)
+            array << file_size
+            c_total << file_size
+          end
+        end
+        puts array.join(' ') + " " + "#{file}"
+      end
+    }
+    if files.size > 1
+      total_output(l_total, w_total, c_total)
+    end
+  else#lsコマンドでパイプライン処理している場合
     array = []
     file_data = $stdin.to_a.join
     if params_array == []#オプション指定がない場合
@@ -64,40 +103,6 @@ def main
         end
       end
       puts array.join(' ')
-    end
-  else
-    files.each{|file|
-      array = []
-      file_path = File.expand_path(file)
-      file_data = File.read(file_path)
-
-      if params_array == []#オプション指定がない場合
-        line_count = l_option(file_data)
-        word_count = w_option(file_data)
-        file_size = c_option(file_data)
-        puts [line_count,word_count,file_size].join(' ') + " " + "#{file}"
-      else
-        params_array.each do |param|
-          if param == "l"
-            line_count = l_option(file_data)
-            array << line_count
-            l_total << line_count
-          elsif param == "w"
-            word_count = w_option(file_data)
-            array << word_count
-            w_total << word_count
-          elsif param == "c"
-            file_size = c_option(file_data)
-            array << file_size
-            c_total << file_size
-          end
-        end
-        puts array.join(' ') + " " + "#{file}"
-      end
-    }
-
-    if files.size > 1
-      total_output(l_total, w_total, c_total)
     end
   end
 end
