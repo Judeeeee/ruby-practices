@@ -39,7 +39,6 @@ def main
   opt.on('-c') {|v| params[:c] = v }
   opt.parse!(ARGV)
   files =  ARGV
-
   params_array = params.keys.to_a.map(&:to_s)
   #l,w,cの順番で入れ替える
   order = ["l","w","c"]
@@ -50,16 +49,15 @@ def main
   w_total = []
   c_total = []
 
-  files.each{|file|
+  #lsコマンドでパイプライン処理している場合
+  if $stdin
     array = []
-    file_path = File.expand_path(file)
-    file_data = File.read(file_path)
-
+    file_data = $stdin.to_a.join
     if params_array == []#オプション指定がない場合
       line_count,l_total = l_option(file_data,l_total)
       word_count,w_total = w_option(file_data,w_total)
-      file_size,c_total = c_option(file_path,c_total)
-      puts [line_count,word_count,file_size].join(' ') + " " + "#{file}"
+      file_size = file_data.bytesize
+      puts [line_count,word_count,file_size].join(' ')
     else
       params_array.each do |param|
         if param == "l"
@@ -69,16 +67,43 @@ def main
           word_count,w_total = w_option(file_data,w_total)
           array << word_count
         elsif param == "c"
-          file_size,c_total =c_option(file_path,c_total)
+          file_size = file_data.bytesize
           array << file_size
         end
       end
-      puts array.join(' ') + " " + "#{file}"
+      puts array.join(' ')
     end
-  }
+  else
+    files.each{|file|
+      array = []
+      file_path = File.expand_path(file)
+      file_data = File.read(file_path)#=>lsコマンドで渡ってきている時は、file_data =  $stdin.to_a.joinとしたい。
 
-  if files.size > 1
-    total_output(l_total, w_total, c_total)
+      if params_array == []#オプション指定がない場合
+        line_count,l_total = l_option(file_data,l_total)
+        word_count,w_total = w_option(file_data,w_total)
+        file_size,c_total = c_option(file_path,c_total)
+        puts [line_count,word_count,file_size].join(' ') + " " + "#{file}"
+      else
+        params_array.each do |param|
+          if param == "l"
+            line_count,l_total = l_option(file_data,l_total)
+            array << line_count
+          elsif param == "w"
+            word_count,w_total = w_option(file_data,w_total)
+            array << word_count
+          elsif param == "c"
+            file_size,c_total =c_option(file_path,c_total)
+            array << file_size
+          end
+        end
+        puts array.join(' ') + " " + "#{file}"
+      end
+    }
+
+    if files.size > 1
+      total_output(l_total, w_total, c_total)
+    end
   end
 end
 
