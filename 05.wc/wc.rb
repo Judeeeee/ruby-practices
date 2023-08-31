@@ -42,7 +42,7 @@ def main
   c_total = []
 
   #lsコマンドでパイプライン処理している場合
-  if $stdin
+  if $stdin.nil?
     array = []
     file_data = $stdin.to_a.join
     if params_array == []#オプション指定がない場合
