@@ -35,24 +35,29 @@ def split_by_frames(scoreboard)
   shots.each_slice(2).to_a
 end
 
+def detect_bonus_score(frames, frame, index)
+  next_frame = frames[index + 1]
+
+  if spare?(frame)
+    next_frame[0]
+  elsif strike?(frame)
+    if strike?(next_frame)
+      after_next_frame = frames[index + 2]
+      next_frame[0] + after_next_frame[0]
+    else
+      next_frame[0..1].sum
+    end
+  else
+    0
+  end
+end
+
 def calculate_score(frames)
   final_score = 0
 
-  frames[0..8].each_with_index.sum do |frame, i|
-    next_frame = frames[i + 1]
-    bonus = if spare?(frame)
-              next_frame[0]
-            elsif strike?(frame)
-              if strike?(next_frame)
-                after_next_frame = frames[i + 2]
-                next_frame[0] + after_next_frame[0]
-              else
-                next_frame[0..1].sum
-              end
-            else
-              0
-            end
-    final_score += frame.sum + bonus
+  frames[0..8].each_with_index.sum do |frame, index|
+    bonus_score = detect_bonus_score(frames, frame, index)
+    final_score += frame.sum + bonus_score
   end
 
   last_frame = frames[9]
