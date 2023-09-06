@@ -8,14 +8,14 @@ class TestBowling < Test::Unit::TestCase
   def testcase1_split_by_frames
     input = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,6,4,5'
     actual = split_by_frames(input)
-    expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [6, 4, 5]]
+    expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [6, 4], [5]]
     assert_equal(actual, expect)
   end
 
   def testcase2_split_by_frames
     input = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,X,X,X'
     actual = split_by_frames(input)
-    expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [10, 10, 10]]
+    expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [10, 0], [10, 0], [10, 0]]
     assert_equal(actual, expect)
   end
 
@@ -29,21 +29,21 @@ class TestBowling < Test::Unit::TestCase
   def testcase4_split_by_frames
     input = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,X,0,0'
     actual = split_by_frames(input)
-    expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [10]]
+    expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [10, 0], [0, 0]]
     assert_equal(actual, expect)
   end
 
   def testcase5_split_by_frames
     input = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,X,1,8'
     actual = split_by_frames(input)
-    expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [10, 1, 8]]
+    expect = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [10, 0], [1, 8]]
     assert_equal(actual, expect)
   end
 
   def testcase6_split_by_frames
     input = 'X,X,X,X,X,X,X,X,X,X,X,X'
     actual = split_by_frames(input)
-    expect = [[10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 10, 10]]
+    expect = [[10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0], [10, 0]]
     assert_equal(actual, expect)
   end
 
