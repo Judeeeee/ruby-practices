@@ -8,11 +8,8 @@ def main
   opt.on('-r') { |v| params[:r] = v }
   opt.parse!(ARGV)
 
-  files = if params[:r]
-            reversed_files
-          else
-            fetch_filenames_without_dotfile
-          end
+  files = fetch_filenames_without_dotfile
+  files = reversed_files(files) if params[:r]
   output_list(files)
 end
 
@@ -20,9 +17,8 @@ def fetch_filenames_without_dotfile
   Dir.glob('*')
 end
 
-def reversed_files
-  filenames_without_dotfile = fetch_filenames_without_dotfile
-  filenames_without_dotfile.reverse
+def reversed_files(files)
+  files.reverse
 end
 
 def output_list(files, max_column = 3)
