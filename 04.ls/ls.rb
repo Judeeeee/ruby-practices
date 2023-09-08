@@ -9,16 +9,12 @@ def main
   opt.parse!(ARGV)
 
   files = fetch_filenames_without_dotfile
-  files = reversed_files(files) if params[:r]
+  files = files.reverse if params[:r]
   output_list(files)
 end
 
 def fetch_filenames_without_dotfile
   Dir.glob('*')
-end
-
-def reversed_files(files)
-  files.reverse
 end
 
 def output_list(files, max_column = 3)
