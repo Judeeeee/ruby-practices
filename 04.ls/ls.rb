@@ -5,23 +5,16 @@ require 'optparse'
 def main
   opt = OptionParser.new
   params = {}
-  opt.on('-a') { |v| params[:a] = v }
+  opt.on('-r') { |v| params[:r] = v }
   opt.parse!(ARGV)
 
-  files = if params[:a]
-            fetch_all_items
-          else
-            fetch_filenames_without_dotfile
-          end
+  files = fetch_filenames_without_dotfile
+  files = files.reverse if params[:r]
   output_list(files)
 end
 
 def fetch_filenames_without_dotfile
   Dir.glob('*')
-end
-
-def fetch_all_items
-  Dir.entries('.').sort
 end
 
 def output_list(files, max_column = 3)
