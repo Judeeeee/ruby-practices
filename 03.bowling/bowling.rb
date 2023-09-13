@@ -15,16 +15,6 @@ def spare?(frame)
   !strike?(frame) && (frame[0] + frame[1] == 10)
 end
 
-def group_last_frame_shots(frames, last_frame, last_frame_added_shot)
-  # 10フレーム目が全てストライクの場合
-  if strike?(last_frame) && strike?(last_frame_added_shot)
-    last_frame_final_shot = frames[11]
-    (last_frame + last_frame_added_shot + last_frame_final_shot).reject(&:zero?)
-  else
-    (last_frame + last_frame_added_shot).reject(&:zero?)
-  end
-end
-
 def split_by_frames(scoreboard)
   scores = scoreboard.split(',')
 
@@ -61,12 +51,7 @@ def calculate_score(frames)
   end
 
   last_frame = frames[9]
-  if frames.size == 10 # 最後のフレームがスペアでもストライクでもない場合
-    final_score += last_frame.sum
-  else
-    last_frame_added_shot = frames[10]
-    final_score += group_last_frame_shots(frames, last_frame, last_frame_added_shot).sum
-  end
+  final_score += last_frame.sum
 end
 
 # スコア合計を標準出力。putsで引数を出力しているだけだが、テストコードで実行結果を確認するために、敢えてメソッドにしている。
