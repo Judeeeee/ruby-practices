@@ -76,7 +76,7 @@ class TestBowling < Test::Unit::TestCase
     assert_equal(acutual, expected)
   end
 
-  def ttestcase4_calculate_score
+  def testcase4_calculate_score
     flames = [[6, 3], [9, 0], [0, 3], [8, 2], [7, 3], [10, 0], [9, 1], [8, 0], [10, 0], [10]]
     acutual = calculate_score(flames)
     expected = 134
