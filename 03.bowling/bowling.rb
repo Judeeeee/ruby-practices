@@ -43,15 +43,13 @@ def detect_bonus_score(frames, frame, index)
 end
 
 def calculate_score(frames)
-  final_score = 0
-
-  frames[0..8].each_with_index.sum do |frame, index|
+  final_score = frames[0..8].each_with_index.sum do |frame, index|
     bonus_score = detect_bonus_score(frames, frame, index)
-    final_score += frame.sum + bonus_score
+    frame.sum + bonus_score
   end
 
   last_frame = frames[9]
-  final_score += last_frame.sum
+  final_score + last_frame.sum
 end
 
 # スコア合計を標準出力。putsで引数を出力しているだけだが、テストコードで実行結果を確認するために、敢えてメソッドにしている。
