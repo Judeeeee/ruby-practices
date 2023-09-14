@@ -10,10 +10,13 @@ def main
   params = {}
   opt.on('-l') { |v| params[:l] = v }
   opt.parse!(ARGV)
-
   files = fetch_filenames_without_dotfile
-  files = show_file_detail(files) if params[:l]
-  puts files
+
+  if params[:l]
+    puts show_file_detail(files)
+  else
+    output_list(files)
+  end
 end
 
 def fetch_filenames_without_dotfile
@@ -31,8 +34,8 @@ def show_file_detail(files)
             export_timestamp(path), file].join(' ')
     detail_lines << line
   end
-  total_block_size = "total #{total_block_size}"
-  detail_lines.unshift(total_block_size)
+  first_line = "total #{total_block_size}"
+  detail_lines.unshift(first_line)
 end
 
 def get_file_stat(path)
@@ -47,23 +50,22 @@ def get_file_mode(path)
 end
 
 def get_permission(path)
-  final_result = []
+  permission_alphabets = []
   permission = get_file_stat(path).mode.to_s(8).slice(-3..-1)
   permission.each_char do |char|
     permission_mode = []
     permission_mode << (char.to_i >= 4 ? 'r' : '-')
     permission_mode << ((char.to_i % 4) >= 2 ? 'w' : '-')
     permission_mode << (char.to_i.odd? ? 'x' : '-')
-    final_result << permission_mode.join('')
+    permission_alphabets << permission_mode.join('')
   end
-  final_result << '@' # mac拡張属性
+  permission_alphabets << '@' # mac拡張属性
 end
 
 def change_file_permission_format(path)
   file_mode = get_file_mode(path)
   permission = get_permission(path)
-  final_result = permission.unshift(file_mode)
-  final_result.join
+  permission.unshift(file_mode).join
 end
 
 def count_hardlink(path)
@@ -88,6 +90,20 @@ def export_timestamp(path)
   datetime = DateTime.parse(atime)
   formatted_time = "#{datetime.month} #{datetime.day} #{datetime.hour}:#{datetime.minute.to_s.rjust(2, '0')}"
   formatted_time.to_s
+end
+
+def output_list(files, max_column = 3)
+  result = []
+  column_size = (files.size - 1) / max_column + 1
+  column_size.times do |i|
+    row = []
+    max_column.times do
+      row << files[i]
+      i += column_size
+    end
+    result << row.compact.join(' ')
+  end
+  puts result
 end
 
 main
