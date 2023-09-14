@@ -4,7 +4,7 @@ require 'test/unit'
 require './bowling'
 
 class TestBowling < Test::Unit::TestCase
-  def test_case_1
+  def test_case1
     scoreboard = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,6,4,5'
     frames = split_by_frames(scoreboard)
     final_score = calculate_score(frames)
@@ -12,7 +12,7 @@ class TestBowling < Test::Unit::TestCase
     assert_equal(final_score, expected)
   end
 
-  def test_case_2
+  def test_case2
     scoreboard = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,X,X,X'
     frames = split_by_frames(scoreboard)
     final_score = calculate_score(frames)
@@ -20,7 +20,7 @@ class TestBowling < Test::Unit::TestCase
     assert_equal(final_score, expected)
   end
 
-  def test_case_3
+  def test_case3
     scoreboard = '0,10,1,5,0,0,0,0,X,X,X,5,1,8,1,0,4'
     frames = split_by_frames(scoreboard)
     final_score = calculate_score(frames)
@@ -28,7 +28,7 @@ class TestBowling < Test::Unit::TestCase
     assert_equal(final_score, expected)
   end
 
-  def test_case_4
+  def test_case4
     scoreboard = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,X,0,0'
     frames = split_by_frames(scoreboard)
     final_score = calculate_score(frames)
@@ -36,7 +36,7 @@ class TestBowling < Test::Unit::TestCase
     assert_equal(final_score, expected)
   end
 
-  def test_case_5
+  def test_case5
     scoreboard = '6,3,9,0,0,3,8,2,7,3,X,9,1,8,0,X,X,1,8'
     frames = split_by_frames(scoreboard)
     final_score = calculate_score(frames)
@@ -44,7 +44,7 @@ class TestBowling < Test::Unit::TestCase
     assert_equal(final_score, expected)
   end
 
-  def test_case_6
+  def test_case6
     scoreboard = 'X,X,X,X,X,X,X,X,X,X,X,X'
     frames = split_by_frames(scoreboard)
     final_score = calculate_score(frames)
@@ -52,7 +52,7 @@ class TestBowling < Test::Unit::TestCase
     assert_equal(final_score, expected)
   end
 
-  def test_case_7
+  def test_case7
     scoreboard = 'X,0,0,X,0,0,X,0,0,X,0,0,X,0,0'
     frames = split_by_frames(scoreboard)
     final_score = calculate_score(frames)

@@ -49,7 +49,7 @@ def calculate_score(frames)
     frame.sum + bonus_score
   end
 
-  last_frame = frames[9..-1].flatten
+  last_frame = frames[9..].flatten
   final_score + last_frame.sum
 end
 
