@@ -4,7 +4,7 @@ def main
   scoreboard = ARGV[0]
   frames = split_by_frames(scoreboard)
   final_score = calculate_score(frames)
-  output_result(final_score)
+  puts final_score
 end
 
 def strike?(frame)
@@ -50,11 +50,6 @@ def calculate_score(frames)
 
   last_frame = frames[9]
   final_score + last_frame.sum
-end
-
-# スコア合計を標準出力。putsで引数を出力しているだけだが、テストコードで実行結果を確認するために、敢えてメソッドにしている。
-def output_result(final_score)
-  puts final_score
 end
 
 main if __FILE__ == $PROGRAM_NAME
