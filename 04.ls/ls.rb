@@ -50,13 +50,13 @@ def get_permission(path)
   final_result = []
   permission = get_file_stat(path).mode.to_s(8).slice(-3..-1)
   permission.each_char do |char|
-    permission_mode = ''.dup
+    permission_mode = []
     permission_mode << (char.to_i >= 4 ? 'r' : '-')
     permission_mode << ((char.to_i % 4) >= 2 ? 'w' : '-')
     permission_mode << (char.to_i.odd? ? 'x' : '-')
-    final_result << permission_mode
+    final_result << permission_mode.join('')
   end
-  final_result << '@'
+  final_result << '@' # mac拡張属性
 end
 
 def change_file_permission_format(path)
