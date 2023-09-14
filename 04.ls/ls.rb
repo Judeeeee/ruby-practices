@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'optparse'
 require 'etc'
 require 'date'
@@ -22,14 +23,15 @@ end
 def show_file_detail(files)
   detail_lines = []
   total_block_size = 0
-  files.each{|file|
+  files.each do |file|
     path = File.expand_path(file)
     total_block_size += get_file_stat(path).blocks
 
-    line = [change_file_permission_format(path), count_hardlink(path), find_owner_name(path), find_group_name(path), calculate_bytesize(path).rjust(4), export_timestamp(path), file].join(' ')
+    line = [change_file_permission_format(path), count_hardlink(path), find_owner_name(path), find_group_name(path), calculate_bytesize(path).rjust(4),
+            export_timestamp(path), file].join(' ')
     detail_lines << line
-  }
-  total_block_size = "total #{total_block_size.to_s}"
+  end
+  total_block_size = "total #{total_block_size}"
   detail_lines.unshift(total_block_size)
 end
 
@@ -47,14 +49,14 @@ end
 def get_permission(path)
   final_result = []
   permission = get_file_stat(path).mode.to_s(8).slice(-3..-1)
-  permission.each_char{|char|
-    permission_mode = "".dup
+  permission.each_char do |char|
+    permission_mode = ''.dup
     permission_mode << (char.to_i >= 4 ? 'r' : '-')
     permission_mode << ((char.to_i % 4) >= 2 ? 'w' : '-')
-    permission_mode << ((char.to_i % 2) == 1 ? 'x' : '-')
+    permission_mode << (char.to_i.odd? ? 'x' : '-')
     final_result << permission_mode
-  }
-  final_result << "@"
+  end
+  final_result << '@'
 end
 
 def change_file_permission_format(path)
