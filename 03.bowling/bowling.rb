@@ -12,7 +12,7 @@ def strike?(frame)
 end
 
 def spare?(frame)
-  !strike?(frame) && (frame[0] + frame[1] == 10)
+  !strike?(frame) && (frame[0..1].sum == 10)
 end
 
 def split_by_frames(scoreboard)
