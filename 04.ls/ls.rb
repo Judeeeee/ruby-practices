@@ -12,7 +12,7 @@ def main
 
   files = fetch_filenames_without_dotfile
   files = show_file_detail(files) if params[:l]
-  output_list(files)
+  puts files
 end
 
 def fetch_filenames_without_dotfile
@@ -21,14 +21,16 @@ end
 
 def show_file_detail(files)
   detail_lines = []
-  #total_block_size = 0
+  total_block_size = 0
   files.each{|file|
     path = File.expand_path(file)
-    #total_block_size += get_file_stat(path).blocks
-    line = [change_file_permission_format(path), count_hardlink(path), find_owner_name(path), find_group_name(path), calculate_bytesize(path), export_timestamp(path), file].join(' ')
+    total_block_size += get_file_stat(path).blocks
+
+    line = [change_file_permission_format(path), count_hardlink(path), find_owner_name(path), find_group_name(path), calculate_bytesize(path).rjust(4), export_timestamp(path), file].join(' ')
     detail_lines << line
   }
-  detail_lines#.unshift(total_block_size.to_s)
+  total_block_size = "total #{total_block_size.to_s}"
+  detail_lines.unshift(total_block_size)
 end
 
 def get_file_stat(path)
@@ -52,11 +54,10 @@ def get_permission(path)
     permission_mode << ((char.to_i % 2) == 1 ? 'x' : '-')
     final_result << permission_mode
   }
-  final_result
+  final_result << "@"
 end
 
 def change_file_permission_format(path)
-  final_result = "".dup
   file_mode = get_file_mode(path)
   permission = get_permission(path)
   final_result = permission.unshift(file_mode)
@@ -85,25 +86,6 @@ def export_timestamp(path)
   datetime = DateTime.parse(atime)
   formatted_time = "#{datetime.month} #{datetime.day} #{datetime.hour}:#{datetime.minute.to_s.rjust(2, '0')}"
   formatted_time.to_s
-end
-
-def output_list(files, max_column = 3)
-  result = []
-  column_size = (files.size - 1) / max_column + 1
-  longest_string_length = files.max_by(&:length).length
-
-  column_size.times do |i|
-    row = []
-    max_column.times do
-      #ブロック数だけ最初の行に表示したい。
-      #break if i == 0
-      files[i] = files[i].ljust(longest_string_length)
-      row << files[i]
-      i += column_size
-    end
-    result << row.compact.join(' ')
-  end
-  puts result
 end
 
 main
