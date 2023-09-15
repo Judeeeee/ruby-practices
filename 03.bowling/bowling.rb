@@ -24,7 +24,7 @@ def split_by_frames(scoreboard)
   shots.each_slice(2).to_a
 end
 
-def detect_bonus_score(frames, index)
+def caluculate_bonus_score(frames, index)
   frame = frames[index]
   next_frame = frames[index + 1]
 
@@ -43,12 +43,12 @@ def detect_bonus_score(frames, index)
 end
 
 def calculate_score(frames)
-  final_score = frames[0..8].each_with_index.sum do |frame, index|
-    frame.sum + detect_bonus_score(frames, index)
+  up_to_9th_total_score = frames[0..8].each_with_index.sum do |frame, index|
+    frame.sum + caluculate_bonus_score(frames, index)
   end
 
   last_frame = frames[9..].flatten
-  final_score + last_frame.sum
+  up_to_9th_total_score + last_frame.sum
 end
 
 main if __FILE__ == $PROGRAM_NAME
