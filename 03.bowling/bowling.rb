@@ -3,8 +3,7 @@
 def main
   scoreboard = ARGV[0]
   frames = split_by_frames(scoreboard)
-  final_score = calculate_score(frames)
-  puts final_score
+  puts calculate_score(frames)
 end
 
 def strike?(frame)
@@ -45,8 +44,7 @@ end
 
 def calculate_score(frames)
   final_score = frames[0..8].each_with_index.sum do |frame, index|
-    bonus_score = detect_bonus_score(frames, index)
-    frame.sum + bonus_score
+    frame.sum + detect_bonus_score(frames, index)
   end
 
   last_frame = frames[9..].flatten
