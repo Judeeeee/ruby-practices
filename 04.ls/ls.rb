@@ -30,8 +30,16 @@ def show_file_detail(files)
     path = File.expand_path(file)
     total_block_size += get_file_stat(path).blocks
 
-    line = [change_file_permission_format(path), count_hardlink(path), find_owner_name(path), find_group_name(path), calculate_bytesize(path).rjust(4),
-            export_timestamp(path), file].join(' ')
+    line = [
+      change_file_permission_format(path),
+      count_hardlink(path),
+      find_owner_name(path),
+      find_group_name(path),
+      calculate_bytesize(path).rjust(4),
+      export_timestamp(path),
+      file
+    ].join(' ')
+
     detail_lines << line
   end
   first_line = "total #{total_block_size}"
