@@ -13,7 +13,7 @@ def main
   files = fetch_filenames_without_dotfile
 
   if params[:l]
-    puts show_file_detail(files)
+    show_file_detail(files)
   else
     output_list(files)
   end
@@ -35,7 +35,7 @@ def show_file_detail(files)
     detail_lines << line
   end
   first_line = "total #{total_block_size}"
-  detail_lines.unshift(first_line)
+  puts detail_lines.unshift(first_line)
 end
 
 def get_file_stat(path)
