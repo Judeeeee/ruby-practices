@@ -67,9 +67,10 @@ def output_detail_list(files)
   files.each do |file|
     path = File.expand_path(file)
     total_block_size += File.stat(path).blocks
+    xattr_result = `xattr #{file}`
 
     line = [
-      change_file_permission_format(path),
+      xattr_result ? change_file_permission_format(path) << '@' : change_file_permission_format(path),
       count_hardlink(path).rjust(max_hardlink),
       find_owner_name(path).ljust(max_owner_name),
       find_group_name(path).ljust(max_group_name),
@@ -101,7 +102,7 @@ def get_permission(path)
     permission_mode << (char.to_i.odd? ? 'x' : '-')
     permission_alphabets << permission_mode.join('')
   end
-  permission_alphabets << '@' # mac拡張属性
+  permission_alphabets
 end
 
 def change_file_permission_format(path)
