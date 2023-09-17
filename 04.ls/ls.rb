@@ -24,7 +24,7 @@ def fetch_filenames_without_dotfile
 end
 
 def show_file_detail(files)
-  detail_lines = []
+  lines = []
   total_block_size = 0
   files.each do |file|
     path = File.expand_path(file)
@@ -40,10 +40,10 @@ def show_file_detail(files)
       file
     ].join(' ')
 
-    detail_lines << line
+    lines << line
   end
   first_line = "total #{total_block_size}"
-  puts detail_lines.unshift(first_line)
+  puts lines.unshift(first_line)
 end
 
 def get_file_mode(path)
