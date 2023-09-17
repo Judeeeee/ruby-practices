@@ -28,7 +28,7 @@ def show_file_detail(files)
   total_block_size = 0
   files.each do |file|
     path = File.expand_path(file)
-    total_block_size += get_file_stat(path).blocks
+    total_block_size += File.stat(path).blocks
 
     line = [
       change_file_permission_format(path),
@@ -46,10 +46,6 @@ def show_file_detail(files)
   puts detail_lines.unshift(first_line)
 end
 
-def get_file_stat(path)
-  File.stat(path)
-end
-
 def get_file_mode(path)
   file_mode = File.lstat(path).mode.to_s(8).slice(0..1)
   file_mode = 'd' if file_mode.to_i == 40
@@ -59,7 +55,7 @@ end
 
 def get_permission(path)
   permission_alphabets = []
-  permission = get_file_stat(path).mode.to_s(8).slice(-3..-1)
+  permission = File.stat(path).mode.to_s(8).slice(-3..-1)
   permission.each_char do |char|
     permission_mode = []
     permission_mode << (char.to_i >= 4 ? 'r' : '-')
@@ -77,23 +73,23 @@ def change_file_permission_format(path)
 end
 
 def count_hardlink(path)
-  get_file_stat(path).nlink
+  File.stat(path).nlink
 end
 
 def find_owner_name(path)
-  Etc.getpwuid(get_file_stat(path).uid).name
+  Etc.getpwuid(File.stat(path).uid).name
 end
 
 def find_group_name(path)
-  Etc.getgrgid(get_file_stat(path).gid).name
+  Etc.getgrgid(File.stat(path).gid).name
 end
 
 def calculate_bytesize(path)
-  get_file_stat(path).size.to_s
+  File.stat(path).size.to_s
 end
 
 def export_timestamp(path)
-  atime = get_file_stat(path).atime.to_s
+  atime = File.stat(path).atime.to_s
   datetime = DateTime.parse(atime)
   formatted_time = "#{datetime.month} #{datetime.day} #{datetime.hour}:#{datetime.minute.to_s.rjust(2, '0')}"
   formatted_time.to_s
