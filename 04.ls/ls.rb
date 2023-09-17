@@ -51,7 +51,7 @@ def search_max_bytesize(files)
   end.max
 end
 
-def find_max_item(files)
+def find_largest_string(files)
   max_hardlink = search_max_hardlink(files)
   max_owner_name = search_max_owner_name(files)
   max_group_name = search_max_group_name(files)
@@ -62,7 +62,7 @@ end
 def output_detail_list(files)
   lines = []
   total_block_size = 0
-  max_hardlink, max_owner_name, max_group_name, max_bytesize = find_max_item(files)
+  max_hardlink, max_owner_name, max_group_name, max_bytesize = find_largest_string(files)
 
   files.each do |file|
     path = File.expand_path(file)
