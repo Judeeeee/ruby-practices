@@ -23,19 +23,57 @@ def fetch_filenames_without_dotfile
   Dir.glob('*')
 end
 
+def search_max_hardlink(files)
+  files.map do |file|
+    path = File.expand_path(file)
+    count_hardlink(path).to_s.length
+  end.max
+end
+
+def search_max_owner_name(files)
+  files.map do |file|
+    path = File.expand_path(file)
+    find_owner_name(path).length
+  end.max
+end
+
+def search_max_group_name(files)
+  files.map do |file|
+    path = File.expand_path(file)
+    find_group_name(path).length
+  end.max
+end
+
+def search_max_bytesize(files)
+  files.map do |file|
+    path = File.expand_path(file)
+    calculate_bytesize(path).to_s.length
+  end.max
+end
+
+def find_max_item(files)
+  max_hardlink = search_max_hardlink(files)
+  max_owner_name = search_max_owner_name(files)
+  max_group_name = search_max_group_name(files)
+  max_bytesize = search_max_bytesize(files)
+  [max_hardlink, max_owner_name, max_group_name, max_bytesize]
+end
+
 def output_detail_list(files)
   lines = []
   total_block_size = 0
+  max_hardlink, max_owner_name, max_group_name, max_bytesize = find_max_item(files)
+
   files.each do |file|
     path = File.expand_path(file)
     total_block_size += File.stat(path).blocks
 
     line = [
       change_file_permission_format(path),
-      count_hardlink(path),
-      find_owner_name(path),
-      find_group_name(path),
-      calculate_bytesize(path).rjust(4),
+      count_hardlink(path).rjust(max_hardlink),
+      find_owner_name(path).ljust(max_owner_name),
+      find_group_name(path).ljust(max_group_name),
+      calculate_bytesize(path).rjust(max_bytesize),
       export_timestamp(path),
       file
     ].join(' ')
@@ -73,7 +111,7 @@ def change_file_permission_format(path)
 end
 
 def count_hardlink(path)
-  File.stat(path).nlink
+  File.stat(path).nlink.to_s
 end
 
 def find_owner_name(path)
