@@ -13,7 +13,7 @@ def main
   files = fetch_filenames_without_dotfile
 
   if params[:l]
-    show_file_detail(files)
+    output_detail_list(files)
   else
     output_list(files)
   end
@@ -23,7 +23,7 @@ def fetch_filenames_without_dotfile
   Dir.glob('*')
 end
 
-def show_file_detail(files)
+def output_detail_list(files)
   lines = []
   total_block_size = 0
   files.each do |file|
