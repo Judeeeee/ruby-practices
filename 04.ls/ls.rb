@@ -89,8 +89,7 @@ def find_group_name(path)
 end
 
 def calculate_bytesize(path)
-  bytesize = get_file_stat(path).size
-  bytesize.to_s
+  get_file_stat(path).size.to_s
 end
 
 def export_timestamp(path)
