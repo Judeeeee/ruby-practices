@@ -141,6 +141,8 @@ def output_list(files, max_column = 3)
   column_size.times do |i|
     row = []
     max_column.times do
+      break if i >= files.size
+
       files[i] = files[i].ljust(longest_string_length)
       row << files[i]
       i += column_size
