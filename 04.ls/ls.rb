@@ -130,8 +130,8 @@ end
 def export_timestamp(path)
   atime = File.stat(path).atime.to_s
   datetime = DateTime.parse(atime)
-  formatted_time = "#{datetime.month} #{datetime.day} #{datetime.hour}:#{datetime.minute.to_s.rjust(2, '0')}"
-  formatted_time.to_s
+  hour_minute = "#{datetime.hour}:#{datetime.minute.to_s.rjust(2, '0')}"
+  [datetime.month.to_s.rjust(2), datetime.day.to_s.rjust(2), hour_minute].join(' ')
 end
 
 def output_list(files, max_column = 3)
