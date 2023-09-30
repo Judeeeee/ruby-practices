@@ -14,20 +14,17 @@ def main
   opt.parse!(ARGV)
 
   # 複数オプションが指定された場合、順序を入れ替えないと期待通りに動かない
-  params_array = params.keys.to_a.map(&:to_s)
-  order = ["a","r","l"]
-  params_array = params_array.sort_by { |str| order.index(str) }
+  params_array = params.keys.to_a.map(&:to_s).sort_by { |str| %w[a r l].index(str) }
 
-  if params_array.empty?
-    files = Dir.glob('*')
-  end
+  files = Dir.glob('*') if params_array.empty?
 
   params_array.each do |param|
-    if param == "a"
+    case param
+    when 'a'
       files = Dir.entries('.').sort
-    elsif param == "r"
+    when 'r'
       files = reverse_fetch_all_items(files)
-    elsif param == "l"
+    when 'l'
       puts output_detail_list(files)
       files = nil
     end
@@ -36,12 +33,10 @@ def main
   output_list(files) unless files.nil?
 end
 
-
 def reverse_fetch_all_items(files)
-  files = files || Dir.glob('*')
-  reversed_files = files.reverse
+  files ||= Dir.glob('*')
+  files.reverse
 end
-
 
 def search_max_hardlink(files)
   files.map do |file|
@@ -80,7 +75,7 @@ def find_largest_string(files)
 end
 
 def output_detail_list(files)
-  files = files || Dir.glob('*')
+  files ||= Dir.glob('*')
   lines = []
   total_block_size = 0
   max_hardlink, max_owner_name, max_group_name, max_bytesize = find_largest_string(files)
@@ -102,8 +97,7 @@ def output_detail_list(files)
 
     lines << line
   end
-  first_line = "total #{total_block_size}"
-  lines.unshift(first_line)
+  lines.unshift("total #{total_block_size}")
 end
 
 def get_file_mode(path)
