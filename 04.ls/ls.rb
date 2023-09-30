@@ -8,20 +8,40 @@ require 'pathname'
 def main
   opt = OptionParser.new
   params = {}
+  opt.on('-a') { |v| params[:a] = v }
+  opt.on('-r') { |v| params[:r] = v }
   opt.on('-l') { |v| params[:l] = v }
   opt.parse!(ARGV)
-  files = fetch_filenames_without_dotfile
 
-  if params[:l]
-    output_detail_list(files)
-  else
-    output_list(files)
+  # 複数オプションが指定された場合、順序を入れ替えないと期待通りに動かない
+  params_array = params.keys.to_a.map(&:to_s)
+  order = ["a","r","l"]
+  params_array = params_array.sort_by { |str| order.index(str) }
+
+  if params_array.empty?
+    files = Dir.glob('*')
   end
+
+  params_array.each do |param|
+    if param == "a"
+      files = Dir.entries('.').sort
+    elsif param == "r"
+      files = reverse_fetch_all_items(files)
+    elsif param == "l"
+      puts output_detail_list(files)
+      files = nil
+    end
+  end
+  # -lオプションの場合はメソッドを実行しない。
+  output_list(files) unless files.nil?
 end
 
-def fetch_filenames_without_dotfile
-  Dir.glob('*')
+
+def reverse_fetch_all_items(files)
+  files = files || Dir.glob('*')
+  reversed_files = files.reverse
 end
+
 
 def search_max_hardlink(files)
   files.map do |file|
@@ -60,6 +80,7 @@ def find_largest_string(files)
 end
 
 def output_detail_list(files)
+  files = files || Dir.glob('*')
   lines = []
   total_block_size = 0
   max_hardlink, max_owner_name, max_group_name, max_bytesize = find_largest_string(files)
@@ -82,7 +103,7 @@ def output_detail_list(files)
     lines << line
   end
   first_line = "total #{total_block_size}"
-  puts lines.unshift(first_line)
+  lines.unshift(first_line)
 end
 
 def get_file_mode(path)
