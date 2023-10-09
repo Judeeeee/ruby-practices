@@ -13,15 +13,13 @@ def main
   opt.on('-l') { |v| params[:l] = v }
   opt.parse!(ARGV)
 
-  if params.include?(:a)
-    files = Dir.entries('.').sort
-  else
-    files = Dir.glob('*')
-  end
+  files = if params.include?(:a)
+            Dir.entries('.').sort
+          else
+            Dir.glob('*')
+          end
 
-  if params.include?(:r)
-    files = files.reverse
-  end
+  files = files.reverse if params.include?(:r)
 
   if params.include?(:l)
     puts output_detail_list(files)
