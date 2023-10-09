@@ -22,9 +22,9 @@ def main
   files = files.reverse if params.include?(:r)
 
   if params.include?(:l)
-    puts output_detail_list(files)
+    output_detail_list(files)
   else
-    puts files
+    output_list(files)
   end
 end
 
@@ -86,7 +86,7 @@ def output_detail_list(files)
 
     lines << line
   end
-  lines.unshift("total #{total_block_size}")
+  puts lines.unshift("total #{total_block_size}")
 end
 
 def get_file_mode(path)
