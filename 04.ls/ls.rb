@@ -13,29 +13,21 @@ def main
   opt.on('-l') { |v| params[:l] = v }
   opt.parse!(ARGV)
 
-  # 複数オプションが指定された場合、順序を入れ替えないと期待通りに動かない
-  params_array = params.keys.to_a.map(&:to_s).sort_by { |str| %w[a r l].index(str) }
-
-  files = Dir.glob('*') if params_array.empty?
-
-  params_array.each do |param|
-    case param
-    when 'a'
-      files = Dir.entries('.').sort
-    when 'r'
-      files = reverse_fetch_all_items(files)
-    when 'l'
-      puts output_detail_list(files)
-      files = nil
-    end
+  if params.include?(:a)
+    files = Dir.entries('.').sort
+  else
+    files = Dir.glob('*')
   end
-  # -lオプションの場合はメソッドを実行しない。
-  output_list(files) unless files.nil?
-end
 
-def reverse_fetch_all_items(files)
-  files ||= Dir.glob('*')
-  files.reverse
+  if params.include?(:r)
+    files = files.reverse
+  end
+
+  if params.include?(:l)
+    puts output_detail_list(files)
+  else
+    puts files
+  end
 end
 
 def search_max_hardlink(files)
@@ -75,7 +67,6 @@ def find_largest_string(files)
 end
 
 def output_detail_list(files)
-  files ||= Dir.glob('*')
   lines = []
   total_block_size = 0
   max_hardlink, max_owner_name, max_group_name, max_bytesize = find_largest_string(files)
