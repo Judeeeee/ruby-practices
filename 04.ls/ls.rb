@@ -8,19 +8,24 @@ require 'pathname'
 def main
   opt = OptionParser.new
   params = {}
+  opt.on('-a') { |v| params[:a] = v }
+  opt.on('-r') { |v| params[:r] = v }
   opt.on('-l') { |v| params[:l] = v }
   opt.parse!(ARGV)
-  files = fetch_filenames_without_dotfile
 
-  if params[:l]
+  files = if params.include?(:a)
+            Dir.entries('.').sort
+          else
+            Dir.glob('*')
+          end
+
+  files = files.reverse if params.include?(:r)
+
+  if params.include?(:l)
     output_detail_list(files)
   else
     output_list(files)
   end
-end
-
-def fetch_filenames_without_dotfile
-  Dir.glob('*')
 end
 
 def search_max_hardlink(files)
@@ -81,8 +86,7 @@ def output_detail_list(files)
 
     lines << line
   end
-  first_line = "total #{total_block_size}"
-  puts lines.unshift(first_line)
+  puts lines.unshift("total #{total_block_size}")
 end
 
 def get_file_mode(path)
