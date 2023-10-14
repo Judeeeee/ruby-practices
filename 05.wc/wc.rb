@@ -14,6 +14,37 @@ def c_option(file_data)
   file_data.bytesize
 end
 
+def calculate_total_line(files)
+  n = 0
+  files.each do |file|
+    file_path = File.expand_path(file)
+    file_data = File.read(file_path)
+    n += l_option(file_data)
+  end
+  return n.to_s.length
+end
+
+def calculate_total_word(files)
+  n = 0
+  files.each do |file|
+    file_path = File.expand_path(file)
+    file_data = File.read(file_path)
+    n += w_option(file_data)
+  end
+  return n.to_s.length
+end
+
+def calculate_total_bytesize(files)
+  n = 0
+  files.each do |file|
+    file_path = File.expand_path(file)
+    file_data = File.read(file_path)
+    n += c_option(file_data)
+  end
+  return n.to_s.length
+end
+
+
 def total_output(l_total, w_total, c_total)
   # ? 合計を算出する
   l_output = l_total.sum.to_s if l_total.sum != 0
@@ -50,7 +81,8 @@ def main
         l_total << l_option(file_data)
         w_total << w_option(file_data)
         c_total << c_option(file_data)
-        puts [l_option(file_data), w_option(file_data), c_option(file_data), file.to_s].join(' ')
+        # ここで、行頭を揃える必要がある。
+        puts [l_option(file_data).to_s.rjust(calculate_total_line(files)), w_option(file_data).to_s.rjust(calculate_total_word(files)), c_option(file_data).to_s.rjust(calculate_total_bytesize(files)), file.to_s].join(' ')
       else
         params_array.each do |param|
           case param
@@ -68,6 +100,7 @@ def main
         puts "#{output_line.join(' ')} #{file}"
       end
     end
+    # 先にトータルを計算しておいて、その分だけ左にずらす
     total_output(l_total, w_total, c_total) if files.size > 1
   else # lsコマンドでパイプライン処理している場合
     output_line = []
