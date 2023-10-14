@@ -30,7 +30,7 @@ def main
   opt.on('-c') { |v| params[:c] = v }
   opt.parse!(ARGV)
   files = ARGV
-  params_array = params.keys.to_a.map(&:to_s)
+  params_array = params.keys.to_a.map(&:to_s).sort_by { |str| %w[l w c].index(str) }
 
   l_total = []
   w_total = []
@@ -40,13 +40,13 @@ def main
   $stdin = STDIN
   input_flag = input.isatty
 
-  if input_flag # lsコマンドでパイプライン処理していない場合(ややこしいので、tty?でもいいかも。)
+  if input_flag
     files.each do |file|
       output_line = []
       file_path = File.expand_path(file)
       file_data = File.read(file_path)
 
-      if params_array == [] # オプション指定がない場合は、l,c,wどれも出力する
+      if params_array.empty? # オプション指定がない場合は、l,c,wどれも出力する
         l_total << l_option(file_data)
         w_total << w_option(file_data)
         c_total << c_option(file_data)
@@ -72,7 +72,7 @@ def main
   else # lsコマンドでパイプライン処理している場合
     output_line = []
     file_data = $stdin.to_a.join
-    if params_array == [] # オプション指定がない場合
+    if params_array.empty? # オプション指定がない場合
       puts [l_option(file_data), w_option(file_data), c_option(file_data)].join(' ')
     else
       params_array.each do |param|
