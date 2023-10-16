@@ -2,6 +2,16 @@
 
 require 'optparse'
 
+def define_options
+  opt = OptionParser.new
+  params = {}
+  opt.on('-l') { |v| params[:l] = v }
+  opt.on('-w') { |v| params[:w] = v }
+  opt.on('-c') { |v| params[:c] = v }
+  opt.parse!(ARGV)
+  params
+end
+
 def l_option(file_data)
   file_data.count("\n")
 end
@@ -35,27 +45,8 @@ def calculate_total_bytesize(files)
   file_datas.sum { |file_data| c_option(file_data) }
 end
 
-def create_output_line_with_options(params_array, file_data)
-  output_line = []
-  params_array.each do |param|
-    case param
-    when 'l'
-      output_line << l_option(file_data).to_s.rjust(8)
-    when 'w'
-      output_line << w_option(file_data).to_s.rjust(8)
-    when 'c'
-      output_line << c_option(file_data).to_s.rjust(8)
-    end
-  end
-  output_line
-end
-
-# TODO: オプション指定ありで複数ファイルが渡された場合
-def create_end_line(params_array, total_line, total_word, total_bytesize)
-  end_line = []
-  end_line << total_line.to_s.rjust(8) if params_array.include?('l')
-  end_line << total_word.to_s.rjust(8) if params_array.include?('w')
-  end_line << total_bytesize.to_s.rjust(8) if params_array.include?('c')
+def calculate_total_detail_datas(files)
+  [calculate_total_line(files), calculate_total_word(files), calculate_total_bytesize(files)]
 end
 
 def option?(files, params_array)
@@ -72,6 +63,13 @@ def option?(files, params_array)
   end
 end
 
+def create_end_line(params_array, total_line, total_word, total_bytesize)
+  end_line = []
+  end_line << total_line.to_s.rjust(8) if params_array.include?('l')
+  end_line << total_word.to_s.rjust(8) if params_array.include?('w')
+  end_line << total_bytesize.to_s.rjust(8) if params_array.include?('c')
+end
+
 def add_end_line(params_array, total_line, total_word, total_bytesize)
   if params_array.empty?
     puts "#{[total_line.to_s.rjust(8), total_word.to_s.rjust(8), total_bytesize.to_s.rjust(8)].join} total"
@@ -81,18 +79,19 @@ def add_end_line(params_array, total_line, total_word, total_bytesize)
   end
 end
 
-def define_options
-  opt = OptionParser.new
-  params = {}
-  opt.on('-l') { |v| params[:l] = v }
-  opt.on('-w') { |v| params[:w] = v }
-  opt.on('-c') { |v| params[:c] = v }
-  opt.parse!(ARGV)
-  params
-end
-
-def calculate_total_detail_datas(files)
-  [calculate_total_line(files), calculate_total_word(files), calculate_total_bytesize(files)]
+def create_output_line_with_options(params_array, file_data)
+  output_line = []
+  params_array.each do |param|
+    case param
+    when 'l'
+      output_line << l_option(file_data).to_s.rjust(8)
+    when 'w'
+      output_line << w_option(file_data).to_s.rjust(8)
+    when 'c'
+      output_line << c_option(file_data).to_s.rjust(8)
+    end
+  end
+  output_line
 end
 
 def main
