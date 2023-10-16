@@ -89,19 +89,19 @@ def main
     output_line = []
     file_data = $stdin.to_a.join
     if params_array.empty? # オプション指定がない場合
-      puts [l_option(file_data), w_option(file_data), c_option(file_data)].join(' ')
+      puts [l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8)].join
     else
       params_array.each do |param|
         case param
         when 'l'
-          output_line << l_option(file_data)
+          output_line << l_option(file_data).to_s.rjust(8)
         when 'w'
-          output_line << w_option(file_data)
+          output_line << w_option(file_data).to_s.rjust(8)
         when 'c'
-          output_line << c_option(file_data)
+          output_line << c_option(file_data).to_s.rjust(8)
         end
       end
-      puts output_line.join(' ')
+      puts output_line.join
     end
   end
 end
