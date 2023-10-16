@@ -35,8 +35,7 @@ def calculate_total_bytesize(files)
   file_datas.sum { |file_data| c_option(file_data) }
 end
 
-# TODO:コマンド単体実行で、オプション指定がない場合
-def have_option(params_array)
+def create_output_line_with_options(params_array,file_data)
   output_line = []
   params_array.each do |param|
     case param
@@ -52,12 +51,11 @@ def have_option(params_array)
 end
 
 # TODO: オプション指定ありで複数ファイルが渡された場合
-def have_option_and_have_files
-  total_display = []
-  total_display << total_line.to_s.rjust(8) if params_array.include?('l')
-  total_display << total_word.to_s.rjust(8) if params_array.include?('w')
-  total_display << total_bytesize.to_s.rjust(8) if params_array.include?('c')
-  total_display << 'total'
+def create_end_line(params_array,total_line,total_word,total_bytesize)
+  end_line = []
+  end_line << total_line.to_s.rjust(8) if params_array.include?('l')
+  end_line << total_word.to_s.rjust(8) if params_array.include?('w')
+  end_line << total_bytesize.to_s.rjust(8) if params_array.include?('c')
 end
 
 def main
@@ -84,26 +82,25 @@ def main
       file_data = File.read(file_path)
 
       if params_array.empty?
-        puts [l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8), file.to_s].join(' ')
+        puts "#{[l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8)].join} #{file}"
       else
-        output_line = have_option(params_array)
-        puts "#{output_line.join(' ').to_s.rjust(8)} #{file}"
+        output_line = create_output_line_with_options(params_array,file_data)
+        puts "#{output_line.join} #{file}"
       end
     end
 
-    puts [total_line.to_s.rjust(8), total_word.to_s.rjust(8), total_bytesize.to_s.rjust(8), 'total'].join(' ') if files.size > 1 && params_array.empty?
+    puts "#{[total_line.to_s.rjust(8), total_word.to_s.rjust(8), total_bytesize.to_s.rjust(8)].join} total" if files.size > 1 && params_array.empty?
 
     if files.size > 1 && params_array.any?
-      total_display = have_option_and_have_files
-      puts total_display.join(' ') if files.size > 1
+      end_line = create_end_line(params_array,total_line,total_word,total_bytesize)
+      puts "#{end_line.join} total"
     end
   else
-    output_line = []
     file_data = $stdin.to_a.join
     if params_array.empty?
       puts [l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8)].join
     else
-      output_line = within_pipeline_and_have_option(params_array)
+      output_line = create_output_line_with_options(params_array,file_data)
       puts output_line.join
     end
   end
