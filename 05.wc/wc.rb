@@ -35,7 +35,7 @@ def calculate_total_bytesize(files)
   file_datas.sum { |file_data| c_option(file_data) }
 end
 
-def create_output_line_with_options(params_array,file_data)
+def create_output_line_with_options(params_array, file_data)
   output_line = []
   params_array.each do |param|
     case param
@@ -51,56 +51,68 @@ def create_output_line_with_options(params_array,file_data)
 end
 
 # TODO: オプション指定ありで複数ファイルが渡された場合
-def create_end_line(params_array,total_line,total_word,total_bytesize)
+def create_end_line(params_array, total_line, total_word, total_bytesize)
   end_line = []
   end_line << total_line.to_s.rjust(8) if params_array.include?('l')
   end_line << total_word.to_s.rjust(8) if params_array.include?('w')
   end_line << total_bytesize.to_s.rjust(8) if params_array.include?('c')
 end
 
-def main
+def option?(files, params_array)
+  files.each do |file|
+    file_path = File.expand_path(file)
+    file_data = File.read(file_path)
+
+    if params_array.empty?
+      puts "#{[l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8)].join} #{file}"
+    else
+      output_line = create_output_line_with_options(params_array, file_data)
+      puts "#{output_line.join} #{file}"
+    end
+  end
+end
+
+def add_end_line(params_array, total_line, total_word, total_bytesize)
+  if params_array.empty?
+    puts "#{[total_line.to_s.rjust(8), total_word.to_s.rjust(8), total_bytesize.to_s.rjust(8)].join} total"
+  else
+    end_line = create_end_line(params_array, total_line, total_word, total_bytesize)
+    puts "#{end_line.join} total"
+  end
+end
+
+def define_options
   opt = OptionParser.new
   params = {}
   opt.on('-l') { |v| params[:l] = v }
   opt.on('-w') { |v| params[:w] = v }
   opt.on('-c') { |v| params[:c] = v }
   opt.parse!(ARGV)
-  files = ARGV
-  params_array = params.keys.to_a.map(&:to_s).sort_by { |str| %w[l w c].index(str) }
+  params
+end
 
+def calculate_total_detail_datas(files)
+  [calculate_total_line(files), calculate_total_word(files), calculate_total_bytesize(files)]
+end
+
+def main
+  files = ARGV
+  params = define_options
+  params_array = params.keys.to_a.map(&:to_s).sort_by { |str| %w[l w c].index(str) }
+  total_line, total_word, total_bytesize = calculate_total_detail_datas(files)
   input = $stdin
   $stdin = STDIN
   input_flag = input.isatty
 
-  total_line = calculate_total_line(files)
-  total_word = calculate_total_word(files)
-  total_bytesize = calculate_total_bytesize(files)
-
   if input_flag
-    files.each do |file|
-      file_path = File.expand_path(file)
-      file_data = File.read(file_path)
-
-      if params_array.empty?
-        puts "#{[l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8)].join} #{file}"
-      else
-        output_line = create_output_line_with_options(params_array,file_data)
-        puts "#{output_line.join} #{file}"
-      end
-    end
-
-    puts "#{[total_line.to_s.rjust(8), total_word.to_s.rjust(8), total_bytesize.to_s.rjust(8)].join} total" if files.size > 1 && params_array.empty?
-
-    if files.size > 1 && params_array.any?
-      end_line = create_end_line(params_array,total_line,total_word,total_bytesize)
-      puts "#{end_line.join} total"
-    end
+    option?(files, params_array)
+    add_end_line(params_array, total_line, total_word, total_bytesize) if files.size > 1
   else
     file_data = $stdin.to_a.join
     if params_array.empty?
       puts [l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8)].join
     else
-      output_line = create_output_line_with_options(params_array,file_data)
+      output_line = create_output_line_with_options(params_array, file_data)
       puts output_line.join
     end
   end
