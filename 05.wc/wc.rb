@@ -15,21 +15,24 @@ def c_option(file_data)
 end
 
 def calculate_total_line(files)
-  files.map { |file|
+  file_datas = files.map do |file|
     File.read(File.expand_path(file))
-  }.sum { |file_data| l_option(file_data) }
+  end
+  file_datas.sum { |file_data| l_option(file_data) }
 end
 
 def calculate_total_word(files)
-  files.map { |file|
+  file_datas = files.map do |file|
     File.read(File.expand_path(file))
-  }.sum { |file_data| w_option(file_data) }
+  end
+  file_datas.sum { |file_data| w_option(file_data) }
 end
 
 def calculate_total_bytesize(files)
-  files.map { |file|
+  file_datas = files.map do |file|
     File.read(File.expand_path(file))
-  }.sum { |file_data| c_option(file_data) }
+  end
+  file_datas.sum { |file_data| c_option(file_data) }
 end
 
 def main
@@ -73,15 +76,13 @@ def main
       end
     end
 
-    if files.size > 1 && params_array.empty?
-      puts [total_line.to_s.rjust(8), total_word.to_s.rjust(8), total_bytesize.to_s.rjust(8), 'total'].join(' ')
-    end
+    puts [total_line.to_s.rjust(8), total_word.to_s.rjust(8), total_bytesize.to_s.rjust(8), 'total'].join(' ') if files.size > 1 && params_array.empty?
 
     if files.size > 1 && params_array.any?
       total_display = []
-      total_display << total_line.to_s.rjust(8) if params_array.include?("l")
-      total_display << total_word.to_s.rjust(8) if params_array.include?("w")
-      total_display << total_bytesize.to_s.rjust(8) if params_array.include?("c")
+      total_display << total_line.to_s.rjust(8) if params_array.include?('l')
+      total_display << total_word.to_s.rjust(8) if params_array.include?('w')
+      total_display << total_bytesize.to_s.rjust(8) if params_array.include?('c')
       total_display << 'total'
       puts total_display.join(' ') if files.size > 1
     end
