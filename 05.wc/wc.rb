@@ -57,31 +57,31 @@ def main
       file_data = File.read(file_path)
 
       if params_array.empty? # オプション指定がない場合は、l,c,wどれも出力する
-        puts [l_option(file_data).to_s.rjust(total_line.to_s.length), w_option(file_data).to_s.rjust(total_word.to_s.length), c_option(file_data).to_s.rjust(total_bytesize.to_s.length), file.to_s].join(' ')
+        puts [l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8), file.to_s].join(' ')
       else
         params_array.each do |param|
           case param
           when 'l'
-            output_line << l_option(file_data).to_s.rjust(total_line.to_s.length)
+            output_line << l_option(file_data).to_s.rjust(8)
           when 'w'
-            output_line << w_option(file_data).to_s.rjust(total_word.to_s.length)
+            output_line << w_option(file_data).to_s.rjust(8)
           when 'c'
-            output_line << c_option(file_data).to_s.rjust(total_bytesize.to_s.length)
+            output_line << c_option(file_data).to_s.rjust(8)
           end
         end
-        puts "#{output_line.join(' ')} #{file}"
+        puts "#{output_line.join(' ').to_s.rjust(8)} #{file}"
       end
     end
 
     if files.size > 1 && params_array.empty?
-      puts [total_line, total_word, total_bytesize, 'total'].join(' ')
+      puts [total_line.to_s.rjust(8), total_word.to_s.rjust(8), total_bytesize.to_s.rjust(8), 'total'].join(' ')
     end
 
     if files.size > 1 && params_array.any?
       total_display = []
-      total_display << total_line if params_array.include?("l")
-      total_display << total_word if params_array.include?("w")
-      total_display << total_bytesize if params_array.include?("c")
+      total_display << total_line.to_s.rjust(8) if params_array.include?("l")
+      total_display << total_word.to_s.rjust(8) if params_array.include?("w")
+      total_display << total_bytesize.to_s.rjust(8) if params_array.include?("c")
       total_display << 'total'
       puts total_display.join(' ') if files.size > 1
     end
