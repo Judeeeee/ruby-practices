@@ -15,33 +15,21 @@ def c_option(file_data)
 end
 
 def calculate_total_line(files)
-  n = 0
-  files.each do |file|
-    file_path = File.expand_path(file)
-    file_data = File.read(file_path)
-    n += l_option(file_data)
-  end
-  return n
+  files.map { |file|
+    File.read(File.expand_path(file))
+  }.sum { |file_data| l_option(file_data) }
 end
 
 def calculate_total_word(files)
-  n = 0
-  files.each do |file|
-    file_path = File.expand_path(file)
-    file_data = File.read(file_path)
-    n += w_option(file_data)
-  end
-  return n
+  files.map { |file|
+    File.read(File.expand_path(file))
+  }.sum { |file_data| w_option(file_data) }
 end
 
 def calculate_total_bytesize(files)
-  n = 0
-  files.each do |file|
-    file_path = File.expand_path(file)
-    file_data = File.read(file_path)
-    n += c_option(file_data)
-  end
-  return n
+  files.map { |file|
+    File.read(File.expand_path(file))
+  }.sum { |file_data| c_option(file_data) }
 end
 
 def main
