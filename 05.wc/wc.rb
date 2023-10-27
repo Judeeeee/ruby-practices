@@ -82,11 +82,11 @@ def main
   end
   params = define_options
   params_array = params.keys.to_a.map(&:to_s).sort_by { |str| %w[l w c].index(str) }
-  total_line, total_word, total_bytesize = calculate_total_detail_datas(file_datas)
   input_flag = $stdin.isatty
 
   if input_flag
-    option?(files, params_array)
+    option?(file_datas, params_array)
+    total_line, total_word, total_bytesize = calculate_total_detail_datas(file_datas)
     add_end_line(params_array, total_line, total_word, total_bytesize) if files.size > 1
   else
     file_data = $stdin.to_a.join
