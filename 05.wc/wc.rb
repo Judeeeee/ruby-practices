@@ -32,13 +32,13 @@ def calculate_total_detail_datas(file_datas)
   [calculate_total_line, calculate_total_word, calculate_total_bytesize]
 end
 
-def option?(file_datas, params_array)
+def option?(file_datas, params_array, total_line, total_word, total_bytesize)
   file_datas.each do |file_data|
 
     if params_array.empty?
       puts "#{[l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8)].join} #ファイル名"
     else
-      output_line = create_output_line_with_options(params_array, file_data)
+      output_line = create_end_line(params_array, total_line, total_word, total_bytesize)
       puts "#{output_line.join} #ファイル名"
     end
   end
@@ -60,21 +60,6 @@ def add_end_line(params_array, total_line, total_word, total_bytesize)
   end
 end
 
-def create_output_line_with_options(params_array, file_data)
-  output_line = []
-  params_array.each do |param|
-    case param
-    when 'l'
-      output_line << l_option(file_data).to_s.rjust(8)
-    when 'w'
-      output_line << w_option(file_data).to_s.rjust(8)
-    when 'c'
-      output_line << c_option(file_data).to_s.rjust(8)
-    end
-  end
-  output_line
-end
-
 def main
   files = ARGV
   file_datas = files.map do |file|
@@ -83,17 +68,17 @@ def main
   params = define_options
   params_array = params.keys.to_a.map(&:to_s).sort_by { |str| %w[l w c].index(str) }
   input_flag = $stdin.isatty
+  total_line, total_word, total_bytesize = calculate_total_detail_datas(file_datas)
 
   if input_flag
-    option?(file_datas, params_array)
-    total_line, total_word, total_bytesize = calculate_total_detail_datas(file_datas)
+    option?(file_datas, params_array, total_line, total_word, total_bytesize)
     add_end_line(params_array, total_line, total_word, total_bytesize) if files.size > 1
   else
     file_data = $stdin.to_a.join
     if params_array.empty?
       puts [l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8)].join
     else
-      output_line = create_output_line_with_options(params_array, file_data)
+      output_line = create_end_line(params_array, total_line, total_word, total_bytesize)
       puts output_line.join
     end
   end
