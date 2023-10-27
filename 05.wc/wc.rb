@@ -80,6 +80,12 @@ def add_end_line(params_array, total_line, total_word, total_bytesize)
   end
 end
 
+def display_total_line(file_datas)
+  total_line, total_word, total_bytesize = calculate_total_detail_datas(file_datas)
+  add_end_line(params_array, total_line, total_word, total_bytesize)
+end
+
+
 def main
   files = ARGV
   params = define_options
@@ -92,12 +98,10 @@ def main
 
   if input_flag
     option?(files, file_datas, params_array)
-    total_line, total_word, total_bytesize = calculate_total_detail_datas(file_datas)
-    puts add_end_line(params_array, total_line, total_word, total_bytesize) + "total" if files.size > 1
+    puts display_total_line(file_datas) + "total" if files.size > 1
   else
     file_datas = $stdin.to_a.join
-    total_line, total_word, total_bytesize = calculate_total_detail_datas(file_datas)
-    puts add_end_line(params_array, total_line, total_word, total_bytesize)
+    puts display_total_line(file_datas)
   end
 end
 
