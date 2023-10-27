@@ -99,9 +99,7 @@ def main
   params = define_options
   params_array = params.keys.to_a.map(&:to_s).sort_by { |str| %w[l w c].index(str) }
   total_line, total_word, total_bytesize = calculate_total_detail_datas(files)
-  input = $stdin
-  $stdin = STDIN
-  input_flag = input.isatty
+  input_flag = $stdin.isatty
 
   if input_flag
     option?(files, params_array)
