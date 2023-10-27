@@ -24,41 +24,22 @@ def c_option(file_data)
   file_data.bytesize
 end
 
-def calculate_total_line(files)
-  file_datas = files.map do |file|
-    File.read(File.expand_path(file))
-  end
-  file_datas.sum { |file_data| l_option(file_data) }
+def calculate_total_detail_datas(file_datas)
+  calculate_total_line = file_datas.sum { |file_data| l_option(file_data) }
+  calculate_total_word = file_datas.sum { |file_data| w_option(file_data) }
+  calculate_total_bytesize = file_datas.sum { |file_data| c_option(file_data) }
+
+  [calculate_total_line, calculate_total_word, calculate_total_bytesize]
 end
 
-def calculate_total_word(files)
-  file_datas = files.map do |file|
-    File.read(File.expand_path(file))
-  end
-  file_datas.sum { |file_data| w_option(file_data) }
-end
-
-def calculate_total_bytesize(files)
-  file_datas = files.map do |file|
-    File.read(File.expand_path(file))
-  end
-  file_datas.sum { |file_data| c_option(file_data) }
-end
-
-def calculate_total_detail_datas(files)
-  [calculate_total_line(files), calculate_total_word(files), calculate_total_bytesize(files)]
-end
-
-def option?(files, params_array)
-  files.each do |file|
-    file_path = File.expand_path(file)
-    file_data = File.read(file_path)
+def option?(file_datas, params_array)
+  file_datas.each do |file_data|
 
     if params_array.empty?
-      puts "#{[l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8)].join} #{file}"
+      puts "#{[l_option(file_data).to_s.rjust(8), w_option(file_data).to_s.rjust(8), c_option(file_data).to_s.rjust(8)].join} #ファイル名"
     else
       output_line = create_output_line_with_options(params_array, file_data)
-      puts "#{output_line.join} #{file}"
+      puts "#{output_line.join} #ファイル名"
     end
   end
 end
@@ -96,9 +77,12 @@ end
 
 def main
   files = ARGV
+  file_datas = files.map do |file|
+    File.read(File.expand_path(file))
+  end
   params = define_options
   params_array = params.keys.to_a.map(&:to_s).sort_by { |str| %w[l w c].index(str) }
-  total_line, total_word, total_bytesize = calculate_total_detail_datas(files)
+  total_line, total_word, total_bytesize = calculate_total_detail_datas(file_datas)
   input_flag = $stdin.isatty
 
   if input_flag
