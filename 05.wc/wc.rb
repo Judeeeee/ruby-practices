@@ -24,7 +24,7 @@ def count_bytesize(file_data)
   file_data.bytesize
 end
 
-def create_output_line_with_options(params_array, file_data)
+def create_detail_line(params_array, file_data)
   number_of_line = count_line(file_data).to_s.rjust(8)
   nuber_of_word = count_word(file_data).to_s.rjust(8)
   nuber_of_bytesize = count_bytesize(file_data).to_s.rjust(8)
@@ -46,11 +46,11 @@ def create_output_line_with_options(params_array, file_data)
 end
 
 
-def output_detail_line(files, file_datas, params_array)
+def display_detail_line(files, file_datas, params_array)
   file_datas.each_with_index do |file_data, i|
     file_name = files[i]
-    output_line = create_output_line_with_options(params_array, file_data)
-    puts "#{output_line.join} #{file_name}"
+    detail_line = create_detail_line(params_array, file_data)
+    puts "#{detail_line.join} #{file_name}"
   end
 end
 
@@ -86,11 +86,11 @@ def main
   input_flag = $stdin.isatty
 
   if input_flag
-    output_detail_line(files, file_datas, params_array)
+    display_detail_line(files, file_datas, params_array)
     puts display_total_line(params_array, file_datas).join + "total" if files.size > 1
   else
     file_data = $stdin.to_a.join
-    puts create_output_line_with_options(params_array, file_data).join
+    puts create_detail_line(params_array, file_data).join
   end
 end
 
