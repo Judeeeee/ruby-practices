@@ -36,7 +36,7 @@ def create_detail_line(options_array, file_data)
   if options_array.empty?
     [number_of_line, nuber_of_word, nuber_of_bytesize]
   else
-    options_array.map do |param|
+    options_array.map do |option|
       case param
       when 'l'
         number_of_line
@@ -51,8 +51,8 @@ end
 
 
 def display_detail_line(files, file_datas, options_array)
-  file_datas.each_with_index do |file_data, i|
-    file_name = files[i]
+  file_datas.each_with_index do |file_data, index|
+    file_name = files[index]
     detail_line = create_detail_line(options_array, file_data)
     puts "#{detail_line.join} #{file_name}"
   end
@@ -66,8 +66,8 @@ def display_total_line(options_array, file_datas)
   if options_array.empty?
     [total_number_of_lines, total_number_of_words, total_number_of_bytesize]
   else
-    options_array.map do |param|
-      case param
+    options_array.map do |option|
+      case option
       when 'l'
         total_number_of_lines
       when 'w'
