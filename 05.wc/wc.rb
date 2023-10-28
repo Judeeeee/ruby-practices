@@ -86,8 +86,8 @@ def main
     output_detail_line(files, file_datas, params_array)
     puts display_total_line(params_array, file_datas).join + "total" if files.size > 1
   else
-    file_datas = $stdin.to_a.join
-    puts display_total_line(params_array, file_datas)
+    file_data = $stdin.to_a.join
+    puts create_output_line_with_options(params_array, file_data).join
   end
 end
 
