@@ -12,6 +12,10 @@ def define_options
   params
 end
 
+def stand_alone?
+  $stdin.isatty
+end
+
 def count_line(file_data)
   file_data.count("\n")
 end
@@ -83,9 +87,8 @@ def main
   end
 
   params_array = params.keys.to_a.map(&:to_s).sort_by { |str| %w[l w c].index(str) }
-  input_flag = $stdin.isatty
 
-  if input_flag
+  if stand_alone?
     display_detail_line(files, file_datas, params_array)
     puts display_total_line(params_array, file_datas).join + "total" if files.size > 1
   else
