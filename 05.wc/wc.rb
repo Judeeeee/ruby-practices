@@ -85,6 +85,7 @@ def main
     File.read(File.expand_path(file))
   end
 
+  # ハッシュのまま扱いたい。。。
   options_array = options.keys.to_a.map(&:to_s).sort_by { |str| %w[l w c].index(str) }
 
   if stand_alone?
