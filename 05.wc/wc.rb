@@ -16,16 +16,12 @@ def stand_alone?
   $stdin.isatty
 end
 
-def count_line(file_data)
-  file_data.count("\n")
-end
-
-def count_word(file_data)
-  file_data.split(' ').size
-end
-
-def count_bytesize(file_data)
-  file_data.bytesize
+def display_detail_line(files, file_datas, options_array)
+  file_datas.each_with_index do |file_data, index|
+    file_name = files[index]
+    detail_line = create_detail_line(options_array, file_data)
+    puts "#{detail_line.join} #{file_name}"
+  end
 end
 
 def create_detail_line(options_array, file_data)
@@ -49,13 +45,16 @@ def create_detail_line(options_array, file_data)
   end
 end
 
+def count_line(file_data)
+  file_data.count("\n")
+end
 
-def display_detail_line(files, file_datas, options_array)
-  file_datas.each_with_index do |file_data, index|
-    file_name = files[index]
-    detail_line = create_detail_line(options_array, file_data)
-    puts "#{detail_line.join} #{file_name}"
-  end
+def count_word(file_data)
+  file_data.split(' ').size
+end
+
+def count_bytesize(file_data)
+  file_data.bytesize
 end
 
 def display_total_line(options_array, file_datas)
