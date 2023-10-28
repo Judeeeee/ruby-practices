@@ -25,17 +25,21 @@ def count_bytesize(file_data)
 end
 
 def create_output_line_with_options(params_array, file_data)
+  number_of_line = count_line(file_data).to_s.rjust(8)
+  nuber_of_word = count_word(file_data).to_s.rjust(8)
+  nuber_of_bytesize = count_bytesize(file_data).to_s.rjust(8)
+
   if params_array.empty?
-    [count_line(file_data).to_s.rjust(8), count_word(file_data).to_s.rjust(8), count_bytesize(file_data).to_s.rjust(8)]
+    [number_of_line, nuber_of_word, nuber_of_bytesize]
   else
     params_array.map do |param|
       case param
       when 'l'
-        count_line(file_data).to_s.rjust(8)
+        number_of_line
       when 'w'
-        count_word(file_data).to_s.rjust(8)
+        nuber_of_word
       when 'c'
-        count_bytesize(file_data).to_s.rjust(8)
+        nuber_of_bytesize
       end
     end
   end
@@ -50,27 +54,26 @@ def output_detail_line(files, file_datas, params_array)
   end
 end
 
-def create_end_line(params_array,file_datas)
-  params_array.map do |param|
-    case param
-    when 'l'
-      file_datas.sum { |file_data| count_line(file_data) }.to_s.rjust(8)
-    when 'w'
-      file_datas.sum { |file_data| count_word(file_data) }.to_s.rjust(8)
-    when 'c'
-      file_datas.sum { |file_data| count_bytesize(file_data) }.to_s.rjust(8)
+def display_total_line(params_array, file_datas)
+  total_number_of_lines = file_datas.sum { |file_data| count_line(file_data) }.to_s.rjust(8)
+  total_number_of_words = file_datas.sum { |file_data| count_word(file_data) }.to_s.rjust(8)
+  total_number_of_bytesize = file_datas.sum { |file_data| count_bytesize(file_data) }.to_s.rjust(8)
+
+  if params_array.empty?
+    [total_number_of_lines, total_number_of_words, total_number_of_bytesize]
+  else
+    params_array.map do |param|
+      case param
+      when 'l'
+        total_number_of_lines
+      when 'w'
+        total_number_of_words
+      when 'c'
+        total_number_of_bytesize
+      end
     end
   end
 end
-
-def display_total_line(params_array, file_datas)
-  if params_array.empty?
-    [file_datas.sum { |file_data| count_line(file_data) }.to_s.rjust(8), file_datas.sum { |file_data| count_word(file_data) }.to_s.rjust(8), file_datas.sum { |file_data| count_bytesize(file_data) }.to_s.rjust(8)]
-  else
-    create_end_line(params_array,file_datas)
-  end
-end
-
 
 def main
   files = ARGV
