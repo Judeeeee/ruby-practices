@@ -25,18 +25,16 @@ def c_option(file_data)
 end
 
 def create_output_line_with_options(params_array, file_data)
-  output_line = []
-  params_array.each do |param|
+  params_array.map do |param|
     case param
     when 'l'
-      output_line << l_option(file_data).to_s.rjust(8)
+      l_option(file_data).to_s.rjust(8)
     when 'w'
-      output_line << w_option(file_data).to_s.rjust(8)
+      w_option(file_data).to_s.rjust(8)
     when 'c'
-      output_line << c_option(file_data).to_s.rjust(8)
+      c_option(file_data).to_s.rjust(8)
     end
   end
-  output_line
 end
 
 
