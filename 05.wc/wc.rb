@@ -33,7 +33,7 @@ def create_detail_line(options_array, file_data)
     [number_of_line, nuber_of_word, nuber_of_bytesize]
   else
     options_array.map do |option|
-      case param
+      case option
       when 'l'
         number_of_line
       when 'w'
@@ -89,7 +89,7 @@ def main
 
   if stand_alone?
     display_detail_line(files, file_datas, options_array)
-    puts display_total_line(options_array, file_datas).join + "total" if files.size > 1
+    puts "#{display_total_line(options_array, file_datas).join} total" if files.size > 1
   else
     file_data = $stdin.to_a.join
     puts create_detail_line(options_array, file_data).join
