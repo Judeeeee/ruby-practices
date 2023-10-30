@@ -39,9 +39,27 @@ def determine_caluculate(key, file_data)
     end
 end
 
+# ファイルが複数指定された場合、合計を計算する
+def calcllate_total(hash, total_hash)
+  hash.each do |key, value|
+    total_hash[key] = total_hash[key] + hash[key]
+  end
+end
+
+# 行の出力
+def display_detail_line(hash)
+  hash.map { |key, value| "#{value.to_s.rjust(8)}" }.join
+end
+
+# オプションを並び替える
+def sort_options(hash)
+  hash.sort_by { |str| %i[l w c].index(str[0]) }.to_h
+end
+
 def main
-  files = ARGV
   options = define_options
+  total_hash = {l: 0, w: 0, c: 0}
+  files = ARGV
   if stand_alone?
     file_datas = files.map do |file|
       File.read(File.expand_path(file))
@@ -50,26 +68,17 @@ def main
     file_datas = [$stdin.to_a.join]
   end
 
-  total_hash = {l: 0, w: 0, c: 0}
-
   file_datas.each_with_index do |file_data, index|
     file_name = files[index]
     # オプションの有無判定
     if options.empty?
       # オプションが指定されない場合
-      number_of_line = count_line(file_data)
-      nuber_of_word = count_word(file_data)
-      nuber_of_bytesize = count_bytesize(file_data)
-      no_option_hash = {l: number_of_line, w: nuber_of_word, c: nuber_of_bytesize}
+      file_details = {l: count_line(file_data), w: count_word(file_data), c: count_bytesize(file_data)}
 
-      puts "#{ no_option_hash.map { |key, value| "#{value.to_s.rjust(8)}" }.join } #{file_name}"
+      puts "#{display_detail_line(file_details)} #{file_name}"
 
       # オプションが指定されない場合でファイルが複数指定された場合
-      if files.size != 1
-        no_option_hash.each do |key, value|
-          total_hash[key] = total_hash[key] + no_option_hash[key]
-        end
-      end
+      calcllate_total(file_details, total_hash) if files.size != 1
 
     else
       # オプションが指定された場合
@@ -77,23 +86,19 @@ def main
         options[key] = determine_caluculate(key, file_data)
       end
 
-      foo = options.sort_by { |str| %i[l w c].index(str[0]) }.to_h
-      puts "#{ foo.map { |key, value| "#{value.to_s.rjust(8)}" }.join } #{file_name}"
+      foo = sort_options(options)
+      puts "#{display_detail_line(foo)} #{file_name}"
 
       # オプションが指定された場合でファイルが複数指定された場合
-      if files.size != 1
-        options.each do |key, value|
-          total_hash[key] = total_hash[key] + options[key]
-        end
-      end
+      calcllate_total(options, total_hash) if files.size != 1
     end
   end
 
   # ファイルが複数指定された場合は、"total"の行を出力する
   if file_datas.size != 1
     # 並び替える
-    foo = total_hash.sort_by { |str| %i[l w c].index(str[0]) }.to_h.delete_if{ |key, value| value == 0 }
-    puts "#{ foo.map { |key, value| "#{value.to_s.rjust(8)}" }.join } total"
+    foo = sort_options(total_hash).delete_if{ |key, value| value == 0 }
+    puts "#{ display_detail_line(foo) } total"
   end
 end
 
