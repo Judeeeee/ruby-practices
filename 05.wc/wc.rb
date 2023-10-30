@@ -16,35 +16,6 @@ def stand_alone?
   $stdin.isatty
 end
 
-def display_detail_line(files, file_datas, options_array)
-  file_datas.each_with_index do |file_data, index|
-    file_name = files[index]
-    detail_line = create_detail_line(options_array, file_data)
-    puts "#{detail_line.join} #{file_name}"
-  end
-end
-
-def create_detail_line(options_array, file_data)
-  number_of_line = count_line(file_data).to_s.rjust(8)
-  nuber_of_word = count_word(file_data).to_s.rjust(8)
-  nuber_of_bytesize = count_bytesize(file_data).to_s.rjust(8)
-
-  if options_array.empty?
-    [number_of_line, nuber_of_word, nuber_of_bytesize]
-  else
-    options_array.map do |option|
-      case option
-      when 'l'
-        number_of_line
-      when 'w'
-        nuber_of_word
-      when 'c'
-        nuber_of_bytesize
-      end
-    end
-  end
-end
-
 def count_line(file_data)
   file_data.count("\n")
 end
@@ -57,25 +28,15 @@ def count_bytesize(file_data)
   file_data.bytesize
 end
 
-def display_total_line(options_array, file_datas)
-  total_number_of_lines = file_datas.sum { |file_data| count_line(file_data) }.to_s.rjust(8)
-  total_number_of_words = file_datas.sum { |file_data| count_word(file_data) }.to_s.rjust(8)
-  total_number_of_bytesize = file_datas.sum { |file_data| count_bytesize(file_data) }.to_s.rjust(8)
-
-  if options_array.empty?
-    [total_number_of_lines, total_number_of_words, total_number_of_bytesize]
-  else
-    options_array.map do |option|
-      case option
-      when 'l'
-        total_number_of_lines
-      when 'w'
-        total_number_of_words
-      when 'c'
-        total_number_of_bytesize
-      end
+def determine_caluculate(key, file_data)
+    case key
+    when :l
+      count_line(file_data)
+    when :w
+      count_word(file_data)
+    when :c
+      count_bytesize(file_data)
     end
-  end
 end
 
 def main
@@ -85,15 +46,50 @@ def main
     File.read(File.expand_path(file))
   end
 
-  # ハッシュのまま扱いたい。。。
-  options_array = options.keys.to_a.map(&:to_s).sort_by { |str| %w[l w c].index(str) }
+  total_hash = {l: 0, w: 0, c: 0}
+  file_datas.each_with_index do |file_data, index|
+    file_name = files[index]
 
-  if stand_alone?
-    display_detail_line(files, file_datas, options_array)
-    puts "#{display_total_line(options_array, file_datas).join} total" if files.size > 1
-  else
-    file_data = $stdin.to_a.join
-    puts create_detail_line(options_array, file_data).join
+    # オプションの有無判定
+    if options.empty?
+      # オプションが指定されない場合
+      number_of_line = count_line(file_data)
+      nuber_of_word = count_word(file_data)
+      nuber_of_bytesize = count_bytesize(file_data)
+      no_option_hash = {l: number_of_line, w: nuber_of_word, c: nuber_of_bytesize}
+
+      puts "#{ no_option_hash.map { |key, value| "#{value.to_s.rjust(8)}" }.join } #{file_name}"
+
+      # オプションが指定されない場合でファイルが複数指定された場合
+      if files.size != 1
+        no_option_hash.each do |key, value|
+          total_hash[key] = total_hash[key] + no_option_hash[key]
+        end
+      end
+
+    else
+      # オプションが指定された場合
+      options.each do |key, value|
+        options[key] = determine_caluculate(key, file_data)
+      end
+
+      foo = options.sort_by { |str| %i[l w c].index(str[0]) }.to_h
+      puts "#{ foo.map { |key, value| "#{value.to_s.rjust(8)}" }.join } #{file_name}"
+
+      # オプションが指定された場合でファイルが複数指定された場合
+      if files.size != 1
+        options.each do |key, value|
+          total_hash[key] = total_hash[key] + options[key]
+        end
+      end
+    end
+  end
+
+  # ファイルが複数指定された場合は、"total"の行を出力する
+  if files.size != 1
+    # 並び替える
+    foo = total_hash.sort_by { |str| %i[l w c].index(str[0]) }.to_h.delete_if{ |key, value| value == 0 }
+    puts "#{ foo.map { |key, value| "#{value.to_s.rjust(8)}" }.join } total"
   end
 end
 
