@@ -28,8 +28,8 @@ def count_bytesize(string_of_file)
   string_of_file.bytesize
 end
 
-def determine_caluculate(key, string_of_file)
-    case key
+def determine_caluculate(option, string_of_file)
+    case option
     when :l
       count_line(string_of_file)
     when :w
@@ -39,14 +39,14 @@ def determine_caluculate(key, string_of_file)
     end
 end
 
-def calculate_total(hash, total_calculation_of_file_details)
-  hash.each do |key, value|
-    total_calculation_of_file_details[key] = total_calculation_of_file_details[key] + hash[key]
+def calculate_total(file_detail, total_calculation_of_file_details)
+  file_detail.each do |key, value|
+    total_calculation_of_file_details[key] = total_calculation_of_file_details[key] + file_detail[key]
   end
 end
 
-def sort_options(hash)
-  hash.sort_by { |str| %i[l w c].index(str[0]) }.to_h
+def sort_options(options)
+  options.sort_by { |option| %i[l w c].index(option[0]) }.to_h
 end
 
 def output_lines(file_details, file_name, total_calculation_of_file_details)
@@ -54,13 +54,14 @@ def output_lines(file_details, file_name, total_calculation_of_file_details)
   calculate_total(file_details, total_calculation_of_file_details) if files.size != 1
 end
 
-def display_detail_line(hash)
-  hash.map { |key, value| "#{value.to_s.rjust(8)}" }.join
+def display_detail_line(file_details)
+  file_details.map { |key, value| "#{value.to_s.rjust(8)}" }.join
 end
 
 def create_detail_line(options, string_of_file)
+  detail_line = {}
   options.each do |key, value|
-    options[key] = determine_caluculate(key, string_of_file)
+    detail_line[key] = determine_caluculate(key, string_of_file)
   end
 end
 
@@ -82,8 +83,8 @@ def main
       file_details = {l: count_line(string_of_file), w: count_word(string_of_file), c: count_bytesize(string_of_file)}
       output_lines(file_details, file_name, total_calculation_of_file_details)
     else
-      create_detail_line(options, string_of_file)
-      sorted_file_details = sort_options(options)
+      detail_line = create_detail_line(options, string_of_file)
+      sorted_file_details = sort_options(detail_line)
       output_lines(sorted_file_details, file_name, total_calculation_of_file_details)
     end
   end
