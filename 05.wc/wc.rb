@@ -65,18 +65,21 @@ def create_detail_line(options, string_of_file)
   end
 end
 
+def read_files(files)
+  if stand_alone?
+    files.map do |file|
+      File.read(File.expand_path(file))
+    end
+  else
+    [$stdin.to_a.join]
+  end
+end
+
 def main
   options = define_options
   total_calculation_of_file_details = {l: 0, w: 0, c: 0}
   files = ARGV
-  if stand_alone?
-    string_of_files = files.map do |file|
-      File.read(File.expand_path(file))
-    end
-  else
-    string_of_files = [$stdin.to_a.join]
-  end
-
+  string_of_files = read_files(files)
   string_of_files.each_with_index do |string_of_file, index|
     file_name = files[index]
     if options.empty?
