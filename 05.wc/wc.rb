@@ -42,14 +42,18 @@ end
 def main
   files = ARGV
   options = define_options
-  file_datas = files.map do |file|
-    File.read(File.expand_path(file))
+  if stand_alone?
+    file_datas = files.map do |file|
+      File.read(File.expand_path(file))
+    end
+  else
+    file_datas = [$stdin.to_a.join]
   end
 
   total_hash = {l: 0, w: 0, c: 0}
+
   file_datas.each_with_index do |file_data, index|
     file_name = files[index]
-
     # オプションの有無判定
     if options.empty?
       # オプションが指定されない場合
@@ -86,7 +90,7 @@ def main
   end
 
   # ファイルが複数指定された場合は、"total"の行を出力する
-  if files.size != 1
+  if file_datas.size != 1
     # 並び替える
     foo = total_hash.sort_by { |str| %i[l w c].index(str[0]) }.to_h.delete_if{ |key, value| value == 0 }
     puts "#{ foo.map { |key, value| "#{value.to_s.rjust(8)}" }.join } total"
