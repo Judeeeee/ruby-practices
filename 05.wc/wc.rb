@@ -16,31 +16,31 @@ def stand_alone?
   $stdin.isatty
 end
 
-def count_line(file_data)
-  file_data.count("\n")
+def count_line(string_of_file)
+  string_of_file.count("\n")
 end
 
-def count_word(file_data)
-  file_data.split(' ').size
+def count_word(string_of_file)
+  string_of_file.split(' ').size
 end
 
-def count_bytesize(file_data)
-  file_data.bytesize
+def count_bytesize(string_of_file)
+  string_of_file.bytesize
 end
 
-def determine_caluculate(key, file_data)
+def determine_caluculate(key, string_of_file)
     case key
     when :l
-      count_line(file_data)
+      count_line(string_of_file)
     when :w
-      count_word(file_data)
+      count_word(string_of_file)
     when :c
-      count_bytesize(file_data)
+      count_bytesize(string_of_file)
     end
 end
 
 # ファイルが複数指定された場合、合計を計算する
-def calcllate_total(hash, total_hash)
+def calculate_total(hash, total_hash)
   hash.each do |key, value|
     total_hash[key] = total_hash[key] + hash[key]
   end
@@ -61,32 +61,32 @@ def main
   total_hash = {l: 0, w: 0, c: 0}
   files = ARGV
   if stand_alone?
-    file_datas = files.map do |file|
+    string_of_files = files.map do |file|
       File.read(File.expand_path(file))
     end
   else
-    file_datas = [$stdin.to_a.join]
+    string_of_files = [$stdin.to_a.join]
   end
 
-  file_datas.each_with_index do |file_data, index|
+  string_of_files.each_with_index do |string_of_file, index|
     file_name = files[index]
     if options.empty?
-      file_details = {l: count_line(file_data), w: count_word(file_data), c: count_bytesize(file_data)}
+      file_details = {l: count_line(string_of_file), w: count_word(string_of_file), c: count_bytesize(string_of_file)}
       puts "#{display_detail_line(file_details)} #{file_name}"
-      calcllate_total(file_details, total_hash) if files.size != 1
+      calculate_total(file_details, total_hash) if files.size != 1
     else
       options.each do |key, value|
-        options[key] = determine_caluculate(key, file_data)
+        options[key] = determine_caluculate(key, string_of_file)
       end
-      foo = sort_options(options)
-      puts "#{display_detail_line(foo)} #{file_name}"
-      calcllate_total(options, total_hash) if files.size != 1
+      sorted_file_details = sort_options(options)
+      puts "#{display_detail_line(sorted_file_details)} #{file_name}"
+      calculate_total(options, total_hash) if files.size != 1
     end
   end
 
-  if file_datas.size != 1
-    foo = sort_options(total_hash).delete_if{ |key, value| value == 0 }
-    puts "#{ display_detail_line(foo) } total"
+  if string_of_files.size != 1
+    sorted_file_details = sort_options(total_hash).delete_if{ |option, counted_detail| counted_detail.nil? }
+    puts "#{ display_detail_line(sorted_file_details) } total"
   end
 end
 
