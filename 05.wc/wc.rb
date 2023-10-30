@@ -39,30 +39,25 @@ def determine_caluculate(key, string_of_file)
     end
 end
 
-# ファイルが複数指定された場合、合計を計算する
 def calculate_total(hash, total_calculation_of_file_details)
   hash.each do |key, value|
     total_calculation_of_file_details[key] = total_calculation_of_file_details[key] + hash[key]
   end
 end
 
-# オプションを並び替える
 def sort_options(hash)
   hash.sort_by { |str| %i[l w c].index(str[0]) }.to_h
 end
 
-# 行の出力(最後の行も含めて)
 def output_lines(file_details, file_name, total_calculation_of_file_details)
   puts "#{display_detail_line(file_details)} #{file_name}"
   calculate_total(file_details, total_calculation_of_file_details) if files.size != 1
 end
 
-# 行の出力
 def display_detail_line(hash)
   hash.map { |key, value| "#{value.to_s.rjust(8)}" }.join
 end
 
-# オプション指定ありの行作成
 def create_detail_line(options, string_of_file)
   options.each do |key, value|
     options[key] = determine_caluculate(key, string_of_file)
