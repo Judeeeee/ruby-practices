@@ -28,8 +28,8 @@ end
 
 def create_detail_line(options, string_of_file)
   detail_line = {}
-  options.each do |key, value|
-    detail_line[key] = determine_caluculate(key, string_of_file)
+  options.each do |option, selected_option|
+    detail_line[option] = determine_caluculate(option, string_of_file)
   end
   detail_line
 end
@@ -58,18 +58,18 @@ def count_bytesize(string_of_file)
 end
 
 
-def output_lines(files,file_details, file_name, total_calculation_of_file_details)
+def output_lines(files, file_details, file_name, total_calculation_of_file_details)
   puts "#{display_detail_line(file_details)} #{file_name}"
   calculate_total(file_details, total_calculation_of_file_details) if files.size != 1
 end
 
 def display_detail_line(file_details)
-  file_details.map { |key, value| "#{value.to_s.rjust(8)}" }.join
+  file_details.map { |option, counted_file_detail| "#{counted_file_detail.to_s.rjust(8)}" }.join
 end
 
 def calculate_total(file_detail, total_calculation_of_file_details)
-  file_detail.each do |key, value|
-    total_calculation_of_file_details[key] = total_calculation_of_file_details[key] + file_detail[key]
+  file_detail.each do |option, counted_file_detail|
+    total_calculation_of_file_details[option] = total_calculation_of_file_details[option] + file_detail[option]
   end
 end
 
