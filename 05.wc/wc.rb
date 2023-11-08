@@ -55,7 +55,7 @@ def count_bytesize(string_of_file)
 end
 
 def output_lines(file_details)
-  file_details.map { |_option, counted_file_detail| counted_file_detail.to_s.rjust(8) }.join
+  file_details.values.map { |counted_file_detail| counted_file_detail.to_s.rjust(8) }.join
 end
 
 def calculate_total(file_detail)
