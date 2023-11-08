@@ -19,16 +19,6 @@ def define_options
   params
 end
 
-def read_files(files)
-  if stand_alone?
-    files.map do |file|
-      File.read(File.expand_path(file))
-    end
-  else
-    [$stdin.to_a.join]
-  end
-end
-
 def stand_alone?
   $stdin.isatty
 end
@@ -81,19 +71,27 @@ end
 
 def main
   options = define_options
-  total_calculation_of_file_details = { l: 0, w: 0, c: 0 }
-  files = ARGV
-  string_of_files = read_files(files)
 
-  string_of_files.each_with_index do |string_of_file, index|
-    detail_line = create_detail_line(options, string_of_file)
-    file_name = files[index]
-    output_lines(files, detail_line, file_name, total_calculation_of_file_details)
+  if stand_alone?
+    files = ARGV
+    file_details = files.to_h {|file| [file, File.read(File.expand_path(file))]}
+    file_details_total = { l: 0, w: 0, c: 0 }
+
+    file_details.each do |file_name, file_string|
+      detail_line = create_detail_line(options, file_string)
+      puts "#{output_lines(detail_line)} #{file_name}"
+
+      if file_details.keys.size != 1
+        options.keys.each do |option|
+          file_details_total[option] += detail_line[option]
+        end
+      end
+    end
+    output_total_line(file_details_total) if file_details.size != 1
+  else
+    detail_line = create_detail_line(options, $stdin.to_a.join)
+    puts "#{output_lines(detail_line)}"
   end
-
-  return unless string_of_files.size != 1
-  sorted_file_details = total_calculation_of_file_details.delete_if { |_option, counted_detail| counted_detail.zero? }
-  puts "#{display_detail_line(sorted_file_details)} total"
 end
 
 main
