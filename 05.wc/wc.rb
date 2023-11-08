@@ -54,6 +54,11 @@ def count_bytesize(string_of_file)
   string_of_file.bytesize
 end
 
+def output_total_line(file_details_total)
+  total_line = file_details_total.reject{|_option, counted_detail| counted_detail.zero? }
+  puts "#{output_lines(total_line)} total"
+end
+
 def output_lines(file_details)
   file_details.values.map { |counted_file_detail| counted_file_detail.to_s.rjust(8) }.join
 end
