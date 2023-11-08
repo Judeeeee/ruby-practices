@@ -16,7 +16,7 @@ def define_options
       :c=>true
     }
   end
-  params
+  params.sort_by { |option| %i[l w c].index(option[0]) }.to_h
 end
 
 def stand_alone?
@@ -24,7 +24,7 @@ def stand_alone?
 end
 
 def create_detail_line(options, string_of_file)
-  detail_line = { l: 0, w: 0, c: 0 }
+  detail_line = Hash.new
   options.each do |option, _selected_option|
     detail_line[option] = determine_caluculate(option, string_of_file)
   end
@@ -75,7 +75,7 @@ def main
   if stand_alone?
     files = ARGV
     file_details = files.to_h {|file| [file, File.read(File.expand_path(file))]}
-    file_details_total = { l: 0, w: 0, c: 0 }
+    file_details_total = Hash.new
 
     file_details.each do |file_name, file_string|
       detail_line = create_detail_line(options, file_string)
