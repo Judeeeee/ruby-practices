@@ -53,11 +53,19 @@ def define_options
     params.transform_values { true }
   else
     params.compact
-  ende
+  end
 end
 
 def stand_alone?
   $stdin.isatty
+end
+
+def inilialize_file_details_total(options)
+
+  options.each_key do |option|
+    file_details_total = Hash.new
+    file_details_total[option] = 0
+  end
 end
 
 def main
@@ -66,11 +74,8 @@ def main
   if stand_alone?
     files = ARGV
     file_details = files.to_h {|file| [file, File.read(File.expand_path(file))]}
-    file_details_total = Hash.new
+    file_details_total = inilialize_file_details_total(options)
 
-    options.each_key do |option|
-      file_details_total[option] = 0
-    end
     file_details.each do |file_name, file_string|
       detail_line = create_detail_line(options, file_string)
       puts "#{output_lines(detail_line)} #{file_name}"
