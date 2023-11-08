@@ -42,16 +42,25 @@ def output_lines(file_details)
   file_details.values.map { |counted_file_detail| counted_file_detail.to_s.rjust(8) }.join
 end
 
-def calculate_total(file_detail)
-  file_detail.keys.each do |option|
-    file_details_total[option] += file_detail[option]
+def define_options
+  opt = OptionParser.new
+  params = {}
+  opt.on('-l') { |v| params[:l] = v }
+  opt.on('-w') { |v| params[:w] = v }
+  opt.on('-c') { |v| params[:c] = v }
+  opt.parse!(ARGV)
+  if params.empty?
+    params = {
+      :l=>true,
+      :w=>true,
+      :c=>true
+    }
   end
   params.sort_by { |option| %i[l w c].index(option[0]) }.to_h
 end
 
-def output_total_line(file_details_total)
-  total_line = file_details_total.reject{|_option, counted_detail| counted_detail.zero? }
-  puts "#{output_lines(total_line)} total"
+def stand_alone?
+  $stdin.isatty
 end
 
 def main
