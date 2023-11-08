@@ -54,19 +54,19 @@ def count_bytesize(string_of_file)
   string_of_file.bytesize
 end
 
-def output_lines(files, file_details, file_name, total_calculation_of_file_details)
-  puts "#{display_detail_line(file_details)} #{file_name}"
-  calculate_total(file_details, total_calculation_of_file_details) if files.size != 1
-end
-
-def display_detail_line(file_details)
+def output_lines(file_details)
   file_details.map { |_option, counted_file_detail| counted_file_detail.to_s.rjust(8) }.join
 end
 
-def calculate_total(file_detail, total_calculation_of_file_details)
-  file_detail.each do |option, _counted_file_detail|
-    total_calculation_of_file_details[option] = total_calculation_of_file_details[option] + file_detail[option]
+def calculate_total(file_detail)
+  file_detail.keys.each do |option|
+    file_details_total[option] += file_detail[option]
   end
+end
+
+def output_total_line(file_details_total)
+  sorted_file_details = file_details_total.delete_if { |_option, counted_detail| counted_detail.zero? }
+  puts "#{output_lines(sorted_file_details)} total"
 end
 
 def main
