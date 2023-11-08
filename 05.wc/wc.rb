@@ -44,19 +44,16 @@ end
 
 def define_options
   opt = OptionParser.new
-  params = {}
+  params = {l: nil, w: nil, c: nil}
   opt.on('-l') { |v| params[:l] = v }
   opt.on('-w') { |v| params[:w] = v }
   opt.on('-c') { |v| params[:c] = v }
   opt.parse!(ARGV)
-  if params.empty?
-    params = {
-      :l=>true,
-      :w=>true,
-      :c=>true
-    }
-  end
-  params.sort_by { |option| %i[l w c].index(option[0]) }.to_h
+  if params.values.none?
+    params.transform_values { true }
+  else
+    params.compact
+  ende
 end
 
 def stand_alone?
@@ -71,6 +68,9 @@ def main
     file_details = files.to_h {|file| [file, File.read(File.expand_path(file))]}
     file_details_total = Hash.new
 
+    options.each_key do |option|
+      file_details_total[option] = 0
+    end
     file_details.each do |file_name, file_string|
       detail_line = create_detail_line(options, file_string)
       puts "#{output_lines(detail_line)} #{file_name}"
