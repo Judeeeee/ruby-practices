@@ -9,6 +9,13 @@ def define_options
   opt.on('-w') { |v| params[:w] = v }
   opt.on('-c') { |v| params[:c] = v }
   opt.parse!(ARGV)
+  if params.empty?
+    params = {
+      :l=>true,
+      :w=>true,
+      :c=>true
+    }
+  end
   params
 end
 
@@ -79,14 +86,9 @@ def main
   string_of_files = read_files(files)
 
   string_of_files.each_with_index do |string_of_file, index|
+    detail_line = create_detail_line(options, string_of_file)
     file_name = files[index]
-    if options.empty?
-      file_details = { l: count_line(string_of_file), w: count_word(string_of_file), c: count_bytesize(string_of_file) }
-      output_lines(files, file_details, file_name, total_calculation_of_file_details)
-    else
-      detail_line = create_detail_line(options, string_of_file)
-      output_lines(files, detail_line, file_name, total_calculation_of_file_details)
-    end
+    output_lines(files, detail_line, file_name, total_calculation_of_file_details)
   end
 
   return unless string_of_files.size != 1
