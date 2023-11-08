@@ -72,10 +72,6 @@ def calculate_total(file_detail, total_calculation_of_file_details)
   end
 end
 
-def sort_options(options)
-  options.sort_by { |option| %i[l w c].index(option[0]) }.to_h
-end
-
 def main
   options = define_options
   total_calculation_of_file_details = { l: 0, w: 0, c: 0 }
