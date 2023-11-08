@@ -27,11 +27,11 @@ def stand_alone?
 end
 
 def create_detail_line(options, string_of_file)
-  detail_line = {}
+  detail_line = { l: 0, w: 0, c: 0 }
   options.each do |option, _selected_option|
     detail_line[option] = determine_caluculate(option, string_of_file)
   end
-  detail_line
+  detail_line.delete_if { |_option, counted_detail| counted_detail.zero? }
 end
 
 def determine_caluculate(option, string_of_file)
@@ -89,14 +89,12 @@ def main
       output_lines(files, file_details, file_name, total_calculation_of_file_details)
     else
       detail_line = create_detail_line(options, string_of_file)
-      sorted_file_details = sort_options(detail_line)
-      output_lines(files, sorted_file_details, file_name, total_calculation_of_file_details)
+      output_lines(files, detail_line, file_name, total_calculation_of_file_details)
     end
   end
 
   return unless string_of_files.size != 1
-
-  sorted_file_details = sort_options(total_calculation_of_file_details).delete_if { |_option, counted_detail| counted_detail.zero? }
+  sorted_file_details = total_calculation_of_file_details.delete_if { |_option, counted_detail| counted_detail.zero? }
   puts "#{display_detail_line(sorted_file_details)} total"
 end
 
