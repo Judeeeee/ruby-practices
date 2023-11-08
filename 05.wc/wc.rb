@@ -2,27 +2,6 @@
 
 require 'optparse'
 
-def define_options
-  opt = OptionParser.new
-  params = {}
-  opt.on('-l') { |v| params[:l] = v }
-  opt.on('-w') { |v| params[:w] = v }
-  opt.on('-c') { |v| params[:c] = v }
-  opt.parse!(ARGV)
-  if params.empty?
-    params = {
-      :l=>true,
-      :w=>true,
-      :c=>true
-    }
-  end
-  params.sort_by { |option| %i[l w c].index(option[0]) }.to_h
-end
-
-def stand_alone?
-  $stdin.isatty
-end
-
 def create_detail_line(options, string_of_file)
   detail_line = Hash.new
   options.each do |option, _selected_option|
@@ -67,6 +46,7 @@ def calculate_total(file_detail)
   file_detail.keys.each do |option|
     file_details_total[option] += file_detail[option]
   end
+  params.sort_by { |option| %i[l w c].index(option[0]) }.to_h
 end
 
 def output_total_line(file_details_total)
