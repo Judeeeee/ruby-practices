@@ -28,7 +28,7 @@ def create_detail_line(options, string_of_file)
   options.each do |option, _selected_option|
     detail_line[option] = determine_caluculate(option, string_of_file)
   end
-  detail_line.delete_if { |_option, counted_detail| counted_detail.zero? }
+  detail_line.reject{|_option, counted_detail| counted_detail.zero?}
 end
 
 def determine_caluculate(option, string_of_file)
@@ -65,8 +65,8 @@ def calculate_total(file_detail)
 end
 
 def output_total_line(file_details_total)
-  sorted_file_details = file_details_total.delete_if { |_option, counted_detail| counted_detail.zero? }
-  puts "#{output_lines(sorted_file_details)} total"
+  total_line = file_details_total.reject{|_option, counted_detail| counted_detail.zero? }
+  puts "#{output_lines(total_line)} total"
 end
 
 def main
