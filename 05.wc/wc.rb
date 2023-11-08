@@ -82,7 +82,7 @@ def main
       puts "#{output_lines(detail_line)} #{file_name}"
 
       if file_details.keys.size != 1
-        options.keys.each do |option|
+        options.each_key do |option|
           file_details_total[option] += detail_line[option]
         end
       end
