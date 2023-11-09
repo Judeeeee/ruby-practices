@@ -7,7 +7,7 @@ def create_detail_line(options, string_of_file)
   options.each do |option, _selected_option|
     detail_line[option] = determine_caluculate(option, string_of_file)
   end
-  detail_line.reject { |_option, counted_detail| counted_detail.zero? }
+  detail_line
 end
 
 def determine_caluculate(option, string_of_file)
@@ -34,8 +34,7 @@ def count_bytesize(string_of_file)
 end
 
 def output_total_line(file_details_total)
-  total_line = file_details_total.reject { |_option, counted_detail| counted_detail.zero? }
-  puts "#{output_lines(total_line)} total"
+  puts "#{output_lines(file_details_total)} total"
 end
 
 def output_lines(file_details)
@@ -65,6 +64,7 @@ def inilialize_file_details_total(options)
   options.each_key do |option|
     file_details_total[option] = 0
   end
+  file_details_total
 end
 
 def main
@@ -79,7 +79,7 @@ def main
       detail_line = create_detail_line(options, file_string)
       puts "#{output_lines(detail_line)} #{file_name}"
 
-      next if file_details.keys.size != 1
+      next if file_details.keys.size == 1
 
       options.each_key do |option|
         file_details_total[option] += detail_line[option]
