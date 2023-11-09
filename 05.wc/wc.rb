@@ -79,7 +79,7 @@ def main
       detail_line = create_detail_line(options, file_string)
       puts "#{output_lines(detail_line)} #{file_name}"
 
-      next if file_details.keys.size == 1
+      next if file_details.size == 1
 
       options.each_key do |option|
         file_details_total[option] += detail_line[option]
