@@ -4,7 +4,7 @@ require 'optparse'
 
 def create_detail_line(options, string_of_file)
   detail_line = {}
-  options.each do |option, _selected_option|
+  options.each_key do |option|
     detail_line[option] = determine_caluculate(option, string_of_file)
   end
   detail_line
