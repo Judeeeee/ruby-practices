@@ -2,35 +2,35 @@
 
 require 'optparse'
 
-def create_detail_line(options, string_of_file)
+def create_detail_line(options, file_string)
   detail_line = {}
   options.each_key do |option|
-    detail_line[option] = determine_caluculate(option, string_of_file)
+    detail_line[option] = determine_caluculate(option, file_string)
   end
   detail_line
 end
 
-def determine_caluculate(option, string_of_file)
+def determine_caluculate(option, file_string)
   case option
   when :l
-    count_line(string_of_file)
+    count_line(file_string)
   when :w
-    count_word(string_of_file)
+    count_word(file_string)
   when :c
-    count_bytesize(string_of_file)
+    count_bytesize(file_string)
   end
 end
 
-def count_line(string_of_file)
-  string_of_file.count("\n")
+def count_line(file_string)
+  file_string.count("\n")
 end
 
-def count_word(string_of_file)
-  string_of_file.split(' ').size
+def count_word(file_string)
+  file_string.split(' ').size
 end
 
-def count_bytesize(string_of_file)
-  string_of_file.bytesize
+def count_bytesize(file_string)
+  file_string.bytesize
 end
 
 def output_total_line(file_details_total)
