@@ -2,6 +2,32 @@
 
 require 'optparse'
 
+def main
+  options = define_options
+
+  if stand_alone?
+    files = ARGV
+    file_details = files.to_h { |file| [file, File.read(File.expand_path(file))] }
+    file_details_total = inilialize_file_details_total(options)
+
+    file_details.each do |file_name, file_string|
+      detail_line = create_detail_line(options, file_string)
+      puts "#{output_lines(detail_line)} #{file_name}"
+
+      next if file_details.size == 1
+
+      options.each_key do |option|
+        file_details_total[option] += detail_line[option]
+      end
+    end
+
+    output_total_line(file_details_total) if file_details.size != 1
+  else
+    detail_line = create_detail_line(options, $stdin.to_a.join)
+    puts output_lines(detail_line)
+  end
+end
+
 def create_detail_line(options, file_string)
   detail_line = {}
   options.each_key do |option|
@@ -65,32 +91,6 @@ def inilialize_file_details_total(options)
     file_details_total[option] = 0
   end
   file_details_total
-end
-
-def main
-  options = define_options
-
-  if stand_alone?
-    files = ARGV
-    file_details = files.to_h { |file| [file, File.read(File.expand_path(file))] }
-    file_details_total = inilialize_file_details_total(options)
-
-    file_details.each do |file_name, file_string|
-      detail_line = create_detail_line(options, file_string)
-      puts "#{output_lines(detail_line)} #{file_name}"
-
-      next if file_details.size == 1
-
-      options.each_key do |option|
-        file_details_total[option] += detail_line[option]
-      end
-    end
-
-    output_total_line(file_details_total) if file_details.size != 1
-  else
-    detail_line = create_detail_line(options, $stdin.to_a.join)
-    puts output_lines(detail_line)
-  end
 end
 
 main
