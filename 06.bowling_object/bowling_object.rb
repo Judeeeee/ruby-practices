@@ -31,14 +31,13 @@ class Game
     frame_score = @frames[0..8].flatten.sum + @frames[9..].flatten.sum
     bonus_score = caluculate_bonus_score
     frame_score + bonus_score
-    binding.irb
   end
 
   private
 
   def caluculate_bonus_score
     bonus_result = 0
-    @frames.each_with_index do |frame, index|
+    @frames[0..8].each_with_index do |frame, index|
       next_frame = @frames[index + 1]
 
       if spare?(frame)
