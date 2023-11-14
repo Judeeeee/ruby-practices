@@ -64,4 +64,4 @@ def calculate_bonus_score(frames)
   end
 end
 
-main if __FILE__ == $PROGRAM_NAME
+main
