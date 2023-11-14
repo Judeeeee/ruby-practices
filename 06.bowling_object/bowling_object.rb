@@ -62,6 +62,7 @@ def calculate_bonus_score(frames)
                      end
     end
   end
+  bonus_score
 end
 
 main
