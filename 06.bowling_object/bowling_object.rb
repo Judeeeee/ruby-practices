@@ -5,7 +5,7 @@ class Shot
     @point = point
   end
 
-  def x_to_10
+  def x_to_ten
     @point == 'X' ? [10, 0] : @point.to_i
   end
 end
@@ -34,7 +34,7 @@ end
 
 def main
   points = ARGV[0].split(',')
-  x_converted_to_10_points = points.map { |point| Shot.new(point).x_to_10 }.flatten
+  x_converted_to_10_points = points.map { |point| Shot.new(point).x_to_ten }.flatten
   base_score = x_converted_to_10_points.sum
   shots = x_converted_to_10_points.each_slice(2).to_a
   frames = shots.map { |shot| Frame.new(shot) }
