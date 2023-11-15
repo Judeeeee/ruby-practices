@@ -8,7 +8,7 @@ def main
   if stand_alone?
     files = ARGV
     file_details = files.to_h { |file| [file, File.read(File.expand_path(file))] }
-    file_details_total = inilialize_file_details_total(options)
+    file_details_total = Hash.new(0)
 
     file_details.each do |file_name, file_string|
       detail_line = create_detail_line(options, file_string)
@@ -83,14 +83,6 @@ end
 
 def stand_alone?
   $stdin.isatty
-end
-
-def inilialize_file_details_total(options)
-  file_details_total = {}
-  options.each_key do |option|
-    file_details_total[option] = 0
-  end
-  file_details_total
 end
 
 main
