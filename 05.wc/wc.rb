@@ -62,7 +62,7 @@ def output_total_line(file_details_total)
 end
 
 def output_lines(file_details)
-  file_details.values.map { |counted_file_detail| counted_file_detail.to_s.rjust(8) }.join
+  file_details.values.map { |count| count.to_s.rjust(8) }.join
 end
 
 def define_options
