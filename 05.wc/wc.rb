@@ -27,11 +27,11 @@ def main
 end
 
 def create_detail_line(options, file_string)
-  detail_line = {}
-  options.each_key do |option|
-    detail_line[option] = determine_caluculate(option, file_string)
-  end
-  detail_line
+  {
+    l: count_line(file_string),
+    w: count_word(file_string),
+    c: count_bytesize(file_string)
+  }.slice(*options.keys)
 end
 
 def determine_caluculate(option, file_string)
