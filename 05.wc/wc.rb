@@ -19,7 +19,7 @@ def main
       end
     end
 
-    output_total_line(file_details_total) if file_details.size != 1
+    output_total_line(file_details_total) if file_details.size > 1
   else
     detail_line = create_detail_line(options, $stdin.to_a.join)
     puts output_lines(detail_line)
