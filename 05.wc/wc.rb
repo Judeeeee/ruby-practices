@@ -73,7 +73,7 @@ def define_options
   opt.on('-c') { |v| params[:c] = v }
   opt.parse!(ARGV)
   if params.values.none?
-    params.transform_values{ true }.keys
+    params.transform_values { true }.keys
   else
     params.compact.keys
   end
