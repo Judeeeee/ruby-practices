@@ -14,7 +14,7 @@ def main
       detail_line = create_detail_line(options, file_string)
       puts "#{output_lines(detail_line)} #{file_name}"
 
-      options.each_key do |option|
+      options.each do |option|
         file_details_total[option] += detail_line[option]
       end
     end
@@ -31,7 +31,7 @@ def create_detail_line(options, file_string)
     l: count_line(file_string),
     w: count_word(file_string),
     c: count_bytesize(file_string)
-  }.slice(*options.keys)
+  }.slice(*options)
 end
 
 def determine_caluculate(option, file_string)
@@ -73,9 +73,9 @@ def define_options
   opt.on('-c') { |v| params[:c] = v }
   opt.parse!(ARGV)
   if params.values.none?
-    params.transform_values { true }
+    params.transform_values{ true }.keys
   else
-    params.compact
+    params.compact.keys
   end
 end
 
