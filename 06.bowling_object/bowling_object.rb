@@ -1,36 +1,7 @@
 # frozen_string_literal: true
 
-class Shot
-  def initialize(point)
-    @point = point
-  end
-
-  def x_to_ten
-    @point == 'X' ? [10, 0] : @point.to_i
-  end
-end
-
-class Frame
-  def initialize(shots)
-    @shots = shots
-  end
-
-  def strike?
-    @shots == [10, 0]
-  end
-
-  def spare?
-    !strike? && (@shots.sum == 10)
-  end
-
-  def first_shot
-    @shots[0]
-  end
-
-  def total_shot
-    @shots.sum
-  end
-end
+require './shot'
+require './frame'
 
 def main
   points = ARGV[0].split(',')
