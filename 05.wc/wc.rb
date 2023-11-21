@@ -11,7 +11,7 @@ def main
     file_details_total = Hash.new(0)
 
     file_details.each do |file_name, file_text|
-      detail_line = create_detail_line(options, file_text)
+      detail_line = create_details(options, file_text)
       puts "#{add_space(detail_line)} #{file_name}"
 
       options.each do |option|
@@ -21,12 +21,12 @@ def main
 
     puts "#{add_space(file_details_total)} total" if file_details.size > 1
   else
-    detail_line = create_detail_line($stdin.to_a.join, options)
+    detail_line = create_details($stdin.to_a.join, options)
     puts add_space(detail_line)
   end
 end
 
-def create_detail_line(file_text, options)
+def create_details(file_text, options)
   {
     l: file_text.count("\n"),
     w: file_text.split(' ').size,
