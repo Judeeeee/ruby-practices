@@ -11,7 +11,7 @@ def main
     file_details_total = Hash.new(0)
 
     file_details.each do |file_name, file_text|
-      detail_line = create_details(options, file_text)
+      detail_line = create_details(file_text, options)
       puts "#{add_space(detail_line)} #{file_name}"
 
       options.each do |option|
