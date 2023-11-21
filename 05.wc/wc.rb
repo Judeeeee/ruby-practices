@@ -34,17 +34,6 @@ def create_detail_line(options, file_text)
   }.slice(*options)
 end
 
-def determine_caluculate(option, file_text)
-  case option
-  when :l
-    count_line(file_text)
-  when :w
-    count_word(file_text)
-  when :c
-    count_bytesize(file_text)
-  end
-end
-
 def count_line(file_text)
   file_text.count("\n")
 end
