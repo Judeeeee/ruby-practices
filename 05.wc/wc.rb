@@ -28,22 +28,10 @@ end
 
 def create_detail_line(options, file_text)
   {
-    l: count_line(file_text),
-    w: count_word(file_text),
-    c: count_bytesize(file_text)
+    l: file_text.count("\n"),
+    w: file_text.split(' ').size,
+    c: file_text.bytesize
   }.slice(*options)
-end
-
-def count_line(file_text)
-  file_text.count("\n")
-end
-
-def count_word(file_text)
-  file_text.split(' ').size
-end
-
-def count_bytesize(file_text)
-  file_text.bytesize
 end
 
 def add_space(file_details)
