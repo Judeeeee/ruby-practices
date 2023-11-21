@@ -12,17 +12,17 @@ def main
 
     file_details.each do |file_name, file_text|
       detail_line = create_detail_line(options, file_text)
-      puts "#{output_lines(detail_line)} #{file_name}"
+      puts "#{add_space(detail_line)} #{file_name}"
 
       options.each do |option|
         file_details_total[option] += detail_line[option]
       end
     end
 
-    output_total_line(file_details_total) if file_details.size > 1
+    puts "#{add_space(file_details_total)} total" if file_details.size > 1
   else
     detail_line = create_detail_line(options, $stdin.to_a.join)
-    puts output_lines(detail_line)
+    puts add_space(detail_line)
   end
 end
 
@@ -46,11 +46,7 @@ def count_bytesize(file_text)
   file_text.bytesize
 end
 
-def output_total_line(file_details_total)
-  puts "#{output_lines(file_details_total)} total"
-end
-
-def output_lines(file_details)
+def add_space(file_details)
   file_details.values.map { |count| count.to_s.rjust(8) }.join
 end
 
