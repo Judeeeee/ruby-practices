@@ -21,12 +21,12 @@ def main
 
     puts "#{add_space(file_details_total)} total" if file_details.size > 1
   else
-    detail_line = create_detail_line(options, $stdin.to_a.join)
+    detail_line = create_detail_line($stdin.to_a.join, options)
     puts add_space(detail_line)
   end
 end
 
-def create_detail_line(options, file_text)
+def create_detail_line(file_text, options)
   {
     l: file_text.count("\n"),
     w: file_text.split(' ').size,
