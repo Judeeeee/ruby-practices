@@ -10,8 +10,8 @@ def main
     file_details = files.to_h { |file| [file, File.read(File.expand_path(file))] }
     file_details_total = Hash.new(0)
 
-    file_details.each do |file_name, file_string|
-      detail_line = create_detail_line(options, file_string)
+    file_details.each do |file_name, file_text|
+      detail_line = create_detail_line(options, file_text)
       puts "#{output_lines(detail_line)} #{file_name}"
 
       options.each do |option|
@@ -26,35 +26,35 @@ def main
   end
 end
 
-def create_detail_line(options, file_string)
+def create_detail_line(options, file_text)
   {
-    l: count_line(file_string),
-    w: count_word(file_string),
-    c: count_bytesize(file_string)
+    l: count_line(file_text),
+    w: count_word(file_text),
+    c: count_bytesize(file_text)
   }.slice(*options)
 end
 
-def determine_caluculate(option, file_string)
+def determine_caluculate(option, file_text)
   case option
   when :l
-    count_line(file_string)
+    count_line(file_text)
   when :w
-    count_word(file_string)
+    count_word(file_text)
   when :c
-    count_bytesize(file_string)
+    count_bytesize(file_text)
   end
 end
 
-def count_line(file_string)
-  file_string.count("\n")
+def count_line(file_text)
+  file_text.count("\n")
 end
 
-def count_word(file_string)
-  file_string.split(' ').size
+def count_word(file_text)
+  file_text.split(' ').size
 end
 
-def count_bytesize(file_string)
-  file_string.bytesize
+def count_bytesize(file_text)
+  file_text.bytesize
 end
 
 def output_total_line(file_details_total)
