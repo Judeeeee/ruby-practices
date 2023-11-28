@@ -8,18 +8,18 @@ def main
   if stand_alone?
     files = ARGV
     file_details = files.to_h { |file| [file, File.read(file)] }
-    file_details_total = Hash.new(0)
+    total_counts = Hash.new(0)
 
     file_details.each do |file_name, file_text|
       detail_line = create_details(file_text, options)
       puts "#{add_space(detail_line)} #{file_name}"
 
       options.each do |option|
-        file_details_total[option] += detail_line[option]
+        total_counts[option] += detail_line[option]
       end
     end
 
-    puts "#{add_space(file_details_total)} total" if file_details.size > 1
+    puts "#{add_space(total_counts)} total" if file_details.size > 1
   else
     detail_line = create_details($stdin.read, options)
     puts add_space(detail_line)
