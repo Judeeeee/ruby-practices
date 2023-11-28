@@ -7,7 +7,7 @@ def main
 
   if stand_alone?
     files = ARGV
-    file_details = files.to_h { |file| [file, File.read(File.expand_path(file))] }
+    file_details = files.to_h { |file| [file, File.read(file)] }
     file_details_total = Hash.new(0)
 
     file_details.each do |file_name, file_text|
@@ -21,7 +21,7 @@ def main
 
     puts "#{add_space(file_details_total)} total" if file_details.size > 1
   else
-    detail_line = create_details($stdin.to_a.join, options)
+    detail_line = create_details($stdin.read, options)
     puts add_space(detail_line)
   end
 end
