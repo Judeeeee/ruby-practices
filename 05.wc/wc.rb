@@ -12,17 +12,17 @@ def main
 
     file_details.each do |file_name, file_text|
       detail_line = create_detail_line(file_text, options)
-      puts "#{add_space(detail_line)} #{file_name}"
+      puts "#{format_counts(detail_line)} #{file_name}"
 
       options.each do |option|
         total_counts[option] += detail_line[option]
       end
     end
 
-    puts "#{add_space(total_counts)} total" if file_details.size > 1
+    puts "#{format_counts(total_counts)} total" if file_details.size > 1
   else
     detail_line = create_detail_line($stdin.read, options)
-    puts add_space(detail_line)
+    puts format_counts(detail_line)
   end
 end
 
@@ -34,7 +34,7 @@ def create_detail_line(text, options)
   }.slice(*options)
 end
 
-def add_space(file_details)
+def format_counts(file_details)
   file_details.values.map { |count| count.to_s.rjust(8) }.join
 end
 
