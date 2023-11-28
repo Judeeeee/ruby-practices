@@ -26,11 +26,11 @@ def main
   end
 end
 
-def create_detail_line(file_text, options)
+def create_detail_line(text, options)
   {
-    l: file_text.count("\n"),
-    w: file_text.split(' ').size,
-    c: file_text.bytesize
+    l: text.count("\n"),
+    w: text.split(' ').size,
+    c: text.bytesize
   }.slice(*options)
 end
 
