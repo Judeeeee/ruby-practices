@@ -3,7 +3,7 @@
 require 'optparse'
 
 def main
-  options = define_options
+  options = read_options
 
   if stand_alone?
     files = ARGV
@@ -38,7 +38,7 @@ def add_space(file_details)
   file_details.values.map { |count| count.to_s.rjust(8) }.join
 end
 
-def define_options
+def read_options
   opt = OptionParser.new
   params = { l: nil, w: nil, c: nil }
   opt.on('-l') { |v| params[:l] = v }
