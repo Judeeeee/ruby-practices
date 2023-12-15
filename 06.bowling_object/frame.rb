@@ -6,18 +6,22 @@ class Frame
   end
 
   def strike?
-    @shots == [10, 0]
+    @shots[0].x?
   end
 
   def spare?
-    !strike? && (@shots.sum == 10)
+    !strike? && (total == 10)
+  end
+
+  def total
+    @shots.sum(&:to_i)
   end
 
   def first_shot
-    @shots[0]
+    @shots[0].to_i
   end
 
-  def total_shot
-    @shots.sum
+  def two_shots_total
+    @shots[0..1].sum(&:to_i)
   end
 end

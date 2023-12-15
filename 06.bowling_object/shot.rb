@@ -5,7 +5,11 @@ class Shot
     @point = point
   end
 
-  def x_to_ten
-    @point == 'X' ? [10, 0] : @point.to_i
+  def to_i
+    x? ? 10 : @point.to_i
+  end
+
+  def x?
+    @point == 'X'
   end
 end
