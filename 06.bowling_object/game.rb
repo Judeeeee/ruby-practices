@@ -33,13 +33,13 @@ class Game
 
   def total_score
     base_score = @frames.sum(&:base_score)
+    bonus_score = calculate_bonus_score_exclude_final_frame
     base_score + bonus_score
   end
 
   private
 
-  def bonus_score
-    # 最後のフレームではボーナススコアを計算しないため、1~9フレーム目までを計算する
+  def calculate_bonus_score_exclude_final_frame
     @frames.slice(0, 9).each_with_index.sum do |frame, index|
       next_frame = @frames[index + 1]
       after_next_frame = @frames[index + 2]
