@@ -32,7 +32,7 @@ class Game
   end
 
   def total_score
-    base_score = @frames.sum(&:total)
+    base_score = @frames.sum(&:base_score)
     base_score + bonus_score
   end
 
