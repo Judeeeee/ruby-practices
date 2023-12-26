@@ -6,10 +6,10 @@ class Shot
   end
 
   def to_i
-    x? ? 10 : @point.to_i
+    strike? ? 10 : @point.to_i
   end
 
-  def x?
+  def strike?
     @point == 'X'
   end
 end

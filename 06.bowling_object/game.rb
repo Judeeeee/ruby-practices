@@ -14,7 +14,7 @@ class Game
     10.times do |frame_number|
       len = if frame_number == 9
               3
-            elsif shots[i].x?
+            elsif shots[i].strike?
               1
             else
               2

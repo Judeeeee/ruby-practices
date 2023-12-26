@@ -6,7 +6,7 @@ class Frame
   end
 
   def strike?
-    @shots[0].x?
+    @shots[0].strike?
   end
 
   def spare?
