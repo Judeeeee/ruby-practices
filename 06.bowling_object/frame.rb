@@ -10,10 +10,10 @@ class Frame
   end
 
   def spare?
-    !strike? && (base_score == 10)
+    !strike? && (knocked_pins_total == 10)
   end
 
-  def base_score
+  def knocked_pins_total
     @shots.sum(&:to_i)
   end
 

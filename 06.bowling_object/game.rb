@@ -32,7 +32,7 @@ class Game
   end
 
   def total_score
-    base_score = @frames.sum(&:base_score)
+    base_score = @frames.sum(&:knocked_pins_total)
     bonus_score = calculate_bonus_score_exclude_final_frame
     base_score + bonus_score
   end
