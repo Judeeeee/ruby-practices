@@ -4,7 +4,7 @@ require 'optparse'
 require './output'
 require './content'
 
-def define_option
+def read_options
   opt = OptionParser.new
   params = {}
   opt.on('-a') { |v| params[:a] = v }
@@ -15,7 +15,7 @@ def define_option
 end
 
 def main
-  options = define_option
+  options = read_options
   output = Output.new(options)
   output.display
 end
