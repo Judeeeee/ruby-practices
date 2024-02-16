@@ -71,6 +71,6 @@ class Content
   end
 
   def timestamp
-    @file.atime.strftime('%_m %e %k:%M')
+    @file.mtime.strftime('%_m %e %k:%M')
   end
 end
