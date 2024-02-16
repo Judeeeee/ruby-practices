@@ -6,7 +6,6 @@ require 'date'
 require 'pathname'
 require './output'
 require './content'
-require 'Time'
 
 def define_option
   opt = OptionParser.new
