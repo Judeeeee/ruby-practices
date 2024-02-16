@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'etc'
+require 'date'
+require 'pathname'
+
 class Content
   PERMISSION_SYMBOLS = {
     '7' => 'rwx',

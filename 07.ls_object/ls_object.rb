@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 require 'optparse'
-require 'etc'
-require 'date'
-require 'pathname'
 require './output'
 require './content'
 
