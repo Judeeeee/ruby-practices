@@ -38,14 +38,16 @@ class Content
     @file.blocks
   end
 
-  def detail(max_hardlink, max_owner_name, max_group_name, max_bytesize)
-    [permission,
-     hardlink.rjust(max_hardlink),
-     owner_name.rjust(max_owner_name + 1),
-     group_name.rjust(max_group_name + 1),
-     bytesize.rjust(max_bytesize),
-     timestamp,
-     path]
+  def properties
+    {
+      permission:,
+      hardlink:,
+      owner_name:,
+      group_name:,
+      bytesize:,
+      timestamp:,
+      path:
+    }
   end
 
   def permission
