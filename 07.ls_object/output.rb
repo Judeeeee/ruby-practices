@@ -10,10 +10,10 @@ class Output
             end
 
     @contents = if @options.include?(:r)
-      paths.map { |path| Content.new(path) }.reverse
-    else
-      paths.map { |path| Content.new(path) }
-    end
+                    paths.map { |path| Content.new(path) }.reverse
+                else
+                    paths.map { |path| Content.new(path) }
+                end
   end
 
   def max_length
