@@ -9,11 +9,10 @@ class Output
               Dir.glob('*')
             end
 
-    @contents = paths.map { |path| Content.new(path) }
-    if @options.include?(:r)
-      @contents.reverse!
+    @contents = if @options.include?(:r)
+      paths.map { |path| Content.new(path) }.reverse
     else
-      @contents
+      paths.map { |path| Content.new(path) }
     end
   end
 
