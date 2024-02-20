@@ -22,7 +22,9 @@ class Output
       rjust_blank_sizes = calcurate_add_blank_sizes # 良い変数名が思いつかず、しっくりきていないです。。
       output_detail_lines(max_blocks,rjust_blank_sizes)
     else
-      @contents.map { |content| content.path.length }.max
+      max_path = @contents.map { |content| content.path.length }.max
+      lines = @contents.map { |content| content.path.ljust(max_path) }
+      output_three_column_format(lines)
     end
   end
 
@@ -60,10 +62,11 @@ class Output
     end
   end
 
-  def format_lines(lines, max_column = 3)
+  def output_three_column_format(lines, max_column = 3)
     row_size = (lines.size.to_f / max_column).ceil
     add_blank_size = (row_size * max_column) - lines.size
     formatted_lines = (lines + [nil] * add_blank_size).each_slice(row_size).to_a.transpose
-    formatted_lines.map { |formatted_line| formatted_line.join('   ') }
+    three_column_format_lines = formatted_lines.map { |formatted_line| formatted_line.join('   ') }
+    puts three_column_format_lines
   end
 end
