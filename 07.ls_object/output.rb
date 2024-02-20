@@ -38,7 +38,7 @@ class Output
 
     {
       hardlink: max_hardlink,
-      owner_name: (max_owner_name + 1),
+      owner_name: max_owner_name,
       group_name: max_group_name,
       bytesize: max_bytesize
     }
