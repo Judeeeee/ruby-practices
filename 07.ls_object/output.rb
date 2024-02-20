@@ -10,9 +10,9 @@ class Output
             end
 
     @contents = if @options.include?(:r)
-                    paths.map { |path| Content.new(path) }.reverse
+                  paths.map { |path| Content.new(path) }.reverse
                 else
-                    paths.map { |path| Content.new(path) }
+                  paths.map { |path| Content.new(path) }
                 end
   end
 
@@ -20,7 +20,7 @@ class Output
     if @options.include?(:l)
       max_blocks = @contents.sum(&:blocks)
       rjust_blank_sizes = calcurate_add_blank_sizes # 良い変数名が思いつかず、しっくりきていないです。。
-      output_detail_lines(max_blocks,rjust_blank_sizes)
+      output_detail_lines(max_blocks, rjust_blank_sizes)
     else
       max_path = @contents.map { |content| content.path.length }.max
       lines = @contents.map { |content| content.path.ljust(max_path) }
@@ -44,8 +44,7 @@ class Output
     }
   end
 
-
-  def output_detail_lines(max_blocks,rjust_blank_sizes)
+  def output_detail_lines(max_blocks, rjust_blank_sizes)
     puts "total #{max_blocks}"
 
     @contents.each do |content|
