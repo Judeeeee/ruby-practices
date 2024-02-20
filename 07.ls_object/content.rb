@@ -39,12 +39,14 @@ class Content
   end
 
   def properties
+    string_bytesize = bytesize.to_s
+    string_hardlink = hardlink.to_s
     {
       permission:,
-      hardlink:,
+      hardlink: string_hardlink,
       owner_name:,
       group_name:,
-      bytesize:,
+      bytesize: string_bytesize,
       timestamp:,
       path:
     }
@@ -61,7 +63,7 @@ class Content
   end
 
   def hardlink
-    @file.nlink.to_s
+    @file.nlink
   end
 
   def owner_name
@@ -73,7 +75,7 @@ class Content
   end
 
   def bytesize
-    @file.size.to_s
+    @file.size
   end
 
   def timestamp
