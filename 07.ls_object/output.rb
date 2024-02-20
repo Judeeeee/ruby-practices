@@ -16,32 +16,47 @@ class Output
                 end
   end
 
-  def max_length
+  def display
     if @options.include?(:l)
-      max_hardlink = @contents.map { |content| content.hardlink.size }.max
-      max_owner_name = @contents.map { |content| content.owner_name.length }.max
-      max_group_name = @contents.map { |content| content.group_name.length }.max
-      max_bytesize = @contents.map { |content| content.bytesize.size }.max
-      [max_hardlink, max_owner_name, max_group_name, max_bytesize]
+      max_blocks = @contents.sum(&:blocks)
+      rjust_blank_sizes = calcurate_add_blank_sizes # 良い変数名が思いつかず、しっくりきていないです。。
+      output_detail_lines(max_blocks,rjust_blank_sizes)
     else
       @contents.map { |content| content.path.length }.max
     end
   end
 
-  def display
-    puts "total #{@contents.sum(&:blocks)}" if @options.include?(:l)
-    puts create_lines(max_length)
-  end
-
   private
 
-  def create_lines(max_length)
-    if @options.include?(:l)
-      max_hardlink, max_owner_name, max_group_name, max_bytesize = max_length
-      @contents.map { |content| content.detail(max_hardlink, max_owner_name, max_group_name, max_bytesize).join(' ') }
-    else
-      lines = @contents.map { |content| content.path.ljust(max_length) }
-      format_lines(lines)
+  def calcurate_add_blank_sizes
+    max_hardlink = @contents.map { |content| content.hardlink.size }.max
+    max_owner_name = @contents.map { |content| content.owner_name.length }.max
+    max_group_name = @contents.map { |content| content.group_name.length }.max
+    max_bytesize = @contents.map { |content| content.bytesize.size }.max
+
+    {
+      hardlink: max_hardlink,
+      owner_name: (max_owner_name + 1),
+      group_name: max_group_name,
+      bytesize: max_bytesize
+    }
+  end
+
+
+  def output_detail_lines(max_blocks,rjust_blank_sizes)
+    puts "total #{max_blocks}"
+
+    @contents.each do |content|
+      properties = content.properties
+      formatted_line = {}
+      properties.each_key do |key|
+        formatted_line[key] = if rjust_blank_sizes[key]
+                                properties[key].rjust(rjust_blank_sizes[key])
+                              else
+                                properties[key]
+                              end
+      end
+      puts formatted_line.values.join(' ')
     end
   end
 
