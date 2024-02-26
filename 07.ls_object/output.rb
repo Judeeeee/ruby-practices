@@ -10,9 +10,9 @@ class Output
 
   def display
     if @options.include?(:l)
-      max_blocks = @contents.sum(&:blocks)
+      total_block_size = @contents.sum(&:blocks)
       rjust_blank_sizes = calcurate_add_blank_sizes # 良い変数名が思いつかず、しっくりきていないです。。
-      output_detail_lines(max_blocks, rjust_blank_sizes)
+      output_detail_lines(total_block_size, rjust_blank_sizes)
     else
       max_path = @contents.map { |content| content.path.length }.max
       lines = @contents.map { |content| content.path.ljust(max_path) }
@@ -36,8 +36,8 @@ class Output
     }
   end
 
-  def output_detail_lines(max_blocks, rjust_blank_sizes)
-    puts "total #{max_blocks}"
+  def output_detail_lines(total_block_size, rjust_blank_sizes)
+    puts "total #{total_block_size}"
 
     @contents.each do |content|
       properties = content.properties
