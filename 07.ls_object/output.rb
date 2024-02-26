@@ -3,11 +3,7 @@
 class Output
   def initialize(options)
     @options = options
-    paths = if @options.include?(:a)
-              Dir.entries('.').sort
-            else
-              Dir.glob('*')
-            end
+    paths = @options.include?(:a) ? Dir.entries('.').sort : Dir.glob('*')
 
     @contents = if @options.include?(:r)
                   paths.map { |path| Content.new(path) }.reverse
