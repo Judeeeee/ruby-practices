@@ -38,20 +38,6 @@ class Content
     @properties.blocks
   end
 
-  def properties
-    string_bytesize = bytesize.to_s
-    string_hardlink = hardlink.to_s
-    {
-      permission:,
-      hardlink: string_hardlink,
-      owner_name:,
-      group_name:,
-      bytesize: string_bytesize,
-      timestamp:,
-      path:
-    }
-  end
-
   def permission
     permission = @properties.mode.to_s(8).slice(-3..-1)
     symbols = permission.each_char.map { |char| PERMISSION_SYMBOLS[char] }

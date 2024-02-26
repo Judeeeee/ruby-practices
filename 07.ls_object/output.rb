@@ -62,9 +62,9 @@ class Output
     max_column = 3
     row_size = (lines.size.to_f / max_column).ceil
     blank_sizes = (row_size * max_column) - lines.size
-    blank_filled_lines = lines + [nil] * blank_sizes
-    formatted_lines = blank_filled_lines.each_slice(row_size).to_a.transpose
-    three_column_format_lines = formatted_lines.map { |formatted_line| formatted_line.join('   ') }
-    puts three_column_format_lines
+    nill_filled_lines = lines + [nil] * blank_sizes
+    grouped_row_lines = nill_filled_lines.each_slice(row_size).to_a.transpose
+    formatted_lines = grouped_row_lines.map { |formatted_line| formatted_line.join('   ') }
+    puts formatted_lines
   end
 end
