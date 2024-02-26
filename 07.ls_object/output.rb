@@ -16,7 +16,7 @@ class Output
     else
       pathname_widths = @contents.map { |content| content.path.length }.max
       lines = @contents.map { |content| content.path.ljust(pathname_widths) }
-      output_three_column_format(lines)
+      output_pathname(lines)
     end
   end
 
@@ -53,7 +53,8 @@ class Output
     end
   end
 
-  def output_three_column_format(lines, max_column = 3)
+  def output_pathname(lines)
+    max_column = 3
     row_size = (lines.size.to_f / max_column).ceil
     blank_sizes = (row_size * max_column) - lines.size
     blank_filled_lines = lines + [nil] * blank_sizes
