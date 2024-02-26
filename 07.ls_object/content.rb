@@ -79,6 +79,6 @@ class Content
   end
 
   def timestamp
-    @properties.mtime.strftime('%_m %e %k:%M')
+    @properties.mtime
   end
 end

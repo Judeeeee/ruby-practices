@@ -11,8 +11,7 @@ class Output
   def display
     if @options.include?(:l)
       total_block_size = @contents.sum(&:blocks)
-      column_widths = calcurate_add_blank_sizes
-      output_detail_lines(total_block_size, column_widths)
+      output_detail_lines(total_block_size)
     else
       pathname_widths = @contents.map { |content| content.path.length }.max
       lines = @contents.map { |content| content.path.ljust(pathname_widths) }
@@ -22,35 +21,32 @@ class Output
 
   private
 
-  def calcurate_add_blank_sizes
-    max_hardlink = @contents.map { |content| content.hardlink.to_s.size }.max
-    max_owner_name = @contents.map { |content| content.owner_name.length }.max
-    max_group_name = @contents.map { |content| content.group_name.length }.max
-    max_bytesize = @contents.map { |content| content.bytesize.to_s.size }.max
+  def output_detail_lines(total_block_size)
+    max_hardlink = find_max_hardlink
+    max_owner_name = find_max_owner_name
+    max_group_name = find_max_group_name
+    max_bytesize = find_max_bytesize
 
-    {
-      hardlink: max_hardlink,
-      owner_name: max_owner_name,
-      group_name: max_group_name,
-      bytesize: max_bytesize
-    }
+    puts "total #{total_block_size}"
+    @contents.each do |content|
+      puts "#{content.permission} #{content.hardlink.to_s.rjust(max_hardlink)} #{content.owner_name.rjust(max_owner_name)}  #{content.group_name.rjust(max_group_name)}  #{content.bytesize.to_s.rjust(max_bytesize)} #{content.timestamp.strftime('%_m %e %k:%M')} #{content.path}"
+    end
   end
 
-  def output_detail_lines(total_block_size, column_widths)
-    puts "total #{total_block_size}"
+  def find_max_hardlink
+    @contents.map { |content| content.hardlink.to_s.size }.max
+  end
 
-    @contents.each do |content|
-      properties = content.properties
-      formatted_line = {}
-      properties.each_key do |key|
-        formatted_line[key] = if column_widths[key]
-                                properties[key].rjust(column_widths[key])
-                              else
-                                properties[key]
-                              end
-      end
-      puts formatted_line.values.join(' ')
-    end
+  def find_max_owner_name
+    @contents.map { |content| content.owner_name.length }.max
+  end
+
+  def find_max_group_name
+    @contents.map { |content| content.group_name.length }.max
+  end
+
+  def find_max_bytesize
+    @contents.map { |content| content.bytesize.to_s.size }.max
   end
 
   def output_pathname(lines)
