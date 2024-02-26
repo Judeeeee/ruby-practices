@@ -14,8 +14,8 @@ class Output
       column_widths = calcurate_add_blank_sizes
       output_detail_lines(total_block_size, column_widths)
     else
-      max_path = @contents.map { |content| content.path.length }.max
-      lines = @contents.map { |content| content.path.ljust(max_path) }
+      pathname_widths = @contents.map { |content| content.path.length }.max
+      lines = @contents.map { |content| content.path.ljust(pathname_widths) }
       output_three_column_format(lines)
     end
   end
