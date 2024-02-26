@@ -29,7 +29,16 @@ class Output
 
     puts "total #{total_block_size}"
     @contents.each do |content|
-      puts "#{content.permission} #{content.hardlink.to_s.rjust(max_hardlink)} #{content.owner_name.rjust(max_owner_name)}  #{content.group_name.rjust(max_group_name)}  #{content.bytesize.to_s.rjust(max_bytesize)} #{content.timestamp.strftime('%_m %e %k:%M')} #{content.path}"
+      line = [
+        content.permission,
+        content.hardlink.to_s.rjust(max_hardlink),
+        "#{content.owner_name.rjust(max_owner_name)} ",
+        "#{content.group_name.rjust(max_group_name)} ",
+        content.bytesize.to_s.rjust(max_bytesize),
+        content.timestamp.strftime('%_m %e %k:%M'),
+        content.path
+      ]
+      puts line.join(' ')
     end
   end
 
