@@ -55,8 +55,9 @@ class Output
 
   def output_three_column_format(lines, max_column = 3)
     row_size = (lines.size.to_f / max_column).ceil
-    add_blank_size = (row_size * max_column) - lines.size
-    formatted_lines = (lines + [nil] * add_blank_size).each_slice(row_size).to_a.transpose
+    blank_sizes = (row_size * max_column) - lines.size
+    blank_filled_lines = lines + [nil] * blank_sizes
+    formatted_lines = blank_filled_lines.each_slice(row_size).to_a.transpose
     three_column_format_lines = formatted_lines.map { |formatted_line| formatted_line.join('   ') }
     puts three_column_format_lines
   end
