@@ -11,8 +11,8 @@ class Output
   def display
     if @options.include?(:l)
       total_block_size = @contents.sum(&:blocks)
-      rjust_blank_sizes = calcurate_add_blank_sizes # 良い変数名が思いつかず、しっくりきていないです。。
-      output_detail_lines(total_block_size, rjust_blank_sizes)
+      column_widths = calcurate_add_blank_sizes
+      output_detail_lines(total_block_size, column_widths)
     else
       max_path = @contents.map { |content| content.path.length }.max
       lines = @contents.map { |content| content.path.ljust(max_path) }
@@ -36,15 +36,15 @@ class Output
     }
   end
 
-  def output_detail_lines(total_block_size, rjust_blank_sizes)
+  def output_detail_lines(total_block_size, column_widths)
     puts "total #{total_block_size}"
 
     @contents.each do |content|
       properties = content.properties
       formatted_line = {}
       properties.each_key do |key|
-        formatted_line[key] = if rjust_blank_sizes[key]
-                                properties[key].rjust(rjust_blank_sizes[key])
+        formatted_line[key] = if column_widths[key]
+                                properties[key].rjust(column_widths[key])
                               else
                                 properties[key]
                               end
