@@ -4,12 +4,8 @@ class Output
   def initialize(options)
     @options = options
     paths = @options.include?(:a) ? Dir.entries('.').sort : Dir.glob('*')
-
-    @contents = if @options.include?(:r)
-                  paths.map { |path| Content.new(path) }.reverse
-                else
-                  paths.map { |path| Content.new(path) }
-                end
+    contents = paths.map { |path| Content.new(path) } # @contentsと名前が被るのですが、いい案が思いつかなかったです😓
+    @contents = @options.include?(:r) ? contents.reverse : contents
   end
 
   def display
