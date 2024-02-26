@@ -26,13 +26,13 @@ class Content
     'socket' => 's'
   }.freeze
 
+  attr_reader :path
+
   def initialize(path)
     @path = path
     absolute_path = File.expand_path(path)
     @file = File.stat(absolute_path)
   end
-
-  attr_reader :path
 
   def blocks
     @file.blocks
