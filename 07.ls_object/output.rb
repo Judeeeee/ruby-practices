@@ -4,7 +4,7 @@ class TerminalDisplay
   def initialize(options)
     @options = options
     paths = @options.include?(:a) ? Dir.entries('.').sort : Dir.glob('*')
-    contents = paths.map { |path| Content.new(path) } # @contentsと名前が被るのですが、いい案が思いつかなかったです😓
+    contents = paths.map { |path| Content.new(path) }
     @contents = @options.include?(:r) ? contents.reverse : contents
   end
 
