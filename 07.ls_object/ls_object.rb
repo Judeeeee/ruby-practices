@@ -6,12 +6,12 @@ require './content'
 
 def read_options
   opt = OptionParser.new
-  params = {}
-  opt.on('-a') { |v| params[:a] = v }
-  opt.on('-r') { |v| params[:r] = v }
-  opt.on('-l') { |v| params[:l] = v }
+  options = {}
+  opt.on('-a') { |v| options[:a] = v }
+  opt.on('-r') { |v| options[:r] = v }
+  opt.on('-l') { |v| options[:l] = v }
   opt.parse!(ARGV)
-  params
+  options
 end
 
 def main
