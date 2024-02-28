@@ -16,7 +16,7 @@ end
 
 def main
   options = read_options
-  output = Output.new(options)
+  output = TerminalDisplay.new(options)
   output.display
 end
 

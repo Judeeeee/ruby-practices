@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Output
+class TerminalDisplay
   def initialize(options)
     @options = options
     paths = @options.include?(:a) ? Dir.entries('.').sort : Dir.glob('*')
