@@ -21,8 +21,8 @@ class TerminalDisplay
   def output_detail_lines
     total_block_size = @contents.sum(&:blocks)
     max_hardlink = find_max_hardlink
-    max_owner_name = find_max_owner_name
-    max_group_name = find_max_group_name
+    owner_name_width = find_max_owner_name
+    group_name_width = find_max_group_name
     max_bytesize = find_max_bytesize
 
     puts "total #{total_block_size}"
@@ -30,8 +30,8 @@ class TerminalDisplay
       line = [
         content.permission,
         content.hardlink.to_s.rjust(max_hardlink),
-        "#{content.owner_name.rjust(max_owner_name)} ",
-        "#{content.group_name.rjust(max_group_name)} ",
+        "#{content.owner_name.rjust(owner_name_width)} ",
+        "#{content.group_name.rjust(group_name_width)} ",
         content.bytesize.to_s.rjust(max_bytesize),
         content.timestamp.strftime('%_m %e %k:%M'),
         content.path
