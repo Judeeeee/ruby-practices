@@ -20,10 +20,10 @@ class TerminalDisplay
 
   def output_detail_lines
     total_block_size = @contents.sum(&:blocks)
-    max_hardlink = find_max_hardlink
-    owner_name_width = find_max_owner_name
-    group_name_width = find_max_group_name
-    max_bytesize = find_max_bytesize
+    max_hardlink = @contents.map { |content| content.hardlink.to_s.size }.max
+    owner_name_width = @contents.map { |content| content.owner_name.length }.max
+    group_name_width = @contents.map { |content| content.group_name.length }.max
+    max_bytesize = @contents.map { |content| content.bytesize.to_s.size }.max
 
     puts "total #{total_block_size}"
     @contents.each do |content|
@@ -38,22 +38,6 @@ class TerminalDisplay
       ]
       puts line.join(' ')
     end
-  end
-
-  def find_max_hardlink
-    @contents.map { |content| content.hardlink.to_s.size }.max
-  end
-
-  def find_max_owner_name
-    @contents.map { |content| content.owner_name.length }.max
-  end
-
-  def find_max_group_name
-    @contents.map { |content| content.group_name.length }.max
-  end
-
-  def find_max_bytesize
-    @contents.map { |content| content.bytesize.to_s.size }.max
   end
 
   def output_pathname
