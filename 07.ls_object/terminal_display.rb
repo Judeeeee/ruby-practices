@@ -8,7 +8,7 @@ class TerminalDisplay
     @contents = @options.include?(:r) ? contents.reverse : contents
   end
 
-  def display
+  def output
     if @options.include?(:l)
       total_block_size = @contents.sum(&:blocks)
       output_detail_lines(total_block_size)

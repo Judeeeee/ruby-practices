@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'optparse'
-require './output'
+require './terminal_display'
 require './content'
 
 def read_options
@@ -16,8 +16,8 @@ end
 
 def main
   options = read_options
-  output = TerminalDisplay.new(options)
-  output.display
+  terminal_display = TerminalDisplay.new(options)
+  terminal_display.output
 end
 
 main
