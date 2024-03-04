@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TerminalDisplay
+  MAX_COLUMN = 3
+
   def initialize(options)
     @options = options
     paths = @options.include?(:a) ? Dir.entries('.').sort : Dir.glob('*')
@@ -43,9 +45,8 @@ class TerminalDisplay
   def output_pathname
     pathname_width = @contents.map { |content| content.path.length }.max
     lines = @contents.map { |content| content.path.ljust(pathname_width) }
-    max_column = 3
-    row_size = (lines.size.to_f / max_column).ceil
-    blank_sizes = (row_size * max_column) - lines.size
+    row_size = (lines.size.to_f / MAX_COLUMN).ceil
+    blank_sizes = (row_size * MAX_COLUMN) - lines.size
     nill_filled_lines = lines + [nil] * blank_sizes
     grouped_row_lines = nill_filled_lines.each_slice(row_size).to_a.transpose
     formatted_lines = grouped_row_lines.map { |formatted_line| formatted_line.join('   ') }
