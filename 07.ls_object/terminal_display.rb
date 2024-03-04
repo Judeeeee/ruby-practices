@@ -57,8 +57,8 @@ class TerminalDisplay
   end
 
   def output_pathname
-    pathname_widths = @contents.map { |content| content.path.length }.max
-    lines = @contents.map { |content| content.path.ljust(pathname_widths) }
+    pathname_width = @contents.map { |content| content.path.length }.max
+    lines = @contents.map { |content| content.path.ljust(pathname_width) }
     max_column = 3
     row_size = (lines.size.to_f / max_column).ceil
     blank_sizes = (row_size * max_column) - lines.size
