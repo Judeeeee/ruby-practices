@@ -49,7 +49,6 @@ class TerminalDisplay
     blank_sizes = (row_size * MAX_COLUMN) - lines.size
     nill_filled_lines = lines + [nil] * blank_sizes
     grouped_row_lines = nill_filled_lines.each_slice(row_size).to_a.transpose
-    formatted_lines = grouped_row_lines.map { |formatted_line| formatted_line.join('   ') }
-    puts formatted_lines
+    puts grouped_row_lines.map { |formatted_line| formatted_line.join('   ') }
   end
 end
