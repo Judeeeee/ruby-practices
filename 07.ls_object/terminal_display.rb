@@ -10,18 +10,16 @@ class TerminalDisplay
 
   def output
     if @options.include?(:l)
-      total_block_size = @contents.sum(&:blocks)
-      output_detail_lines(total_block_size)
+      output_detail_lines
     else
-      pathname_widths = @contents.map { |content| content.path.length }.max
-      lines = @contents.map { |content| content.path.ljust(pathname_widths) }
-      output_pathname(lines)
+      output_pathname
     end
   end
 
   private
 
-  def output_detail_lines(total_block_size)
+  def output_detail_lines
+    total_block_size = @contents.sum(&:blocks)
     max_hardlink = find_max_hardlink
     max_owner_name = find_max_owner_name
     max_group_name = find_max_group_name
@@ -58,7 +56,9 @@ class TerminalDisplay
     @contents.map { |content| content.bytesize.to_s.size }.max
   end
 
-  def output_pathname(lines)
+  def output_pathname
+    pathname_widths = @contents.map { |content| content.path.length }.max
+    lines = @contents.map { |content| content.path.ljust(pathname_widths) }
     max_column = 3
     row_size = (lines.size.to_f / max_column).ceil
     blank_sizes = (row_size * max_column) - lines.size
