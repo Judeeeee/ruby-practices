@@ -31,40 +31,40 @@ class Content
   def initialize(path)
     @path = path
     absolute_path = File.expand_path(path)
-    @properties = File.stat(absolute_path)
+    @lstat = File.stat(absolute_path)
   end
 
   def blocks
-    @properties.blocks
+    @lstat.blocks
   end
 
   def permission
-    permission = @properties.mode.to_s(8).slice(-3..-1)
+    permission = @lstat.mode.to_s(8).slice(-3..-1)
     symbols = permission.each_char.map { |char| PERMISSION_SYMBOLS[char] }
     [file_mode, *symbols, '@'].join
   end
 
   def file_mode
-    FILE_MODES[@properties.ftype]
+    FILE_MODES[@lstat.ftype]
   end
 
   def hardlink
-    @properties.nlink
+    @lstat.nlink
   end
 
   def owner_name
-    Etc.getpwuid(@properties.uid).name
+    Etc.getpwuid(@lstat.uid).name
   end
 
   def group_name
-    Etc.getgrgid(@properties.gid).name
+    Etc.getgrgid(@lstat.gid).name
   end
 
   def bytesize
-    @properties.size
+    @lstat.size
   end
 
   def timestamp
-    @properties.mtime
+    @lstat.mtime
   end
 end
